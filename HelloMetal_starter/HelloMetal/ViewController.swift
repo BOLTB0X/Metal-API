@@ -50,7 +50,23 @@ class ViewController: UIViewController {
   // 3) 이 데이터를 MTLBuffer라는 것으로 이동하여 GPU로 보내야 함
   // 3) 이를 위해 다른 새 속성을 추가
   var vertexBuffer: MTLBuffer!
-    
+  
+  // MARK: 6) Creating a Render Pipeline
+  // 6) 이제 버텍스 및 프래그먼트 셰이더를 만들었으므로 다른 구성 데이터와 함께 렌더 파이프라인이라는 특수 개체에 결합
+  // 6) Metal의 멋진 점 중 하나는 셰이더가 사전 컴파일되고 렌더 파이프라인 구성이 처음 설정한 후 컴파일된다는 것
+  // 6) 이것은 모든 것을 매우 효율적으로 만듬
+  var pipelineState: MTLRenderPipelineState!
+  
+  // MARK: 7) Creating a Command Queue
+  // 7) 수행해야 하는 마지막 일회성 설정 단계는 MTLCommandQueue를 생성하는 것
+  // 7) 이것을 한 번에 하나씩 실행하도록 GPU에 지시하는 순서가 지정된 명령 목록으로 생각
+  // 7) 명령 대기열을 만들려면 새 속성을 추가하기만 하면 됨
+  var commandQueue: MTLCommandQueue!
+  
+  // MARK: 8) Creating a Display Link
+  // 8) CADisplayLink는 디스플레이 재생 빈도에 동기화된 타이머
+  var timer: CADisplayLink!
+
   // 1) 사용하기 전에 확실히 초기화할 것이라는 것을 알고 있으므로 편의를 위해 암시적으로 언래핑된 옵션으로 표시
   // 1) 마지막으로 다음과 같이 viewDidLoad()를 추가하고 장치 속성을 초기화
   override func viewDidLoad() {
@@ -70,5 +86,57 @@ class ViewController: UIViewController {
     
     let dataSize = vertexData.count * MemoryLayout.size(ofValue: vertexData[0]) // 3-1) 정점 데이터의 크기를 바이트 단위로 가져와야 함, 첫 번째 요소의 크기에 배열의 요소 수를 곱하면 됌
     vertexBuffer = device.makeBuffer(bytes: vertexData, length: dataSize, options: []) // 3-2) MTLDevice에서 makeBuffer(bytes:length:options:)를 호출하여 GPU에서 새 버퍼를 만들고 CPU에서 데이터를 전달한 뒤 기본 구성을 위해 빈 배열을 전달
+    
+    // 6-1)
+    // device.makeDefaultLibrary()!를 호출하여 얻은 MTLLibrary 개체를 통해 프로젝트에 포함된 미리 컴파일된 셰이더에 액세스할 수 있음
+    // 그런 다음 이름별로 각 셰이더를 조회할 수 있음
+    let defaultLibrary = device.makeDefaultLibrary()!
+    let fragmentProgram = defaultLibrary.makeFunction(name: "basic_fragment")
+    let vertexProgram = defaultLibrary.makeFunction(name: "basic_vertex")
+        
+    // 6-2)
+    // 렌더 파이프라인 구성을 설정
+    // 여기에는 사용하려는 셰이더와 색상 첨부를 위한 픽셀 형식, 즉 CAMetalLayer 자체인 렌더링 대상 출력 버퍼가 포함됨
+    let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
+    pipelineStateDescriptor.vertexFunction = vertexProgram
+    pipelineStateDescriptor.fragmentFunction = fragmentProgram
+    pipelineStateDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        
+    // 6-3)
+    // 마지막으로 파이프라인 구성을 여기에서 사용하기에 효율적인 파이프라인 상태로 컴파일
+    pipelineState = try! device.makeRenderPipelineState(descriptor: pipelineStateDescriptor)
+
+    // 7)
+    commandQueue = device.makeCommandQueue()
+    
+    // 8)
+    timer = CADisplayLink(target: self, selector: #selector(gameloop))
+    timer.add(to: RunLoop.main, forMode: .default)
   }
+  
+  // MARK: 9) Creating a Render Pass Descriptor
+  // 9) MTLRenderPassDescriptor를 생성하는 것
+  // 9) MTLRenderPassDescriptor는 렌더링되는 텍스처, 명확한 색상 및 약간의 기타 구성을 구성하는 개체
+  func render() {
+    // 9) 생성한 Metal 레이어에서 nextDrawable()을 호출하여 화면에 무언가를 표시하기 위해 그려야 하는 텍스처를 반환
+    guard let drawable = metalLayer?.nextDrawable() else { return }
+    // 9) 다음으로 해당 텍스처를 사용하도록 렌더 패스 설명자를 구성
+    // 9) 불러오기 동작을 Clear로 설정합니다. 즉, “그리기 전에 텍스처를 선명한 색상으로 설정”한다는 의미이며, Clear 색상은 사이트에서 사용하는 녹색 색상으로 설정
+    let renderPassDescriptor = MTLRenderPassDescriptor()
+    renderPassDescriptor.colorAttachments[0].texture = drawable.texture
+    renderPassDescriptor.colorAttachments[0].loadAction = .clear
+    renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(
+      red: 0.0,
+      green: 104.0/255.0,
+      blue: 55.0/255.0,
+      alpha: 1.0)
+  }
+  
+  // 8) 여기서 gameloop()는 매 프레임마다 단순히 render()를 호출
+  @objc func gameloop() {
+    autoreleasepool {
+      self.render()
+    }
+  }
+  
 }

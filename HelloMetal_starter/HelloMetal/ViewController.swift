@@ -121,7 +121,8 @@ class ViewController: UIViewController {
     // 9) 생성한 Metal 레이어에서 nextDrawable()을 호출하여 화면에 무언가를 표시하기 위해 그려야 하는 텍스처를 반환
     guard let drawable = metalLayer?.nextDrawable() else { return }
     // 9) 다음으로 해당 텍스처를 사용하도록 렌더 패스 설명자를 구성
-    // 9) 불러오기 동작을 Clear로 설정합니다. 즉, “그리기 전에 텍스처를 선명한 색상으로 설정”한다는 의미이며, Clear 색상은 사이트에서 사용하는 녹색 색상으로 설정
+    // 9) 불러오기 동작을 Clear로 설정합니다. 즉, “그리기 전에 텍스처를 선명한 색상으로 설정”한다는 의미이며,
+    // Clear 색상은 사이트에서 사용하는 녹색 색상으로 설정
     let renderPassDescriptor = MTLRenderPassDescriptor()
     renderPassDescriptor.colorAttachments[0].texture = drawable.texture
     renderPassDescriptor.colorAttachments[0].loadAction = .clear
@@ -130,6 +131,38 @@ class ViewController: UIViewController {
       green: 104.0/255.0,
       blue: 55.0/255.0,
       alpha: 1.0)
+    
+    // MARK: 10) Creating a Command Buffer
+    // 10) 색상과 선을 그렸으면 명령 버퍼를 만들어야 함
+    // 10) 버퍼를 이 프레임에 대해 실행하려는 렌더링 명령 목록이라고 생각
+    // 10) 명령 버퍼를 커밋하기 전까지는 실제로 아무 일도 일어나지 X
+    // 10) 즉 세밀하게 제어 가능
+    
+    // 10) 이 코드를 추가하는 것이 명령 버퍼를 생성하는 것
+    let commandBuffer = commandQueue.makeCommandBuffer()!
+    
+    // MARK: 11) Creating a Render Command Encoder
+    // 11) 명령 버퍼에는 하나 이상의 렌더링 명령이 포함되어야 함
+    // 11) 렌더링 명령을 만들려면 렌더링 명령 인코더라는 도우미 개체를 사용
+    // 11) 여기에서 명령 인코더를 생성하고 이전에 생성한 파이프라인 및 정점 버퍼를 지정
+    let renderEncoder = commandBuffer
+      .makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+    renderEncoder.setRenderPipelineState(pipelineState)
+    renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+    renderEncoder
+      .drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1) // 11-1) 가장 중요한 부분
+    // 11-1) 여기에서 정점 버퍼를 기반으로 삼각형 집합을 그리도록 GPU에 지시
+    // 11-1) 메서드 인수는 각 삼각형이 꼭짓점 버퍼 내부의 인덱스 0에서 시작하는 세 개의 꼭짓점으로 구성되고
+    // 11-1) 총 하나의 삼각형이 있음을 Metal에게 전달
+    renderEncoder.endEncoding() // 11-1) 완료되면 endEncoding()을 호출하기만 하면 됨
+    
+    // MARK: 12) Committing Your Command Buffer
+    // 12) 그리기가 완료되는 즉시 GPU가 새 텍스처를 제공하는지 확인하려면 첫 번째 줄이 필요
+    // 12) 그런 다음 트랜잭션을 커밋하여 작업을 GPU로 보냄
+    commandBuffer.present(drawable)
+    
+    // 12) 완료
+    commandBuffer.commit()
   }
   
   // 8) 여기서 gameloop()는 매 프레임마다 단순히 render()를 호출

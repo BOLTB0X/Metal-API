@@ -1,7 +1,5 @@
 ## METAl Tutorial
 
-[img](https://github.com/dehesa/Metal/raw/master/docs/assets/Metal.svg)
-
 > 정말 해보고 싶어 튜토리얼을 보고 진행해봄
 
 Kodeco의 [Metal Tutorial: Getting Started](https://www.kodeco.com/7475-metal-tutorial-getting-started)을 보고 첫 걸음을 때 보려함
@@ -15,7 +13,7 @@ devices, command queues등과 같은 Metal에서 가장 중요한 일부 클래�
 
 ## Metal 이란?
 
-[img](https://developer.apple.com/assets/elements/icons/metal/metal-96x96_2x.png)
+![img](https://developer.apple.com/assets/elements/icons/metal/metal-96x96_2x.png)
 
 > Metal powers hardware-accelerated graphics on Apple platforms by providing a low-overhead API
 > <br/>

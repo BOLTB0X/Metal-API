@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="LCk-BY-zWf">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Camera View Controller-->
+        <scene sceneID="85q-7w-hbC">
+            <objects>
+                <viewController id="LCk-BY-zWf" customClass="CameraViewController" customModule="Evanesco" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hGN-7z-Qv8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dS0-4t-Fcr">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IhS-zO-YID" customClass="RecordButton" customModule="Evanesco" customModuleProvider="target">
+                                <rect key="frame" x="151.66666666666666" y="706" width="72" height="72"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="Vav-9t-gRi"/>
+                                    <constraint firstAttribute="height" constant="72" id="yLr-gT-AP3"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="recordTapped:" destination="LCk-BY-zWf" eventType="touchUpInside" id="PKU-kW-D1z"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2QZ-Vw-HSw">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kdm-O0-F7b">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                                    </imageView>
+                                    <view alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vpN-iD-inT">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="obZ-OR-560">
+                                        <rect key="frame" x="328" y="52" width="39" height="30"/>
+                                        <state key="normal" title="Close">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="closeButtonTapped:" destination="LCk-BY-zWf" eventType="touchUpInside" id="4qB-uy-zjg"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="kdm-O0-F7b" firstAttribute="centerY" secondItem="2QZ-Vw-HSw" secondAttribute="centerY" id="2N9-55-aRC"/>
+                                    <constraint firstItem="kdm-O0-F7b" firstAttribute="height" secondItem="2QZ-Vw-HSw" secondAttribute="height" id="7XK-br-HmF"/>
+                                    <constraint firstItem="kdm-O0-F7b" firstAttribute="width" secondItem="2QZ-Vw-HSw" secondAttribute="width" id="CbB-tI-42N"/>
+                                    <constraint firstAttribute="trailing" secondItem="vpN-iD-inT" secondAttribute="trailing" id="Isn-Qr-uUp"/>
+                                    <constraint firstItem="vpN-iD-inT" firstAttribute="bottom" secondItem="obZ-OR-560" secondAttribute="bottom" constant="8" id="L5r-bu-FXW"/>
+                                    <constraint firstItem="vpN-iD-inT" firstAttribute="top" secondItem="2QZ-Vw-HSw" secondAttribute="top" id="SS4-f9-9uc"/>
+                                    <constraint firstItem="vpN-iD-inT" firstAttribute="leading" secondItem="2QZ-Vw-HSw" secondAttribute="leading" id="Ttg-m0-ZNw"/>
+                                    <constraint firstItem="kdm-O0-F7b" firstAttribute="centerX" secondItem="2QZ-Vw-HSw" secondAttribute="centerX" id="gcG-Bp-UxI"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="obZ-OR-560" secondAttribute="trailing" id="pjb-Cj-dHR"/>
+                                    <constraint firstItem="obZ-OR-560" firstAttribute="top" secondItem="2QZ-Vw-HSw" secondAttribute="topMargin" id="txY-ss-abG"/>
+                                    <constraint firstItem="obZ-OR-560" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2QZ-Vw-HSw" secondAttribute="leading" constant="10" id="upa-Cp-39e"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="2QZ-Vw-HSw" secondAttribute="bottom" id="6T7-Op-uqU"/>
+                            <constraint firstItem="2QZ-Vw-HSw" firstAttribute="leading" secondItem="hGN-7z-Qv8" secondAttribute="leading" id="KtH-0R-wRx"/>
+                            <constraint firstItem="IhS-zO-YID" firstAttribute="centerX" secondItem="vxP-bV-wNb" secondAttribute="centerX" id="OPf-HF-sHg"/>
+                            <constraint firstItem="vxP-bV-wNb" firstAttribute="bottom" secondItem="IhS-zO-YID" secondAttribute="bottom" id="Tpf-gl-iDB"/>
+                            <constraint firstAttribute="trailing" secondItem="2QZ-Vw-HSw" secondAttribute="trailing" id="WZz-C6-JI3"/>
+                            <constraint firstAttribute="trailing" secondItem="dS0-4t-Fcr" secondAttribute="trailing" id="er7-C9-pCI"/>
+                            <constraint firstItem="2QZ-Vw-HSw" firstAttribute="top" secondItem="hGN-7z-Qv8" secondAttribute="top" id="fuz-FO-cAi"/>
+                            <constraint firstAttribute="bottom" secondItem="dS0-4t-Fcr" secondAttribute="bottom" id="jqf-bm-evP"/>
+                            <constraint firstItem="dS0-4t-Fcr" firstAttribute="top" secondItem="hGN-7z-Qv8" secondAttribute="top" id="mF4-QB-3Zn"/>
+                            <constraint firstItem="dS0-4t-Fcr" firstAttribute="leading" secondItem="hGN-7z-Qv8" secondAttribute="leading" id="tMy-Yl-wbH"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="vxP-bV-wNb"/>
+                    </view>
+                    <connections>
+                        <outlet property="combinedImageView" destination="kdm-O0-F7b" id="4j6-s2-IUu"/>
+                        <outlet property="containerView" destination="2QZ-Vw-HSw" id="7Zq-Wz-evI"/>
+                        <outlet property="previewView" destination="dS0-4t-Fcr" id="8MK-Dp-QF4"/>
+                        <outlet property="recordButton" destination="IhS-zO-YID" id="JRM-01-GmP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yjI-LQ-WOl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-223.19999999999999" y="-9.6059113300492616"/>
+        </scene>
+    </scenes>
+</document>

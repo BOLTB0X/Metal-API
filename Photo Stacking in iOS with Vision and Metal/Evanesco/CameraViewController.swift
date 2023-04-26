@@ -38,6 +38,9 @@ class CameraViewController: UIViewController {
   let session = AVCaptureSession()
   var isRecording = false
   let maxFrameCount = 20
+  
+  var saver: ImageSaver?
+
 
   override func viewDidLoad() {
     super.viewDidLoad()

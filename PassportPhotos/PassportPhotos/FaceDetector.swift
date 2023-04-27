@@ -100,9 +100,14 @@ extension FaceDetector {
     let convertedBoundingBox =
       viewDelegate.convertFromMetadataToPreviewRect(rect: result.boundingBox)
 
+    // 이제 필요한 롤, 피치 및 요 매개변수를 FaceGeometryModel 개체의 초기화에 추가
     let faceObservationModel = FaceGeometryModel(
-      boundingBox: convertedBoundingBox
+      boundingBox: convertedBoundingBox,
+      roll: result.roll ?? 0,
+      pitch: result.pitch ?? 0,
+      yaw: result.yaw ?? 0
     )
+
 
     model.perform(action: .faceObservationDetected(faceObservationModel))
   }

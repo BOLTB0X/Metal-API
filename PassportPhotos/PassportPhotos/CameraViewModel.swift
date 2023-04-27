@@ -63,7 +63,11 @@ enum FaceBoundsState {
 }
 
 struct FaceGeometryModel {
+  // 이 변경으로 뷰 모델의 면에서 감지된 롤, 피치 및 요 값을 저장할 수 있으
   let boundingBox: CGRect
+  let roll: NSNumber
+  let pitch: NSNumber
+  let yaw: NSNumber
 }
 
 // MARK: 전체 앱의 상태를 제어하는 뷰 모델
@@ -82,7 +86,23 @@ final class CameraViewModel: ObservableObject {
       processUpdatedFaceGeometry()
     }
   }
-
+  
+  // MARK: - hasDetectedValidFace property
+  @Published private(set) var isAcceptableRoll: Bool {
+    didSet {
+      calculateDetectedFaceValidity()
+    }
+  }
+  @Published private(set) var isAcceptablePitch: Bool {
+    didSet {
+      calculateDetectedFaceValidity()
+    }
+  }
+  @Published private(set) var isAcceptableYaw: Bool {
+    didSet {
+      calculateDetectedFaceValidity()
+    }
+  }
   // MARK: - Public properties
   let shutterReleased = PassthroughSubject<Void, Never>()
 
@@ -94,6 +114,11 @@ final class CameraViewModel: ObservableObject {
 
     hasDetectedValidFace = true
     faceGeometryState = .faceNotFound
+    
+    // add
+    isAcceptableRoll = false
+    isAcceptablePitch = false
+    isAcceptableYaw = false
 
     #if DEBUG
       debugModeEnabled = true
@@ -162,7 +187,12 @@ final class CameraViewModel: ObservableObject {
 // MARK: Private instance methods
 
 extension CameraViewModel {
-  func invalidateFaceGeometryState() { }
+  func invalidateFaceGeometryState() {
+    // 감지된 얼굴이 없으므로 허용 가능한 롤, 피치 및 요 값을 false로 설정
+    isAcceptableRoll = false
+    isAcceptablePitch = false
+    isAcceptableYaw = false
+  }
 
   func processUpdatedFaceGeometry() {
     switch faceGeometryState {
@@ -171,18 +201,30 @@ extension CameraViewModel {
     case .errored(let error):
       print(error.localizedDescription)
       invalidateFaceGeometryState()
-    case .faceFound:
+      // 여기에서 감지된 얼굴의 롤, 피치 및 요 값을 faceGeometryModel에서 두 배로 가져옴
+    case .faceFound(let faceGeometryModel):
+      let roll = faceGeometryModel.roll.doubleValue
+      let pitch = faceGeometryModel.pitch.doubleValue
+      let yaw = faceGeometryModel.yaw.doubleValue
+      updateAcceptableRollPitchYaw(using: roll, pitch: pitch, yaw: yaw)
       return
     }
   }
 
   func updateAcceptableBounds(using boundingBox: CGRect) { }
 
-  func updateAcceptableRollPitchYaw(using roll: Double, pitch: Double, yaw: Double) { }
+  func updateAcceptableRollPitchYaw(using roll: Double, pitch: Double, yaw: Double) {
+    isAcceptableRoll = (roll > 1.2 && roll < 1.6)
+    isAcceptablePitch = abs(CGFloat(pitch)) < 0.2
+    isAcceptableYaw = abs(CGFloat(yaw)) < 0.15
+  }
 
   func processUpdatedFaceQuality() { }
 
   func calculateDetectedFaceValidity() {
-    hasDetectedValidFace = false
+    hasDetectedValidFace =
+      isAcceptableRoll &&
+      isAcceptablePitch &&
+      isAcceptableYaw
   }
 }

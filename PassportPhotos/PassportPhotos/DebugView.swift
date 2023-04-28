@@ -49,6 +49,7 @@ struct DebugView: View {
   }
 }
 
+// 현재 값을 화면에 인쇄하고 값이 허용 가능한지 여부에 따라 텍스트 색상을 설정하도록 디버그 텍스트를 업데이트
 struct DebugSection<Model, Content: View>: View {
   let observation: FaceObservation<Model>
   let content: (Model) -> Content

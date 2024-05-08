@@ -8,9 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		BE1B71EF2BE355E00076773A /* triangle.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE1B71EE2BE355E00076773A /* triangle.metal */; };
-		BE1B71F52BE372900076773A /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE1B71F42BE372900076773A /* Texture.cpp */; };
-		BE1B71F82BE373F60076773A /* square.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE1B71F72BE373F60076773A /* square.metal */; };
-		BE1B72062BE37CE70076773A /* stbi_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE1B72052BE37CE70076773A /* stbi_image.cpp */; };
 		BEAC7D1D2BE318C6009F4B5B /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = BEAC7D1C2BE318C6009F4B5B /* main.mm */; };
 		BEAC7D262BE31969009F4B5B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEAC7D252BE31969009F4B5B /* Foundation.framework */; };
 		BEAC7D282BE31972009F4B5B /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEAC7D272BE31972009F4B5B /* Metal.framework */; };
@@ -36,13 +33,6 @@
 		BE1B71EC2BE332990076773A /* mtl_engine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mtl_engine.hpp; sourceTree = "<group>"; };
 		BE1B71ED2BE34E500076773A /* metal-cpp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "metal-cpp"; sourceTree = "<group>"; };
 		BE1B71EE2BE355E00076773A /* triangle.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = triangle.metal; sourceTree = "<group>"; };
-		BE1B71F32BE372620076773A /* Texture.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Texture.hpp; sourceTree = "<group>"; };
-		BE1B71F42BE372900076773A /* Texture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
-		BE1B71F62BE373510076773A /* VertexData.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = VertexData.hpp; sourceTree = "<group>"; };
-		BE1B71F72BE373F60076773A /* square.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = square.metal; sourceTree = "<group>"; };
-		BE1B72052BE37CE70076773A /* stbi_image.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = stbi_image.cpp; sourceTree = "<group>"; };
-		BE1B72092BE387250076773A /* mc_grass.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mc_grass.jpeg; sourceTree = "<group>"; };
-		BE1B720A2BE387850076773A /* tom.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tom.jpg; sourceTree = "<group>"; };
 		BEAC7D192BE318C6009F4B5B /* Metal-Tutorial */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Metal-Tutorial"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEAC7D1C2BE318C6009F4B5B /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		BEAC7D252BE31969009F4B5B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -69,19 +59,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		BE1B72082BE387150076773A /* assets */ = {
-			isa = PBXGroup;
-			children = (
-				BE1B720A2BE387850076773A /* tom.jpg */,
-				BE1B72092BE387250076773A /* mc_grass.jpeg */,
-			);
-			path = assets;
-			sourceTree = "<group>";
-		};
 		BEAC7D102BE318C6009F4B5B = {
 			isa = PBXGroup;
 			children = (
-				BE1B72082BE387150076773A /* assets */,
 				BE1B71ED2BE34E500076773A /* metal-cpp */,
 				BEAC7D1B2BE318C6009F4B5B /* Metal-Tutorial */,
 				BEAC7D1A2BE318C6009F4B5B /* Products */,
@@ -102,15 +82,10 @@
 			children = (
 				BEAC7D312BE31ECD009F4B5B /* Metal-Tutorial.entitlements */,
 				BEAC7D1C2BE318C6009F4B5B /* main.mm */,
-				BE1B72052BE37CE70076773A /* stbi_image.cpp */,
 				BEAC7D2B2BE3199F009F4B5B /* mtl_implementation.cpp */,
 				BEAC7D322BE32B33009F4B5B /* mtl_engine.mm */,
 				BE1B71EC2BE332990076773A /* mtl_engine.hpp */,
 				BE1B71EE2BE355E00076773A /* triangle.metal */,
-				BE1B71F32BE372620076773A /* Texture.hpp */,
-				BE1B71F42BE372900076773A /* Texture.cpp */,
-				BE1B71F62BE373510076773A /* VertexData.hpp */,
-				BE1B71F72BE373F60076773A /* square.metal */,
 			);
 			path = "Metal-Tutorial";
 			sourceTree = "<group>";
@@ -183,12 +158,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE1B71F82BE373F60076773A /* square.metal in Sources */,
 				BEAC7D342BE32B33009F4B5B /* mtl_engine.mm in Sources */,
-				BE1B72062BE37CE70076773A /* stbi_image.cpp in Sources */,
 				BE1B71EF2BE355E00076773A /* triangle.metal in Sources */,
 				BEAC7D1D2BE318C6009F4B5B /* main.mm in Sources */,
-				BE1B71F52BE372900076773A /* Texture.cpp in Sources */,
 				BEAC7D2C2BE3199F009F4B5B /* mtl_implementation.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

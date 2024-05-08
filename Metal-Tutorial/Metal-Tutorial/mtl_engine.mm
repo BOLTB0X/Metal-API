@@ -11,8 +11,7 @@ void MTLEngine::init() {
     initDevice();
     initWindow();
     
-    createSquare();
-    //createTriangle();
+    createTriangle();
     createDefaultLibrary();
     createCommandQueue();
     createRenderPipeline();
@@ -37,15 +36,6 @@ void MTLEngine::initDevice() {
     metalDevice = MTL::CreateSystemDefaultDevice();
 }
 
-void MTLEngine::frameBufferSizeCallback(GLFWwindow *window, int width, int height) {
-    MTLEngine* engine = (MTLEngine*)glfwGetWindowUserPointer(window);
-    engine->resizeFrameBuffer(width, height);
-}
-
-void MTLEngine::resizeFrameBuffer(int width, int height) {
-    metalLayer.drawableSize = CGSizeMake(width, height);
-}
-
 void MTLEngine::initWindow() {
     glfwInit();
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
@@ -68,20 +58,19 @@ void MTLEngine::initWindow() {
     metalWindow.contentView.wantsLayer = YES;
     
     glfwSetWindowUserPointer(glfwWindow, this);
-    glfwSetFramebufferSizeCallback(glfwWindow, frameBufferSizeCallback);
 }
 
-//void MTLEngine::createTriangle() {
-//    simd::float3 triangleVertices[] = {
-//        {-0.5f, -0.5f, 0.0f},
-//        { 0.5f, -0.5f, 0.0f},
-//        { 0.0f,  0.5f, 0.0f}
-//    };
-//
-//    triangleVertexBuffer = metalDevice->newBuffer(&triangleVertices,
-//                                                  sizeof(triangleVertices),
-//                                                  MTL::ResourceStorageModeShared);
-//}
+void MTLEngine::createTriangle() {
+    simd::float3 triangleVertices[] = {
+        {-0.5f, -0.5f, 0.0f},
+        { 0.5f, -0.5f, 0.0f},
+        { 0.0f,  0.5f, 0.0f}
+    };
+
+    triangleVertexBuffer = metalDevice->newBuffer(&triangleVertices,
+                                                  sizeof(triangleVertices),
+                                                  MTL::ResourceStorageModeShared);
+}
 
 void MTLEngine::createDefaultLibrary() {
     metalDefaultLibrary = metalDevice->newDefaultLibrary();
@@ -100,7 +89,7 @@ void MTLEngine::createRenderPipeline() {
     assert(vertexShader);
     MTL::Function* fragmentShader = metalDefaultLibrary->newFunction(NS::String::string("fragmentShader", NS::ASCIIStringEncoding));
     assert(fragmentShader);
-    
+
     MTL::RenderPipelineDescriptor* renderPipelineDescriptor = MTL::RenderPipelineDescriptor::alloc()->init();
     renderPipelineDescriptor->setLabel(NS::String::string("Triangle Rendering Pipeline", NS::ASCIIStringEncoding));
     renderPipelineDescriptor->setVertexFunction(vertexShader);
@@ -108,10 +97,10 @@ void MTLEngine::createRenderPipeline() {
     assert(renderPipelineDescriptor);
     MTL::PixelFormat pixelFormat = (MTL::PixelFormat)metalLayer.pixelFormat;
     renderPipelineDescriptor->colorAttachments()->object(0)->setPixelFormat(pixelFormat);
-    
+
     NS::Error* error;
     metalRenderPSO = metalDevice->newRenderPipelineState(renderPipelineDescriptor, &error);
-    
+
     renderPipelineDescriptor->release();
 }
 
@@ -142,27 +131,9 @@ void MTLEngine::sendRenderCommand() {
 
 void MTLEngine::encodeRenderCommand(MTL::RenderCommandEncoder* renderCommandEncoder) {
     renderCommandEncoder->setRenderPipelineState(metalRenderPSO);
-    renderCommandEncoder->setVertexBuffer(squareVertexBuffer, 0, 0);
-    //renderCommandEncoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
+    renderCommandEncoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
     MTL::PrimitiveType typeTriangle = MTL::PrimitiveTypeTriangle;
     NS::UInteger vertexStart = 0;
-    NS::UInteger vertexCount = 6;
-    //NS::UInteger vertexCount = 3;
-    renderCommandEncoder->setFragmentTexture(grassTexture->texture, 0);
+    NS::UInteger vertexCount = 3;
     renderCommandEncoder->drawPrimitives(typeTriangle, vertexStart, vertexCount);
-}
-
-void MTLEngine::createSquare() {
-    VertexData squareVertices[] {
-        {{-0.5, -0.5,  0.5, 1.0f}, {0.0f, 0.0f}},
-        {{-0.5,  0.5,  0.5, 1.0f}, {0.0f, 1.0f}},
-        {{ 0.5,  0.5,  0.5, 1.0f}, {1.0f, 1.0f}},
-        {{-0.5, -0.5,  0.5, 1.0f}, {0.0f, 0.0f}},
-        {{ 0.5,  0.5,  0.5, 1.0f}, {1.0f, 1.0f}},
-        {{ 0.5, -0.5,  0.5, 1.0f}, {1.0f, 0.0f}}
-    };
-
-    squareVertexBuffer = metalDevice->newBuffer(&squareVertices, sizeof(squareVertices), MTL::ResourceStorageModeShared);
-
-    grassTexture = new Texture("assets/tom.jpg", metalDevice);
 }

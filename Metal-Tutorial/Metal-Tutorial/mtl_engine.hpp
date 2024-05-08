@@ -20,10 +20,6 @@
 #include <iostream>
 #include <simd/simd.h>
 
-#include "VertexData.hpp"
-#include "Texture.hpp"
-#include <stb/stb_image.h>
-#include <filesystem>
 
 class MTLEngine {
 public:
@@ -45,9 +41,6 @@ private:
     void sendRenderCommand();
     void draw();
     
-    static void frameBufferSizeCallback(GLFWwindow *window, int width, int height);
-    void resizeFrameBuffer(int width, int height);
-
     MTL::Device* metalDevice;
     GLFWwindow* glfwWindow;
     NSWindow* metalWindow;
@@ -58,10 +51,7 @@ private:
     MTL::CommandQueue* metalCommandQueue;
     MTL::CommandBuffer* metalCommandBuffer;
     MTL::RenderPipelineState* metalRenderPSO;
-    //MTL::Buffer* triangleVertexBuffer;
-    MTL::Buffer* squareVertexBuffer;
-
-    Texture* grassTexture;
+    MTL::Buffer* triangleVertexBuffer;
 
 };
 

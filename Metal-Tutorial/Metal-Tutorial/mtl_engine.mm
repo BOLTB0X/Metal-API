@@ -12,7 +12,6 @@ void MTLEngine::init() {
     initWindow();
     
     createSquare();
-    //createTriangle();
     createDefaultLibrary();
     createCommandQueue();
     createRenderPipeline();
@@ -70,18 +69,6 @@ void MTLEngine::initWindow() {
     glfwSetWindowUserPointer(glfwWindow, this);
     glfwSetFramebufferSizeCallback(glfwWindow, frameBufferSizeCallback);
 }
-
-//void MTLEngine::createTriangle() {
-//    simd::float3 triangleVertices[] = {
-//        {-0.5f, -0.5f, 0.0f},
-//        { 0.5f, -0.5f, 0.0f},
-//        { 0.0f,  0.5f, 0.0f}
-//    };
-//
-//    triangleVertexBuffer = metalDevice->newBuffer(&triangleVertices,
-//                                                  sizeof(triangleVertices),
-//                                                  MTL::ResourceStorageModeShared);
-//}
 
 void MTLEngine::createDefaultLibrary() {
     metalDefaultLibrary = metalDevice->newDefaultLibrary();
@@ -143,11 +130,9 @@ void MTLEngine::sendRenderCommand() {
 void MTLEngine::encodeRenderCommand(MTL::RenderCommandEncoder* renderCommandEncoder) {
     renderCommandEncoder->setRenderPipelineState(metalRenderPSO);
     renderCommandEncoder->setVertexBuffer(squareVertexBuffer, 0, 0);
-    //renderCommandEncoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
     MTL::PrimitiveType typeTriangle = MTL::PrimitiveTypeTriangle;
     NS::UInteger vertexStart = 0;
     NS::UInteger vertexCount = 6;
-    //NS::UInteger vertexCount = 3;
     renderCommandEncoder->setFragmentTexture(grassTexture->texture, 0);
     renderCommandEncoder->drawPrimitives(typeTriangle, vertexStart, vertexCount);
 }

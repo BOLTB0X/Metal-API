@@ -58,7 +58,6 @@ private:
     MTL::CommandQueue* metalCommandQueue;
     MTL::CommandBuffer* metalCommandBuffer;
     MTL::RenderPipelineState* metalRenderPSO;
-    //MTL::Buffer* triangleVertexBuffer;
     MTL::Buffer* squareVertexBuffer;
 
     Texture* grassTexture;

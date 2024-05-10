@@ -8,6 +8,8 @@
 
   - [Hello Triangle](https://github.com/BOLTB0X/Metal-API/tree/Lesson-1-Hello-Triangle/Metal-Tutorial)
 
+  - [Textures](https://github.com/BOLTB0X/Metal-API/tree/Lesson-1-Textures/Metal-Tutorial)
+
 ## 참고
 
 [Metal Tutorial](https://metaltutorial.com/)

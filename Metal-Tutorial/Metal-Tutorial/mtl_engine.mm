@@ -166,3 +166,65 @@ void MTLEngine::createSquare() {
 
     grassTexture = new Texture("assets/tom.jpg", metalDevice);
 }
+
+void MTLEngine::createCube() {
+    // Cube for use in a right-handed coordinate system with triangle faces
+    // specified with a Counter-Clockwise winding order.
+VertexData cubeVertices[] = {
+        // Front face
+        {{-0.5, -0.5, 0.5, 1.0}, {0.0, 0.0}},
+        {{0.5, -0.5, 0.5, 1.0}, {1.0, 0.0}},
+        {{0.5, 0.5, 0.5, 1.0}, {1.0, 1.0}},
+        {{0.5, 0.5, 0.5, 1.0}, {1.0, 1.0}},
+        {{-0.5, 0.5, 0.5, 1.0}, {0.0, 1.0}},
+        {{-0.5, -0.5, 0.5, 1.0}, {0.0, 0.0}},
+
+        // Back face
+        {{0.5, -0.5, -0.5, 1.0}, {0.0, 0.0}},
+        {{-0.5, -0.5, -0.5, 1.0}, {1.0, 0.0}},
+        {{-0.5, 0.5, -0.5, 1.0}, {1.0, 1.0}},
+        {{-0.5, 0.5, -0.5, 1.0}, {1.0, 1.0}},
+        {{0.5, 0.5, -0.5, 1.0}, {0.0, 1.0}},
+        {{0.5, -0.5, -0.5, 1.0}, {0.0, 0.0}},
+
+        // Top face
+        {{-0.5, 0.5, 0.5, 1.0}, {0.0, 0.0}},
+        {{0.5, 0.5, 0.5, 1.0}, {1.0, 0.0}},
+        {{0.5, 0.5, -0.5, 1.0}, {1.0, 1.0}},
+        {{0.5, 0.5, -0.5, 1.0}, {1.0, 1.0}},
+        {{-0.5, 0.5, -0.5, 1.0}, {0.0, 1.0}},
+        {{-0.5, 0.5, 0.5, 1.0}, {0.0, 0.0}},
+
+        // Bottom face
+        {{-0.5, -0.5, -0.5, 1.0}, {0.0, 0.0}},
+        {{0.5, -0.5, -0.5, 1.0}, {1.0, 0.0}},
+        {{0.5, -0.5, 0.5, 1.0}, {1.0, 1.0}},
+        {{0.5, -0.5, 0.5, 1.0}, {1.0, 1.0}},
+        {{-0.5, -0.5, 0.5, 1.0}, {0.0, 1.0}},
+        {{-0.5, -0.5, -0.5, 1.0}, {0.0, 0.0}},
+
+        // Left face
+        {{-0.5, -0.5, -0.5, 1.0}, {0.0, 0.0}},
+        {{-0.5, -0.5, 0.5, 1.0}, {1.0, 0.0}},
+        {{-0.5, 0.5, 0.5, 1.0}, {1.0, 1.0}},
+        {{-0.5, 0.5, 0.5, 1.0}, {1.0, 1.0}},
+        {{-0.5, 0.5, -0.5, 1.0}, {0.0, 1.0}},
+        {{-0.5, -0.5, -0.5, 1.0}, {0.0, 0.0}},
+
+        // Right face
+        {{0.5, -0.5, 0.5, 1.0}, {0.0, 0.0}},
+        {{0.5, -0.5, -0.5, 1.0}, {1.0, 0.0}},
+        {{0.5, 0.5, -0.5, 1.0}, {1.0, 1.0}},
+        {{0.5, 0.5, -0.5, 1.0}, {1.0, 1.0}},
+        {{0.5, 0.5, 0.5, 1.0}, {0.0, 1.0}},
+        {{0.5, -0.5, 0.5, 1.0}, {0.0, 0.0}},
+    };
+
+    cubeVertexBuffer = metalDevice->newBuffer(&cubeVertices, sizeof(cubeVertices), MTL::ResourceStorageModeShared);
+
+    transformationBuffer = metalDevice->newBuffer(sizeof(TransformationData), MTL::ResourceStorageModeShared);
+
+    // Make sure to change working directory to Metal-Tutorial root
+    // directory via Product -> Scheme -> Edit Scheme -> Run -> Options
+    grassTexture = new Texture("assets/mc_grass.jpeg", metalDevice);
+}

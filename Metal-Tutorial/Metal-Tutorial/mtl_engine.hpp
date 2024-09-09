@@ -47,6 +47,8 @@ private:
     
     static void frameBufferSizeCallback(GLFWwindow *window, int width, int height);
     void resizeFrameBuffer(int width, int height);
+    
+    void createCube(); // add
 
     MTL::Device* metalDevice;
     GLFWwindow* glfwWindow;
@@ -60,6 +62,10 @@ private:
     MTL::RenderPipelineState* metalRenderPSO;
     //MTL::Buffer* triangleVertexBuffer;
     MTL::Buffer* squareVertexBuffer;
+    // add
+    MTL::Buffer* cubeVertexBuffer;
+    MTL::Buffer* transformationBuffer;
+    //
 
     Texture* grassTexture;
 

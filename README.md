@@ -18,8 +18,9 @@
 
 - **Metal API**는 **Apple**에서 제공하는 그래픽 및 연산 작업을 위한 저수준 API
   <br/>
+
   <div style="text-align: center;">
-  <img src="https://developer.apple.com/assets/elements/icons/metal/metal-96x96_2x.png" alt="Example Image" width="50%">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EB%B9%84%EA%B5%90.png?raw=true" alt="Example Image" width="70%">
   </div>
   <br/>
 
@@ -41,7 +42,7 @@
   <br/>
 
   <div style="text-align: center;">
-  <img src="https://developer.apple.com/assets/elements/icons/metal/metal-96x96_2x.png" alt="Example Image" width="50%">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/ios.png?raw=true" alt="Example Image" width="70%">
   </div>
   <br/>
 

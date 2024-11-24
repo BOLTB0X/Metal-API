@@ -11,7 +11,7 @@
 <br/>
 
 <div style="text-align: center;">
-<img src="https://developer.apple.com/assets/elements/icons/metal/metal-96x96_2x.png" alt="Example Image" width="50%">
+<img src="https://developer.apple.com/assets/elements/icons/metal/metal-96x96_2x.png" alt="Example Image" width="30%">
 </div>
 
 <br/>
@@ -20,7 +20,7 @@
   <br/>
 
   <div style="text-align: center;">
-  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EB%B9%84%EA%B5%90.png?raw=true" alt="Example Image" width="70%">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EB%B9%84%EA%B5%90.png?raw=true" alt="Example Image" width="60%">
   </div>
   <br/>
 
@@ -42,7 +42,7 @@
   <br/>
 
   <div style="text-align: center;">
-  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/ios.png?raw=true" alt="Example Image" width="70%">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/ios.png?raw=true" alt="Example Image" width="60%">
   </div>
   <br/>
 

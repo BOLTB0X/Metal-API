@@ -11,6 +11,9 @@
 		BE54D0582CF5CCB500641FBA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE54D0572CF5CCB500641FBA /* ContentView.swift */; };
 		BE54D05A2CF5CCBA00641FBA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE54D0592CF5CCBA00641FBA /* Assets.xcassets */; };
 		BE54D05D2CF5CCBA00641FBA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE54D05C2CF5CCBA00641FBA /* Preview Assets.xcassets */; };
+		BE54D0642CF71BB100641FBA /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE54D0632CF71BB100641FBA /* Renderer.swift */; };
+		BE54D0662CF71E6000641FBA /* TriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE54D0652CF71E6000641FBA /* TriangleView.swift */; };
+		BE54D0682CF722D100641FBA /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE54D0672CF722D100641FBA /* Shaders.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +22,9 @@
 		BE54D0572CF5CCB500641FBA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BE54D0592CF5CCBA00641FBA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE54D05C2CF5CCBA00641FBA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BE54D0632CF71BB100641FBA /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		BE54D0652CF71E6000641FBA /* TriangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriangleView.swift; sourceTree = "<group>"; };
+		BE54D0672CF722D100641FBA /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +59,9 @@
 			children = (
 				BE54D0552CF5CCB500641FBA /* Ex01_TriangleApp.swift */,
 				BE54D0572CF5CCB500641FBA /* ContentView.swift */,
+				BE54D0672CF722D100641FBA /* Shaders.metal */,
+				BE54D0632CF71BB100641FBA /* Renderer.swift */,
+				BE54D0652CF71E6000641FBA /* TriangleView.swift */,
 				BE54D0592CF5CCBA00641FBA /* Assets.xcassets */,
 				BE54D05B2CF5CCBA00641FBA /* Preview Content */,
 			);
@@ -138,7 +147,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE54D0582CF5CCB500641FBA /* ContentView.swift in Sources */,
+				BE54D0642CF71BB100641FBA /* Renderer.swift in Sources */,
+				BE54D0662CF71E6000641FBA /* TriangleView.swift in Sources */,
 				BE54D0562CF5CCB500641FBA /* Ex01_TriangleApp.swift in Sources */,
+				BE54D0682CF722D100641FBA /* Shaders.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

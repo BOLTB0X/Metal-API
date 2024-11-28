@@ -6,20 +6,18 @@
 //
 
 import SwiftUI
-import MetalKit
+import UIKit
 
-struct TriangleView: UIViewRepresentable {
-    let renderer: Renderer
+struct TriangleView: UIViewControllerRepresentable {
+    @ObservedObject var viewModel: TriangleViewModel
     
-    func makeUIView(context: Context) -> MTKView {
-        let mtkView = MTKView()
-        mtkView.device = renderer.device
-        mtkView.delegate = renderer
-        mtkView.clearColor = MTLClearColorMake(0, 0, 0, 1)
-        return mtkView
+    func makeUIViewController(context: Context) -> RenderViewController {
+        let viewController = RenderViewController()
+        viewController.currentColor = viewModel.currentColor
+        return viewController
     }
     
-    func updateUIView(_ uiView: MTKView, context: Context) {
-        /*  */
+    func updateUIViewController(_ uiViewController: RenderViewController, context: Context) {
+        uiViewController.currentColor = viewModel.currentColor
     }
 }

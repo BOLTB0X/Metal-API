@@ -8,33 +8,33 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var renderer = Renderer(device: MTLCreateSystemDefaultDevice()!)
+    @StateObject private var viewModel = TriangleViewModel()
     
     var body: some View {
         VStack {
-            TriangleView(renderer: renderer)
+            TriangleView(viewModel: viewModel)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             
             HStack {
                 Button("Red") {
-                    renderer.currentColor = SIMD4(1, 0, 0, 1)
+                    viewModel.currentColor = SIMD4(1, 0, 0, 1)
                 }
                 .buttonStyle(.bordered)
                 
                 Button("Blue") {
-                    renderer.currentColor = SIMD4(0, 0, 1, 1)
+                    viewModel.currentColor = SIMD4(0, 0, 1, 1)
                 }
                 .buttonStyle(.bordered)
                 
                 Button("Green") {
-                    renderer.currentColor = SIMD4(0, 1, 0, 1)
+                    viewModel.currentColor = SIMD4(0, 1, 0, 1)
                 }
                 .buttonStyle(.bordered)
 
             }
             .padding()
-        }
-    }
+        } // VStack
+    } // body
 }
 
 struct ContentView_Previews: PreviewProvider {

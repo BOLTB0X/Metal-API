@@ -8,32 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = TriangleViewModel()
-    
-    var body: some View {
-        VStack {
-            TriangleView(viewModel: viewModel)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-            
-            HStack {
-                Button("Red") {
-                    viewModel.currentColor = SIMD4(1, 0, 0, 1)
-                }
-                .buttonStyle(.bordered)
-                
-                Button("Blue") {
-                    viewModel.currentColor = SIMD4(0, 0, 1, 1)
-                }
-                .buttonStyle(.bordered)
-                
-                Button("Green") {
-                    viewModel.currentColor = SIMD4(0, 1, 0, 1)
-                }
-                .buttonStyle(.bordered)
 
-            }
-            .padding()
-        } // VStack
+    var body: some View {
+        TabView {
+            Triangle_01()
+                .tabItem {
+                    Text("01")
+                }
+            
+            Triangle_02()
+                .tabItem {
+                    Text("02")
+                }
+        }
     } // body
 }
 

@@ -1,30 +1,39 @@
 //
-//  RendererViewController.swift
+//  Render2ViewController.swift
 //  Ex01-Triangle
 //
-//  Created by KyungHeon Lee on 2024/11/28.
+//  Created by KyungHeon Lee on 2024/11/29.
 //
 
 import UIKit
 import Metal
 
-// MARK: - RenderViewController
-class RenderViewController: UIViewController {
+// MARK: - Render2ViewController
+class Render2ViewController: UIViewController {
     var device: MTLDevice!
     var metalLayer: CAMetalLayer!
-    let vertexData: [Float] = [
-        0.0,  0.5, 0.0,
-        -0.5, -0.5, 0.0,
-        0.5, -0.5, 0.0
+    
+    let vertexData1: [Float] = [
+        -0.8, -0.5, 0.0,
+         -0.3, -0.5, 0.0,
+         -0.55, 0.5, 0.0
     ]
     
-    var vertexBuffer: MTLBuffer!
+    let vertexData2: [Float] = [
+        0.3, -0.5, 0.0,
+        0.8, -0.5, 0.0,
+        0.55, 0.5, 0.0
+    ]
+    
+    var vertexBuffer1: MTLBuffer!
+    var vertexBuffer2: MTLBuffer!
     var pipelineState: MTLRenderPipelineState!
     var commandQueue: MTLCommandQueue!
     
     var timer: CADisplayLink!
     
-    var currentColor: SIMD4<Float> = SIMD4(1, 0, 0, 1)
+    var color1 = SIMD4<Float>(1, 0, 0, 1)
+    var color2 = SIMD4<Float>(0, 0, 1, 1)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,8 +54,11 @@ class RenderViewController: UIViewController {
         metalLayer.frame = view.layer.frame
         view.layer.addSublayer(metalLayer)
         
-        let dataSize = vertexData.count * MemoryLayout.size(ofValue: vertexData[0])
-        vertexBuffer = device.makeBuffer(bytes: vertexData, length: dataSize, options: [])
+        let dataSize1 = vertexData1.count * MemoryLayout.size(ofValue: vertexData1[0])
+        vertexBuffer1 = device.makeBuffer(bytes: vertexData1, length: dataSize1, options: [])
+        
+        let dataSize2 = vertexData2.count * MemoryLayout.size(ofValue: vertexData2[0])
+        vertexBuffer2 = device.makeBuffer(bytes: vertexData2, length: dataSize2, options: [])
         return;
     }
     
@@ -90,13 +102,25 @@ class RenderViewController: UIViewController {
         
         let renderEncoder = commandBuffer
             .makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+        
         renderEncoder.setRenderPipelineState(pipelineState)
-        renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
-        renderEncoder.setFragmentBytes(&currentColor,
+        
+        // 1
+        renderEncoder.setVertexBuffer(vertexBuffer1, offset: 0, index: 0)
+        renderEncoder.setFragmentBytes(&color1,
                                        length: MemoryLayout<SIMD4<Float>>.stride,
                                        index: 1)
         renderEncoder
             .drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
+        
+        // 2
+        renderEncoder.setVertexBuffer(vertexBuffer2, offset: 0, index: 0)
+        renderEncoder.setFragmentBytes(&color2,
+                                       length: MemoryLayout<SIMD4<Float>>.stride,
+                                       index: 1)
+        renderEncoder
+            .drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
+        
         renderEncoder.endEncoding()
         
         commandBuffer.present(drawable)
@@ -111,4 +135,5 @@ class RenderViewController: UIViewController {
             self.render()
         }
     }
+    
 }

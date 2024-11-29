@@ -13,8 +13,12 @@
 		BE54D05D2CF5CCBA00641FBA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE54D05C2CF5CCBA00641FBA /* Preview Assets.xcassets */; };
 		BE54D0662CF71E6000641FBA /* TriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE54D0652CF71E6000641FBA /* TriangleView.swift */; };
 		BE54D0682CF722D100641FBA /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE54D0672CF722D100641FBA /* Shaders.metal */; };
-		BEC537152CF7E9270000947F /* RenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC537142CF7E9270000947F /* RenderViewController.swift */; };
+		BEC537152CF7E9270000947F /* Render1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC537142CF7E9270000947F /* Render1ViewController.swift */; };
 		BEC537172CF8602D0000947F /* TriangleViewmodel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC537162CF8602C0000947F /* TriangleViewmodel.swift */; };
+		BEC5371B2CF935050000947F /* Triangle_01.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC5371A2CF935050000947F /* Triangle_01.swift */; };
+		BEC5371E2CF935F30000947F /* Triangle_02.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC5371D2CF935F30000947F /* Triangle_02.swift */; };
+		BEC537202CF9361B0000947F /* TwintriangleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC5371F2CF9361B0000947F /* TwintriangleView.swift */; };
+		BEC537242CF936A50000947F /* Render2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEC537232CF936A50000947F /* Render2ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,8 +29,12 @@
 		BE54D05C2CF5CCBA00641FBA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BE54D0652CF71E6000641FBA /* TriangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriangleView.swift; sourceTree = "<group>"; };
 		BE54D0672CF722D100641FBA /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
-		BEC537142CF7E9270000947F /* RenderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderViewController.swift; sourceTree = "<group>"; };
+		BEC537142CF7E9270000947F /* Render1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Render1ViewController.swift; sourceTree = "<group>"; };
 		BEC537162CF8602C0000947F /* TriangleViewmodel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriangleViewmodel.swift; sourceTree = "<group>"; };
+		BEC5371A2CF935050000947F /* Triangle_01.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Triangle_01.swift; sourceTree = "<group>"; };
+		BEC5371D2CF935F30000947F /* Triangle_02.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Triangle_02.swift; sourceTree = "<group>"; };
+		BEC5371F2CF9361B0000947F /* TwintriangleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwintriangleView.swift; sourceTree = "<group>"; };
+		BEC537232CF936A50000947F /* Render2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Render2ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,13 +67,12 @@
 		BE54D0542CF5CCB500641FBA /* Ex01-Triangle */ = {
 			isa = PBXGroup;
 			children = (
+				BEC537192CF933860000947F /* Metal-API */,
 				BE54D0552CF5CCB500641FBA /* Ex01_TriangleApp.swift */,
 				BE54D0572CF5CCB500641FBA /* ContentView.swift */,
-				BE54D0672CF722D100641FBA /* Shaders.metal */,
-				BEC537142CF7E9270000947F /* RenderViewController.swift */,
-				BE54D0652CF71E6000641FBA /* TriangleView.swift */,
-				BEC537162CF8602C0000947F /* TriangleViewmodel.swift */,
 				BE54D0592CF5CCBA00641FBA /* Assets.xcassets */,
+				BEC537182CF9331A0000947F /* 01-01 */,
+				BEC5371C2CF935B80000947F /* 01-02 */,
 				BE54D05B2CF5CCBA00641FBA /* Preview Content */,
 			);
 			path = "Ex01-Triangle";
@@ -77,6 +84,35 @@
 				BE54D05C2CF5CCBA00641FBA /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		BEC537182CF9331A0000947F /* 01-01 */ = {
+			isa = PBXGroup;
+			children = (
+				BEC537142CF7E9270000947F /* Render1ViewController.swift */,
+				BE54D0652CF71E6000641FBA /* TriangleView.swift */,
+				BEC537162CF8602C0000947F /* TriangleViewmodel.swift */,
+				BEC5371A2CF935050000947F /* Triangle_01.swift */,
+			);
+			path = "01-01";
+			sourceTree = "<group>";
+		};
+		BEC537192CF933860000947F /* Metal-API */ = {
+			isa = PBXGroup;
+			children = (
+				BE54D0672CF722D100641FBA /* Shaders.metal */,
+			);
+			path = "Metal-API";
+			sourceTree = "<group>";
+		};
+		BEC5371C2CF935B80000947F /* 01-02 */ = {
+			isa = PBXGroup;
+			children = (
+				BEC537232CF936A50000947F /* Render2ViewController.swift */,
+				BEC5371F2CF9361B0000947F /* TwintriangleView.swift */,
+				BEC5371D2CF935F30000947F /* Triangle_02.swift */,
+			);
+			path = "01-02";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -150,11 +186,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE54D0582CF5CCB500641FBA /* ContentView.swift in Sources */,
-				BEC537152CF7E9270000947F /* RenderViewController.swift in Sources */,
+				BEC537202CF9361B0000947F /* TwintriangleView.swift in Sources */,
+				BEC537152CF7E9270000947F /* Render1ViewController.swift in Sources */,
 				BEC537172CF8602D0000947F /* TriangleViewmodel.swift in Sources */,
+				BEC537242CF936A50000947F /* Render2ViewController.swift in Sources */,
+				BEC5371E2CF935F30000947F /* Triangle_02.swift in Sources */,
 				BE54D0662CF71E6000641FBA /* TriangleView.swift in Sources */,
 				BE54D0562CF5CCB500641FBA /* Ex01_TriangleApp.swift in Sources */,
 				BE54D0682CF722D100641FBA /* Shaders.metal in Sources */,
+				BEC5371B2CF935050000947F /* Triangle_01.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

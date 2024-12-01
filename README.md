@@ -39,8 +39,6 @@
      - 불필요한 오버헤드(비효율적인 처리)를 줄이고, 게임, vr 등 작업을 최적화하여 하드웨어의 최대 성능을 끌어낼 수 있음
        <br/>
 
-  <br/>
-
   <div style="text-align: center;">
   <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/ios.png?raw=true" alt="Example Image" width="60%">
   </div>
@@ -76,6 +74,37 @@
 
    - GPU와 데이터를 공유하기 위한 메모리
      <br/>
+
+## 렌더링 과정
+
+1. **Metal 디바이스, layer 설정, vertex, shader 코딩**
+
+   - `MTLDevice`(**Metal 디바이스**): GPU와 연결해 작업을 수행할 객체를 설정
+   - `CAMetalLayer`: 화면 출력용 Metal 레이어를 설정해 렌더링 결과를 디스플레이
+   - **vertex data**: 그릴 도형(예: 삼각형, 사각형 등)의 좌표 정보를 정의
+   - **shader**: 버텍스(기하학적 변환)와 프래그먼트(픽셀 색상 계산)를 처리하는 GPU 코드 작성
+     <br/>
+
+2. **파이프라인(Pipeline) 설정**
+
+   - `MTLRenderPipelineState`**렌더링 파이프라인**:
+     - 버텍스 셰이더와 프래그먼트 셰이더를 연결하고 렌더링 규칙을 설정
+     - 어떤 그래픽 출력을 원하는지 GPU가 이해할수 있도록 정의
+       <br/>
+   - **Pipeline**은 커맨드 큐가 실행할 때 GPU의 처리 흐름을 결정
+     <br/>
+
+3. **커맨드 큐 & 입력 버퍼**
+
+- `MTLBuffer`(**입력 버퍼**): CPU에서 GPU로 데이터를 전달하는 메모리 공간
+
+  - 예 : _버텍스 데이터_ , _색상 정보_
+    <br/>
+
+- `MTLCommandQueue`(**커맨드 큐**):
+  - 커맨드 버퍼 안에 명령어를 작성하고 GPU에서 실행
+  - 예 : _drawPrimitives로 삼각형 등 기본 도형을 그리기_ , _입력 버퍼와 파이프라인을 연결해 GPU 작업 실행_
+    <br/>
 
 ## Tutorial
 

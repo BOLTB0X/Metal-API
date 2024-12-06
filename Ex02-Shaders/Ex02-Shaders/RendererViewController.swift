@@ -69,7 +69,9 @@ class RendererViewController: UIViewController {
     // MARK: - setupPipeline
     private func setupPipeline() {
         let library = device.makeDefaultLibrary()
-        let vertexFunction = library?.makeFunction(name: "vertexFunction")
+        let vertexFunction = library?.makeFunction(name: "exercises01") // exercises01
+        //let vertexFunction = library?.makeFunction(name: "exercises02") // exercises02
+        //let vertexFunction = library?.makeFunction(name: "vertexFunction") // 기본
         let fragmentFunction = library?.makeFunction(name: "fragmentFunction")
         
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -94,15 +96,16 @@ class RendererViewController: UIViewController {
             blue: 0,
             alpha: 0.5
         )
-        //renderPassDescriptor.colorAttachments[0].storeAction = .store
-        
+       
         let commandBuffer = commandQueue.makeCommandBuffer()!
         
         let renderEncoder = commandBuffer
             .makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
-        
+                
         renderEncoder.setRenderPipelineState(pipelineState)
-        renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+        renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0) // 기본, ex01
+//        var offset: Float = 0.5 // ex02
+//        renderEncoder.setVertexBytes(&offset, length: MemoryLayout<Float>.stride, index: 1) // ex02
         
         renderEncoder
             .drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
@@ -119,4 +122,5 @@ class RendererViewController: UIViewController {
             self.render()
         }
     }
+    
 }

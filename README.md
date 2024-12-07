@@ -11,7 +11,7 @@
 <br/>
 
 <div style="text-align: center;">
-<img src="https://developer.apple.com/assets/elements/icons/metal/metal-96x96_2x.png" alt="Example Image" width="30%">
+   <img src="https://developer.apple.com/assets/elements/icons/metal/metal-96x96_2x.png" alt="Example Image" width="30%">
 </div>
 
 <br/>
@@ -20,7 +20,7 @@
   <br/>
 
   <div style="text-align: center;">
-  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EB%B9%84%EA%B5%90.png?raw=true" alt="Example Image" width="60%">
+     <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EB%B9%84%EA%B5%90.png?raw=true" alt="Example Image" width="50%">
   </div>
   <br/>
 
@@ -40,7 +40,7 @@
        <br/>
 
   <div style="text-align: center;">
-  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/ios.png?raw=true" alt="Example Image" width="60%">
+     <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/ios.png?raw=true" alt="Example Image" width="50%">
   </div>
   <br/>
 
@@ -108,6 +108,23 @@
 
 ## Tutorial
 
+~~[OpenGL 튜토리얼](-->) metal로 실습~~
+
+- Hello Triangle
+  <br/>
+     <div style="text-align: center;">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%83%89%EB%B3%80%EA%B2%BD.gif?raw=true" alt="Example Image" width="30%">   <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%82%BC%EA%B0%81%ED%98%95%202%EA%B0%9C.png?raw=true" alt="Example Image" width="30%"> 
+  </div>
+  <br/>
+
+- Shaders
+  <br/>
+     <div style="text-align: center;">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02.png?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02-01.png?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02-02.png?raw=true" alt="Example Image" width="30%">
+  </div>
+  <br/>
+
+<!--
 - Lesson 1: Hello Metal
 
   - [Hello Window](https://github.com/BOLTB0X/Metal-API/tree/Lesson-1-Hello-Window/Metal-Tutorial)
@@ -115,10 +132,13 @@
   - [Hello Triangle](https://github.com/BOLTB0X/Metal-API/tree/Lesson-1-Hello-Triangle/Metal-Tutorial)
 
   - [Textures](https://github.com/BOLTB0X/Metal-API/tree/Lesson-1-Textures/Metal-Tutorial)
+  -->
 
 ## 참고
 
 - [공식 developer apple - Metal](https://developer.apple.com/metal/)
+
+- [공식문서 - Using a Render Pipeline to Render Primitives](https://developer.apple.com/documentation/metal/using_a_render_pipeline_to_render_primitives)
 
 - [공식문서 - Metal](https://developer.apple.com/documentation/metal)
 
@@ -127,5 +147,7 @@
 - [kodeco - metal tutorial](https://www.kodeco.com/7475-metal-tutorial-getting-started#toc-anchor-011)
 
 - [WWDC 2019](https://developer.apple.com/videos/play/wwdc2019/611/?time=180)
+
+- [medium - What’s Metal Shading Language (MSL)?](https://medium.com/@shoheiyokoyama/whats-metal-shading-language-msl-96fe63257994)
 
 - [블로그 참조 - zeddios(Metal이 뭔지 궁금해서 쓰는 글)](https://zeddios.tistory.com/932)

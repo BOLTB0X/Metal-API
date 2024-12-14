@@ -16,10 +16,16 @@ class RendererViewController: UIViewController {
     var pipelineState: MTLRenderPipelineState!
     var commandQueue: MTLCommandQueue!
     var vertexBuffer: MTLBuffer!
+    var indexBuffer: MTLBuffer!
     var texture: MTLTexture!
     var samplerState: MTLSamplerState!
     
     var timer: CADisplayLink!
+    
+    let indices: [UInt16] = [
+        0, 1, 2,
+        1, 3, 2
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +45,7 @@ class RendererViewController: UIViewController {
         guard let metalDevice = MTLCreateSystemDefaultDevice() else {
             fatalError("MTLCreateSystemDefaultDevice Error")
         }
+        
         device = metalDevice
         
         metalLayer = CAMetalLayer()
@@ -62,15 +69,35 @@ class RendererViewController: UIViewController {
             return
         }
         
-        let vertices = [
-            Vertex(position: SIMD2<Float>(0.0, 0.5), color: SIMD3<Float>(1.0, 0.0, 0.0), texCoord: SIMD2<Float>(0.5, 1.0)),
-            Vertex(position: SIMD2<Float>(-0.5, -0.5), color: SIMD3<Float>(0.0, 1.0, 0.0), texCoord: SIMD2<Float>(0.0, 0.0)),
-            Vertex(position: SIMD2<Float>(0.5, -0.5), color: SIMD3<Float>(0.0, 0.0, 1.0), texCoord: SIMD2<Float>(1.0, 0.0))
+//        let vertices = [
+//            Vertex(position: SIMD2<Float>(0.0, 0.5), color: SIMD3<Float>(1.0, 0.0, 0.0), texCoord: SIMD2<Float>(0.5, 1.0)),
+//            Vertex(position: SIMD2<Float>(-0.5, -0.5), color: SIMD3<Float>(0.0, 1.0, 0.0), texCoord: SIMD2<Float>(0.0, 0.0)),
+//            Vertex(position: SIMD2<Float>(0.5, -0.5), color: SIMD3<Float>(0.0, 0.0, 1.0), texCoord: SIMD2<Float>(1.0, 0.0))
+//        ]
+        
+        let rectangleVertices = [
+            Vertex(position: SIMD2<Float>(-1.0,  0.75), color: SIMD3<Float>(1.0, 0.0, 0.0), texCoord: SIMD2<Float>(0.0, 1.0)),
+            Vertex(position: SIMD2<Float>( 1.0,  0.75), color: SIMD3<Float>(0.0, 1.0, 0.0), texCoord: SIMD2<Float>(1.0, 1.0)),
+            Vertex(position: SIMD2<Float>(-1.0, -0.75), color: SIMD3<Float>(0.0, 0.0, 1.0), texCoord: SIMD2<Float>(0.0, 0.0)),
+            Vertex(position: SIMD2<Float>( 1.0, -0.75), color: SIMD3<Float>(1.0, 1.0, 1.0), texCoord: SIMD2<Float>(1.0, 0.0))
         ]
+
+        
+//        vertexBuffer = device.makeBuffer(
+//            bytes: vertices,
+//            length: vertices.count * MemoryLayout<Vertex>.stride,
+//            options: []
+//        )
         
         vertexBuffer = device.makeBuffer(
-            bytes: vertices,
-            length: vertices.count * MemoryLayout<Vertex>.stride,
+            bytes: rectangleVertices,
+            length: rectangleVertices.count * MemoryLayout<Vertex>.stride,
+            options: []
+        )
+
+        indexBuffer = device.makeBuffer(
+            bytes: indices,
+            length: indices.count * MemoryLayout<UInt16>.stride,
             options: []
         )
         
@@ -125,9 +152,14 @@ class RendererViewController: UIViewController {
         // 텍스처 설정
         renderEncoder.setFragmentTexture(texture, index: 0)
         renderEncoder.setFragmentSamplerState(samplerState, index: 0)
-        
-        renderEncoder
-            .drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
+        renderEncoder.drawIndexedPrimitives(
+            type: .triangle,
+            indexCount: indices.count,
+            indexType: .uint16,
+            indexBuffer: indexBuffer,
+            indexBufferOffset: 0
+        )
+        //renderEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
         renderEncoder.endEncoding()
         
         commandBuffer.present(drawable)
@@ -141,7 +173,7 @@ class RendererViewController: UIViewController {
         let textureLoader = MTKTextureLoader(device: device)
         
         do {
-            return try textureLoader.newTexture(name: "wall", scaleFactor: 1.0, bundle: nil, options: nil)
+            return try textureLoader.newTexture(name: "container", scaleFactor: 1.0, bundle: nil, options: nil)
         } catch {
             fatalError("텍스처 로드 실패: \(error)")
         }

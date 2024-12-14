@@ -114,21 +114,28 @@
 
 ~~[OpenGL 튜토리얼](-->) metal로 실습~~
 
-- Hello Triangle
+- **Hello Triangle**
   <br/>
      <p align="center">
   <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%83%89%EB%B3%80%EA%B2%BD.gif?raw=true" alt="Example Image" width="30%">   <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%82%BC%EA%B0%81%ED%98%95%202%EA%B0%9C.png?raw=true" alt="Example Image" width="30%"> 
      </p>
   <br/>
 
-- Shaders
+- **Shaders**
   <br/>
      <p align="center">
   <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02.png?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02-01.png?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02-02.png?raw=true" alt="Example Image" width="30%">
      </p>
   <br/>
 
+3. **textures**
+<br/>
+  <p align="center">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B2%98%20%EC%82%BC%EA%B0%81%ED%98%95.png?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B3%90%20%EC%82%AC%EA%B0%81%ED%98%95.png?raw=true" alt="Example Image" width="30%">
+     </p>
+  <br/>
 <!--
+
 - Lesson 1: Hello Metal
 
   - [Hello Window](https://github.com/BOLTB0X/Metal-API/tree/Lesson-1-Hello-Window/Metal-Tutorial)
@@ -136,7 +143,7 @@
   - [Hello Triangle](https://github.com/BOLTB0X/Metal-API/tree/Lesson-1-Hello-Triangle/Metal-Tutorial)
 
   - [Textures](https://github.com/BOLTB0X/Metal-API/tree/Lesson-1-Textures/Metal-Tutorial)
-  -->
+    -->
 
 ## 참고
 

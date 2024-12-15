@@ -56,9 +56,12 @@
 
 ## Intro
 
-> Metal API를 이해하려면 세 가지 기본 개념이 필요
+<details>
+<summary>기본 구성</summary>
 
 <br/>
+
+> Metal API를 이해하려면 세 가지 기본 개념이 필요
 
 1. **Metal Device** (`MTLDevice`)
 
@@ -77,9 +80,13 @@
 3. **Metal Buffers** (`MTLBuffer`)
 
    - GPU와 데이터를 공유하기 위한 메모리
-     <br/>
+   <br/>
+   </details>
 
-## 렌더링 과정
+<details>
+
+<summary>렌더링 과정</summary>
+<br/>
 
 1. **Metal 디바이스, layer 설정, vertex, shader 코딩**
 
@@ -108,32 +115,43 @@
 - `MTLCommandQueue` (**커맨드 큐**):
   - 커맨드 버퍼 안에 명령어를 작성하고 GPU에서 실행
   - 예 : _drawPrimitives로 삼각형 등 기본 도형을 그리기_ , _입력 버퍼와 파이프라인을 연결해 GPU 작업 실행_
-    <br/>
+  <br/>
+  </details>
 
 ## Tutorial
 
 ~~[OpenGL 튜토리얼](-->) metal로 실습~~
 
-- **Hello Triangle**
-  <br/>
-     <p align="center">
-  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%83%89%EB%B3%80%EA%B2%BD.gif?raw=true" alt="Example Image" width="30%">   <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%82%BC%EA%B0%81%ED%98%95%202%EA%B0%9C.png?raw=true" alt="Example Image" width="30%"> 
-     </p>
-  <br/>
-
-- **Shaders**
-  <br/>
-     <p align="center">
-  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02.png?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02-01.png?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02-02.png?raw=true" alt="Example Image" width="30%">
-     </p>
-  <br/>
-
-3. **textures**
+<details>
+<summary> Hello Triangle</summary>
 <br/>
-  <p align="center">
-  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B2%98%20%EC%82%BC%EA%B0%81%ED%98%95.png?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B3%90%20%EC%82%AC%EA%B0%81%ED%98%95.png?raw=true" alt="Example Image" width="30%">
-     </p>
+<p align="center">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%83%89%EB%B3%80%EA%B2%BD.gif?raw=true" alt="Example Image" width="30%">   <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%82%BC%EA%B0%81%ED%98%95%202%EA%B0%9C.png?raw=true" alt="Example Image" width="30%"> 
+</p>
+</details>
+
+<details>
+<summary> Shaders</summary>
+<br/>
+<p align="center">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02.png?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02-01.png?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02-02.png?raw=true" alt="Example Image" width="30%">
+</p>
+</details>
+
+<details>
+<summary> Textures</summary>
+<br/>
+<p align="center">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B2%98%20%EC%82%BC%EA%B0%81%ED%98%95.png?raw=true" alt="Example Image" width="30%"> 
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B3%90%20%EC%82%AC%EA%B0%81%ED%98%95.png?raw=true" alt="Example Image" width="30%">
   <br/>
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B2%98-mix.png?raw=true" alt="Example Image" width="30%">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B3%90-%ED%85%8D%EC%8A%A4%EC%B3%90mix1.png?raw=true" alt="Example Image" width="30%">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B3%90-%ED%85%8D%EC%8A%A4%EC%B3%90mix2.png?raw=true" alt="Example Image" width="30%">
+</p>
+</details>
+<br/>
+
 <!--
 
 - Lesson 1: Hello Metal

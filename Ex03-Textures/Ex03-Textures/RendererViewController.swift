@@ -17,7 +17,9 @@ class RendererViewController: UIViewController {
     var commandQueue: MTLCommandQueue!
     var vertexBuffer: MTLBuffer!
     var indexBuffer: MTLBuffer!
-    var texture: MTLTexture!
+    var texture1: MTLTexture!
+    var texture2: MTLTexture!
+
     var samplerState: MTLSamplerState!
     
     var timer: CADisplayLink!
@@ -63,38 +65,45 @@ class RendererViewController: UIViewController {
     // MARK: - setupVertices
     private func setupVertices() {
         do {
-            texture = try loadTexture()
+            texture1 = try loadTexture("container")
         } catch {
             print("텍스처 로드 실패: \(error)")
             return
         }
         
-//        let vertices = [
-//            Vertex(position: SIMD2<Float>(0.0, 0.5), color: SIMD3<Float>(1.0, 0.0, 0.0), texCoord: SIMD2<Float>(0.5, 1.0)),
-//            Vertex(position: SIMD2<Float>(-0.5, -0.5), color: SIMD3<Float>(0.0, 1.0, 0.0), texCoord: SIMD2<Float>(0.0, 0.0)),
-//            Vertex(position: SIMD2<Float>(0.5, -0.5), color: SIMD3<Float>(0.0, 0.0, 1.0), texCoord: SIMD2<Float>(1.0, 0.0))
-//        ]
+        do {
+            texture2 = try loadTexture("awesomeface")
+        } catch {
+            print("텍스처 로드 실패: \(error)")
+            return
+        }
+        
+        //        let vertices = [
+        //            Vertex(position: SIMD2<Float>(0.0, 0.5), color: SIMD3<Float>(1.0, 0.0, 0.0), texCoord: SIMD2<Float>(0.5, 1.0)),
+        //            Vertex(position: SIMD2<Float>(-0.5, -0.5), color: SIMD3<Float>(0.0, 1.0, 0.0), texCoord: SIMD2<Float>(0.0, 0.0)),
+        //            Vertex(position: SIMD2<Float>(0.5, -0.5), color: SIMD3<Float>(0.0, 0.0, 1.0), texCoord: SIMD2<Float>(1.0, 0.0))
+        //        ]
         
         let rectangleVertices = [
-            Vertex(position: SIMD2<Float>(-1.0,  0.75), color: SIMD3<Float>(1.0, 0.0, 0.0), texCoord: SIMD2<Float>(0.0, 1.0)),
-            Vertex(position: SIMD2<Float>( 1.0,  0.75), color: SIMD3<Float>(0.0, 1.0, 0.0), texCoord: SIMD2<Float>(1.0, 1.0)),
-            Vertex(position: SIMD2<Float>(-1.0, -0.75), color: SIMD3<Float>(0.0, 0.0, 1.0), texCoord: SIMD2<Float>(0.0, 0.0)),
-            Vertex(position: SIMD2<Float>( 1.0, -0.75), color: SIMD3<Float>(1.0, 1.0, 1.0), texCoord: SIMD2<Float>(1.0, 0.0))
+            Vertex(position: SIMD2<Float>(-0.85,  0.45), color: SIMD3<Float>(1.0, 0.0, 0.0), texCoord: SIMD2<Float>(0.0, 1.0)),
+            Vertex(position: SIMD2<Float>( 0.85,  0.45), color: SIMD3<Float>(0.0, 1.0, 0.0), texCoord: SIMD2<Float>(1.0, 1.0)),
+            Vertex(position: SIMD2<Float>(-0.85, -0.5), color: SIMD3<Float>(0.0, 0.0, 1.0), texCoord: SIMD2<Float>(0.0, 0.0)),
+            Vertex(position: SIMD2<Float>( 0.85, -0.5), color: SIMD3<Float>(1.0, 1.0, 1.0), texCoord: SIMD2<Float>(1.0, 0.0))
         ]
-
         
-//        vertexBuffer = device.makeBuffer(
-//            bytes: vertices,
-//            length: vertices.count * MemoryLayout<Vertex>.stride,
-//            options: []
-//        )
+        
+        //        vertexBuffer = device.makeBuffer(
+        //            bytes: vertices,
+        //            length: vertices.count * MemoryLayout<Vertex>.stride,
+        //            options: []
+        //        )
         
         vertexBuffer = device.makeBuffer(
             bytes: rectangleVertices,
             length: rectangleVertices.count * MemoryLayout<Vertex>.stride,
             options: []
         )
-
+        
         indexBuffer = device.makeBuffer(
             bytes: indices,
             length: indices.count * MemoryLayout<UInt16>.stride,
@@ -115,8 +124,8 @@ class RendererViewController: UIViewController {
     // MARK: - setupPipeline
     private func setupPipeline() {
         let library = device.makeDefaultLibrary()
-        let vertexFunction = library?.makeFunction(name: "vertexFunction") // 기본
-        let fragmentFunction = library?.makeFunction(name: "fragmentFunction")
+        let vertexFunction = library?.makeFunction(name: "vertexFunction")
+        let fragmentFunction = library?.makeFunction(name: "fragmentFunction2")
         
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
@@ -150,8 +159,12 @@ class RendererViewController: UIViewController {
         renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
         
         // 텍스처 설정
-        renderEncoder.setFragmentTexture(texture, index: 0)
+        renderEncoder.setFragmentTexture(texture1, index: 0)
+        renderEncoder.setFragmentTexture(texture2, index: 1)
         renderEncoder.setFragmentSamplerState(samplerState, index: 0)
+        
+        var blendRatio: Float = 0.5
+        renderEncoder.setFragmentBytes(&blendRatio, length: MemoryLayout<Float>.stride, index: 1)
         renderEncoder.drawIndexedPrimitives(
             type: .triangle,
             indexCount: indices.count,
@@ -169,11 +182,11 @@ class RendererViewController: UIViewController {
     }
     
     // MARK: - loadTexture
-    private func loadTexture() throws -> MTLTexture {
+    private func loadTexture(_ name: String) throws -> MTLTexture {
         let textureLoader = MTKTextureLoader(device: device)
         
         do {
-            return try textureLoader.newTexture(name: "container", scaleFactor: 1.0, bundle: nil, options: nil)
+            return try textureLoader.newTexture(name: name, scaleFactor: 1.0, bundle: nil, options: nil)
         } catch {
             fatalError("텍스처 로드 실패: \(error)")
         }

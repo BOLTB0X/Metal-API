@@ -115,8 +115,12 @@
 - `MTLCommandQueue` (**커맨드 큐**):
   - 커맨드 버퍼 안에 명령어를 작성하고 GPU에서 실행
   - 예 : _drawPrimitives로 삼각형 등 기본 도형을 그리기_ , _입력 버퍼와 파이프라인을 연결해 GPU 작업 실행_
-  <br/>
-  </details>
+    <br/>
+
+</details>
+
+- [좌표계](https://github.com/BOLTB0X/Metal-API/blob/main/Tutorial/Coordinate.md)
+- [Attribute Qualifier](https://github.com/BOLTB0X/Metal-API/blob/main/Tutorial/Qualifier.md)
 
 ## Tutorial
 
@@ -177,6 +181,12 @@
 
 - [WWDC 2019](https://developer.apple.com/videos/play/wwdc2019/611/?time=180)
 
+- [medium - Apple’s Metal API tutorial](https://medium.com/@samuliak/apples-metal-api-tutorial-part-3-textures-ff41873dfb67)
+
 - [medium - What’s Metal Shading Language (MSL)?](https://medium.com/@shoheiyokoyama/whats-metal-shading-language-msl-96fe63257994)
 
 - [블로그 참조 - zeddios(Metal이 뭔지 궁금해서 쓰는 글)](https://zeddios.tistory.com/932)
+
+- [블로그 참조 - eunjin3786(샘플러에 대해 알아보자)](https://eunjin3786.tistory.com/190)
+
+- [블로그 참조 - ally10(Metal 스터디)](https://ally10.tistory.com/57)

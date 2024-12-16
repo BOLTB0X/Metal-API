@@ -58,7 +58,7 @@ class RendererViewController: UIViewController {
         metalLayer.frame = view.layer.frame
         view.layer.addSublayer(metalLayer)
         
-        setupSampler() // 샘플러 생성
+        samplerState = setupSampler() // 샘플러 생성
         return
     }
     
@@ -84,13 +84,15 @@ class RendererViewController: UIViewController {
         //            Vertex(position: SIMD2<Float>(0.5, -0.5), color: SIMD3<Float>(0.0, 0.0, 1.0), texCoord: SIMD2<Float>(1.0, 0.0))
         //        ]
         
-        let rectangleVertices = [
-            Vertex(position: SIMD2<Float>(-0.85,  0.45), color: SIMD3<Float>(1.0, 0.0, 0.0), texCoord: SIMD2<Float>(0.0, 1.0)),
-            Vertex(position: SIMD2<Float>( 0.85,  0.45), color: SIMD3<Float>(0.0, 1.0, 0.0), texCoord: SIMD2<Float>(1.0, 1.0)),
-            Vertex(position: SIMD2<Float>(-0.85, -0.5), color: SIMD3<Float>(0.0, 0.0, 1.0), texCoord: SIMD2<Float>(0.0, 0.0)),
-            Vertex(position: SIMD2<Float>( 0.85, -0.5), color: SIMD3<Float>(1.0, 1.0, 1.0), texCoord: SIMD2<Float>(1.0, 0.0))
-        ]
         
+        
+        // exercises02
+        let rectangleVertices = [
+            Vertex(position: SIMD2<Float>(-0.85,  0.45), color: SIMD3<Float>(1.0, 0.0, 0.0), texCoord: SIMD2<Float>(0.0, 2.0)),
+            Vertex(position: SIMD2<Float>( 0.85,  0.45), color: SIMD3<Float>(0.0, 1.0, 0.0), texCoord: SIMD2<Float>(2.0, 2.0)),
+            Vertex(position: SIMD2<Float>(-0.85, -0.5), color: SIMD3<Float>(0.0, 0.0, 1.0), texCoord: SIMD2<Float>(0.0, 0.0)),
+            Vertex(position: SIMD2<Float>( 0.85, -0.5), color: SIMD3<Float>(1.0, 1.0, 1.0), texCoord: SIMD2<Float>(2.0, 0.0))
+        ]
         
         //        vertexBuffer = device.makeBuffer(
         //            bytes: vertices,
@@ -126,6 +128,7 @@ class RendererViewController: UIViewController {
         let library = device.makeDefaultLibrary()
         let vertexFunction = library?.makeFunction(name: "vertexFunction")
         let fragmentFunction = library?.makeFunction(name: "fragmentFunction2")
+        //let fragmentFunction = library?.makeFunction(name: "fragmentFunction2")
         
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
@@ -163,7 +166,7 @@ class RendererViewController: UIViewController {
         renderEncoder.setFragmentTexture(texture2, index: 1)
         renderEncoder.setFragmentSamplerState(samplerState, index: 0)
         
-        var blendRatio: Float = 0.5
+        var blendRatio: Float = 0.3
         renderEncoder.setFragmentBytes(&blendRatio, length: MemoryLayout<Float>.stride, index: 1)
         renderEncoder.drawIndexedPrimitives(
             type: .triangle,
@@ -193,14 +196,28 @@ class RendererViewController: UIViewController {
     }
     
     // MARK: - setupSampler
-    private func setupSampler() {
+    private func setupSampler() -> MTLSamplerState {
         let samplerDescriptor = MTLSamplerDescriptor()
         samplerDescriptor.minFilter = .linear
         samplerDescriptor.magFilter = .linear
-        samplerDescriptor.sAddressMode = .clampToEdge
-        samplerDescriptor.tAddressMode = .clampToEdge
+//        samplerDescriptor.sAddressMode = .clampToEdge
+//        samplerDescriptor.tAddressMode = .clampToEdge
         
-        samplerState = device.makeSamplerState(descriptor: samplerDescriptor)
+        // exercises02
+        samplerDescriptor.sAddressMode = .repeat // 가로 반복
+        samplerDescriptor.tAddressMode = .repeat // 세로 반복
+        
+        // exercises03
+//        samplerDescriptor.minFilter = .nearest
+//        samplerDescriptor.magFilter = .nearest
+
+        
+        
+        guard let sampler = device.makeSamplerState(descriptor: samplerDescriptor) else {
+            fatalError("샘플러 state 생성 실패")
+        }
+        
+        return sampler
     }
     
     @objc private func gameLoop() {

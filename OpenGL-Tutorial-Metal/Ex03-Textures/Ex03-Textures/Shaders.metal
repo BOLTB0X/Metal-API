@@ -50,3 +50,18 @@ fragment float4 fragmentFunction2(VertexOut in [[stage_in]],
     
     return float4(mix(sampledColor1.rgb, sampledColor2.rgb, blendRat), sampledColor1.a);
 }
+
+fragment float4 exercises01(VertexOut in [[stage_in]],
+                            texture2d<float> tex1 [[texture(0)]],
+                            texture2d<float> tex2 [[texture(1)]],
+                            sampler sam [[sampler(0)]],
+                            constant float &blendRat [[buffer(1)]]) {
+    
+    float4 sampledColor1 = tex1.sample(sam, in.texCoord);
+    
+    float2 upsideDown = float2(1.0 - in.texCoord.x, in.texCoord.y);
+    float4 sampledColor2 = tex2.sample(sam, upsideDown);
+    //float4 sampledColor2 = tex2.sample(sam, in.texCoord);
+    
+    return float4(mix(sampledColor1.rgb, sampledColor2.rgb, blendRat), sampledColor1.a);
+}

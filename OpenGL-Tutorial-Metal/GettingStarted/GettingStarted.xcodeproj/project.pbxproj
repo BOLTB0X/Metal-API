@@ -17,6 +17,7 @@
 		BE6BC2952D110B2A006746F0 /* RendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6BC2942D110B2A006746F0 /* RendererView.swift */; };
 		BE6BC2992D111469006746F0 /* RendererViewController+Textures.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6BC2982D111469006746F0 /* RendererViewController+Textures.swift */; };
 		BE6BC29B2D1114FA006746F0 /* RendererViewController+Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6BC29A2D1114F9006746F0 /* RendererViewController+Matrix.swift */; };
+		BE804E162D169B3900CBAEEC /* simd_float4x4.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE804E152D169B3900CBAEEC /* simd_float4x4.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		BE6BC2942D110B2A006746F0 /* RendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererView.swift; sourceTree = "<group>"; };
 		BE6BC2982D111469006746F0 /* RendererViewController+Textures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+Textures.swift"; sourceTree = "<group>"; };
 		BE6BC29A2D1114F9006746F0 /* RendererViewController+Matrix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+Matrix.swift"; sourceTree = "<group>"; };
+		BE804E152D169B3900CBAEEC /* simd_float4x4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = simd_float4x4.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				BE6BC2982D111469006746F0 /* RendererViewController+Textures.swift */,
 				BE6BC29A2D1114F9006746F0 /* RendererViewController+Matrix.swift */,
 				BE6BC2942D110B2A006746F0 /* RendererView.swift */,
+				BE804E152D169B3900CBAEEC /* simd_float4x4.swift */,
 				BE6BC28E2D110935006746F0 /* Shaders.metal */,
 				BE1AB07A2D0FF270006A4AAE /* Assets.xcassets */,
 				BE1AB07C2D0FF270006A4AAE /* Preview Content */,
@@ -158,6 +161,7 @@
 				BE6BC28F2D110935006746F0 /* Shaders.metal in Sources */,
 				BE6BC2912D1109DA006746F0 /* Vertex.swift in Sources */,
 				BE6BC2932D110A0A006746F0 /* RendererViewController.swift in Sources */,
+				BE804E162D169B3900CBAEEC /* simd_float4x4.swift in Sources */,
 				BE6BC2952D110B2A006746F0 /* RendererView.swift in Sources */,
 				BE6BC29B2D1114FA006746F0 /* RendererViewController+Matrix.swift in Sources */,
 				BE1AB0792D0FF269006A4AAE /* ContentView.swift in Sources */,

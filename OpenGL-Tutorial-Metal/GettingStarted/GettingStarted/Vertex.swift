@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Metal
 import simd
 
 struct Vertex {

@@ -7,7 +7,6 @@
 
 import UIKit
 import Metal
-import MetalKit
 import simd
 
 // MARK: - RendererViewController
@@ -24,25 +23,10 @@ class RendererViewController: UIViewController {
     
     var timer: CADisplayLink!
     
-    let cubeIndices: [UInt16] = [
-        // Front face
-        0, 1, 2, 0, 2, 3,
-        // Back face
-        4, 5, 6, 4, 6, 7,
-        // Left face
-        0, 4, 7, 0, 7, 3,
-        // Right face
-        1, 5, 6, 1, 6, 2,
-        // Top face
-        3, 2, 6, 3, 6, 7,
-        // Bottom face
-        0, 1, 5, 0, 5, 4
+    let indices: [UInt16] = [
+        0, 1, 2,
+        2, 3, 0
     ]
-    
-//    let indices: [UInt16] = [
-//        0, 1, 3,
-//        1, 2, 3
-//    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,6 +63,7 @@ class RendererViewController: UIViewController {
     private func setupVertices() {
         do {
             texture1 = try loadTexture("container")
+            print("텍스처 1 로드 성공")
         } catch {
             print("텍스처 로드 실패: \(error)")
             return
@@ -86,40 +71,29 @@ class RendererViewController: UIViewController {
         
         do {
             texture2 = try loadTexture("awesomeface")
+            print("텍스처 2 로드 성공")
         } catch {
             print("텍스처 로드 실패: \(error)")
             return
         }
         
-        let cubeVertices: [Vertex] = [
-            // Front face
+        
+        let rectangleVertices: [Vertex] = [
             Vertex(position: simd_float3(-0.5, -0.5,  0.5), color: simd_float3(1, 0, 0), texCoord: simd_float2(0, 0)),
             Vertex(position: simd_float3( 0.5, -0.5,  0.5), color: simd_float3(0, 1, 0), texCoord: simd_float2(1, 0)),
             Vertex(position: simd_float3( 0.5,  0.5,  0.5), color: simd_float3(0, 0, 1), texCoord: simd_float2(1, 1)),
-            Vertex(position: simd_float3(-0.5,  0.5,  0.5), color: simd_float3(1, 1, 0), texCoord: simd_float2(0, 1)),
-            // Back face
-            Vertex(position: simd_float3(-0.5, -0.5, -0.5), color: simd_float3(1, 0, 1), texCoord: simd_float2(0, 0)),
-            Vertex(position: simd_float3( 0.5, -0.5, -0.5), color: simd_float3(0, 1, 1), texCoord: simd_float2(1, 0)),
-            Vertex(position: simd_float3( 0.5,  0.5, -0.5), color: simd_float3(1, 1, 1), texCoord: simd_float2(1, 1)),
-            Vertex(position: simd_float3(-0.5,  0.5, -0.5), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 1)),
+            Vertex(position: simd_float3(-0.5,  0.5,  0.5), color: simd_float3(1, 1, 0), texCoord: simd_float2(0, 1))
         ]
         
-//        let rectangleVertices: [Vertex] = [
-//            Vertex(position: simd_float2( 0.4,  0.4), color: simd_float3(0.0, 1.0, 0.0), texCoord: simd_float2(1.0, 1.0)),
-//            Vertex(position: simd_float2( 0.4, -0.4), color: simd_float3(1.0, 1.0, 1.0), texCoord: simd_float2(1.0, 0.0)),
-//            Vertex(position: simd_float2(-0.4, -0.4), color: simd_float3(0.0, 0.0, 1.0), texCoord: simd_float2(0.0, 0.0)),
-//            Vertex(position: simd_float2(-0.4,  0.4), color: simd_float3(1.0, 0.0, 0.0), texCoord: simd_float2(0.0, 1.0))
-//        ]
-        
         vertexBuffer = device.makeBuffer(
-            bytes: cubeVertices,
-            length: cubeVertices.count * MemoryLayout<Vertex>.stride,
+            bytes: rectangleVertices,
+            length: rectangleVertices.count * MemoryLayout<Vertex>.stride,
             options: []
         )
         
         indexBuffer = device.makeBuffer(
-            bytes: cubeIndices,
-            length: cubeIndices.count * MemoryLayout<UInt16>.stride,
+            bytes: indices,
+            length: indices.count * MemoryLayout<UInt16>.stride,
             options: []
         )
         
@@ -129,15 +103,38 @@ class RendererViewController: UIViewController {
     // MARK: - setupPipeline
     private func setupPipeline() {
         let library = device.makeDefaultLibrary()
-        let vertexFunction = library?.makeFunction(name: "vertex_main")
+        let vertexFunction = library?.makeFunction(name: "vertexFunction")
         let fragmentFunction = library?.makeFunction(name: "fragmentFunction")
+        
+        let vertexDescriptor = MTLVertexDescriptor()
+        
+        vertexDescriptor.layouts[0].stride = MemoryLayout<Vertex>.stride
+        vertexDescriptor.layouts[0].stepRate = 1
+        vertexDescriptor.layouts[0].stepFunction = .perVertex
+        
+        vertexDescriptor.attributes[0].format = .float3
+        vertexDescriptor.attributes[0].offset =  MemoryLayout.offset(of: \Vertex.position)!
+        vertexDescriptor.attributes[0].bufferIndex = 0
+        
+        vertexDescriptor.attributes[1].format = .float3 // color
+        vertexDescriptor.attributes[1].offset = MemoryLayout.offset(of: \Vertex.color)!
+        vertexDescriptor.attributes[1].bufferIndex = 0
+        
+        vertexDescriptor.attributes[2].format = .float2 // texCoord
+        vertexDescriptor.attributes[2].offset = MemoryLayout.offset(of: \Vertex.texCoord)!
+        vertexDescriptor.attributes[2].bufferIndex = 0
         
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
+        pipelineDescriptor.vertexDescriptor = vertexDescriptor
         pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
         
-        pipelineState = try! device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+        do {
+            pipelineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+        } catch let error {
+            fatalError("pipeline 생성 실패: \(error)")
+        }
         return
     } // setupPipeline
     
@@ -151,22 +148,22 @@ class RendererViewController: UIViewController {
     // MARK: - render
     private func render() {
         guard let drawable = metalLayer?.nextDrawable() else { return }
-                
-        // 3D 큐브
-        let modelMatrix = simd_float4x4.rotate(angle: 0, axis: simd_float3(1, 1, 0)) *
-                          simd_float4x4.translate(x: 0.0, y: 0.0, z: -2.0)
-
-        let viewMatrix = simd_float4x4.lookAt(
-            eye: simd_float3(0.0, 0.0, 3.0),
-            center: simd_float3(0.0, 0.0, 0.0),
-            up: simd_float3(0.0, 1.0, 0.0)
-        )
-
-        let projectionMatrix = simd_float4x4.perspective(
-            aspect: 800.0 / 600.0, fovy: .pi / 4, near: 0.1, far: 100.0
-        )
-
-        var mvpMatrix = projectionMatrix * viewMatrix * modelMatrix
+        
+        var projectionMatrix = createPerspectiveMatrix(
+            fov: toRadians(from: 45.0),
+            aspectRatio: Float(view.bounds.width / view.bounds.height),
+            nearPlane: 0.1,
+            farPlane: 100.0)
+        
+        let viewMatrix = createViewMatrix(
+            eyePosition: simd_float3(0.0, 5.0, -5.0),
+            targetPosition: simd_float3(0.0, 0.0, 0.0),
+            upVec: simd_float3(0.0, 1.0, 0.0))
+        
+        var modelMatrix = matrix_identity_float4x4
+        translate(matrix: &modelMatrix, position: simd_float3(0.0, 0.0, 0.0))
+        rotate(matrix: &modelMatrix, rotation: simd_float3(0.0, toRadians(from: 60.0), 0.0))
+        scale(matrix: &modelMatrix, scale: simd_float3(1.0, 1.0, 1.0))
         
         // 렌더패스 설정
         let renderPassDescriptor = MTLRenderPassDescriptor()
@@ -176,16 +173,19 @@ class RendererViewController: UIViewController {
             red: 0,
             green: 0,
             blue: 0,
-            alpha: 0.5
+            alpha: 1
         )
         
         let commandBuffer = commandQueue.makeCommandBuffer()!
         let renderEncoder = commandBuffer
             .makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
         
+        renderEncoder.setVertexBytes(&projectionMatrix, length: MemoryLayout.stride(ofValue: projectionMatrix), index: 0)
+        var modelViewMatrix = viewMatrix * modelMatrix
+        renderEncoder.setVertexBytes(&modelViewMatrix, length: MemoryLayout.stride(ofValue: modelViewMatrix), index: 1)
+        
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
-        renderEncoder.setVertexBytes(&mvpMatrix, length: MemoryLayout<simd_float4x4>.stride, index: 1)
         
         renderEncoder.setFragmentTexture(texture1, index: 0)
         renderEncoder.setFragmentTexture(texture2, index: 1)
@@ -196,7 +196,7 @@ class RendererViewController: UIViewController {
         
         renderEncoder.drawIndexedPrimitives(
             type: .triangle,
-            indexCount: cubeIndices.count,
+            indexCount: indices.count,
             indexType: .uint16,
             indexBuffer: indexBuffer,
             indexBufferOffset: 0

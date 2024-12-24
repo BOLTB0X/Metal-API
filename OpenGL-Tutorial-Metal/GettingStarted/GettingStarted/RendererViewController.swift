@@ -20,26 +20,39 @@ class RendererViewController: UIViewController {
     var texture1: MTLTexture!
     var texture2: MTLTexture!
     var samplerState: MTLSamplerState!
-    
+    var depthTexture: MTLTexture!
+    var depthStencilState: MTLDepthStencilState!
     var timer: CADisplayLink!
     
     let indices: [UInt16] = [
         0, 1, 2,
-        2, 3, 0
+        1, 3, 2
     ]
     
+    let cubeIndices: [UInt16] = [
+        0, 1, 2,  2, 3, 0,        // Front
+        4, 5, 6,  6, 7, 4,        // Back
+        8, 9, 10,  10, 11, 8,     // Left
+        12, 13, 14,  14, 15, 12,  // Right
+        16, 17, 18,  18, 19, 16,  // Top
+        20, 21, 22,  22, 23, 20   // Bottom
+    ]
+    
+    // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         setupMetal()
         setupVertices()
         setupPipeline()
         rendering()
-    }
+    } // viewDidLoad
     
+    // MARK: - viewDidLayoutSubviews
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         metalLayer.frame = view.bounds
-    }
+        //metalLayer.drawableSize = view.bounds.size
+    } // viewDidLayoutSubviews
     
     // MARK: - setupMetal
     private func setupMetal() {
@@ -57,7 +70,7 @@ class RendererViewController: UIViewController {
         
         samplerState = setupSampler()
         return
-    }
+    } // setupMetal
     
     // MARK: - setupVertices
     private func setupVertices() {
@@ -77,28 +90,65 @@ class RendererViewController: UIViewController {
             return
         }
         
-        
         let rectangleVertices: [Vertex] = [
-            Vertex(position: simd_float3(-0.5, -0.5,  0.5), color: simd_float3(1, 0, 0), texCoord: simd_float2(0, 0)),
-            Vertex(position: simd_float3( 0.5, -0.5,  0.5), color: simd_float3(0, 1, 0), texCoord: simd_float2(1, 0)),
-            Vertex(position: simd_float3( 0.5,  0.5,  0.5), color: simd_float3(0, 0, 1), texCoord: simd_float2(1, 1)),
-            Vertex(position: simd_float3(-0.5,  0.5,  0.5), color: simd_float3(1, 1, 0), texCoord: simd_float2(0, 1))
+            Vertex(position: simd_float3(-0.8, 0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 1)),
+            Vertex(position: simd_float3( 0.8, 0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(1, 1)),
+            Vertex(position: simd_float3( -0.8,  -0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 0)),
+            Vertex(position: simd_float3(0.8,  -0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(1, 0))
+        ]
+        
+        let cubeVertices: [Vertex] = [
+            // Front
+            Vertex(position: simd_float3(-0.5, -0.5,  -0.5), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 1.0)),
+            Vertex(position: simd_float3(0.5, -0.5,  -0.5), color: simd_float3(0, 0, 0), texCoord: simd_float2(1.0, 1.0)),
+            Vertex(position: simd_float3(0.5, 0.5,  -0.5), color: simd_float3(0, 0, 0), texCoord: simd_float2(1.0, 0)),
+            Vertex(position: simd_float3(-0.5, 0.5,  -0.5), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 0)),
+            
+            // Back
+            Vertex(position: simd_float3(-0.5, -0.5,  0.5), color: simd_float3(1, 0, 0), texCoord: simd_float2(0, 1.0)),
+            Vertex(position: simd_float3(0.5, -0.5,  0.5), color: simd_float3(1, 0, 0), texCoord: simd_float2(1.0, 1.0)),
+            Vertex(position: simd_float3(0.5, 0.5,  0.5), color: simd_float3(1, 0, 0), texCoord: simd_float2(1.0, 0)),
+            Vertex(position: simd_float3(-0.5, 0.5,  0.5), color: simd_float3(1, 0, 0), texCoord: simd_float2(0, 0)),
+            
+            // Left
+            Vertex(position: simd_float3(-0.5, -0.5,  0.5), color: simd_float3(0, 1, 0), texCoord: simd_float2(0, 1.0)),
+            Vertex(position: simd_float3(-0.5, -0.5, -0.5), color: simd_float3(0, 1, 0), texCoord: simd_float2(1.0, 1.0)),
+            Vertex(position: simd_float3(-0.5, 0.5, -0.5), color: simd_float3(0, 1, 0), texCoord: simd_float2(1.0, 0)),
+            Vertex(position: simd_float3(-0.5, 0.5,  0.5), color: simd_float3(0, 1, 0), texCoord: simd_float2(0, 0)),
+            
+            // Right
+            Vertex(position: simd_float3(0.5, -0.5, -0.5), color: simd_float3(0, 0, 1), texCoord: simd_float2(0, 1.0)),
+            Vertex(position: simd_float3(0.5, -0.5,  0.5), color: simd_float3(0, 0, 1), texCoord: simd_float2(1.0, 1.0)),
+            Vertex(position: simd_float3(0.5, 0.5,  0.5), color: simd_float3(0, 0, 1), texCoord: simd_float2(1.0, 0)),
+            Vertex(position: simd_float3(0.5, 0.5, -0.5), color: simd_float3(0, 0, 1), texCoord: simd_float2(0, 0)),
+            
+            // Top
+            Vertex(position: simd_float3(-0.5, 0.5, -0.5), color: simd_float3(1, 1, 0), texCoord: simd_float2(0, 1.0)),
+            Vertex(position: simd_float3(0.5, 0.5, -0.5), color: simd_float3(1, 1, 0), texCoord: simd_float2(1.0, 1.0)),
+            Vertex(position: simd_float3(0.5, 0.5,  0.5), color: simd_float3(1, 1, 0), texCoord: simd_float2(1.0, 0)),
+            Vertex(position: simd_float3(-0.5, 0.5,  0.5), color: simd_float3(1, 1, 0), texCoord: simd_float2(0, 0)),
+            
+            // Bottom
+            Vertex(position: simd_float3(-0.5, -0.5, -0.5), color: simd_float3(0, 1, 1), texCoord: simd_float2(0, 1.0)),
+            Vertex(position: simd_float3(0.5, -0.5, -0.5), color: simd_float3(0, 1, 1), texCoord: simd_float2(1.0, 1.0)),
+            Vertex(position: simd_float3(0.5, -0.5,  0.5), color: simd_float3(0, 1, 1), texCoord: simd_float2(1.0, 0)),
+            Vertex(position: simd_float3(-0.5, -0.5,  0.5), color: simd_float3(0, 1, 1), texCoord: simd_float2(0, 0)),
         ]
         
         vertexBuffer = device.makeBuffer(
-            bytes: rectangleVertices,
-            length: rectangleVertices.count * MemoryLayout<Vertex>.stride,
+            bytes: cubeVertices,
+            length: cubeVertices.count * MemoryLayout<Vertex>.stride,
             options: []
         )
         
         indexBuffer = device.makeBuffer(
-            bytes: indices,
-            length: indices.count * MemoryLayout<UInt16>.stride,
+            bytes: cubeIndices,
+            length: cubeIndices.count * MemoryLayout<UInt16>.stride,
             options: []
         )
         
         return
-    }
+    } // setupVertices
     
     // MARK: - setupPipeline
     private func setupPipeline() {
@@ -106,35 +156,19 @@ class RendererViewController: UIViewController {
         let vertexFunction = library?.makeFunction(name: "vertexFunction")
         let fragmentFunction = library?.makeFunction(name: "fragmentFunction")
         
-        let vertexDescriptor = MTLVertexDescriptor()
-        
-        vertexDescriptor.layouts[0].stride = MemoryLayout<Vertex>.stride
-        vertexDescriptor.layouts[0].stepRate = 1
-        vertexDescriptor.layouts[0].stepFunction = .perVertex
-        
-        vertexDescriptor.attributes[0].format = .float3
-        vertexDescriptor.attributes[0].offset =  MemoryLayout.offset(of: \Vertex.position)!
-        vertexDescriptor.attributes[0].bufferIndex = 0
-        
-        vertexDescriptor.attributes[1].format = .float3 // color
-        vertexDescriptor.attributes[1].offset = MemoryLayout.offset(of: \Vertex.color)!
-        vertexDescriptor.attributes[1].bufferIndex = 0
-        
-        vertexDescriptor.attributes[2].format = .float2 // texCoord
-        vertexDescriptor.attributes[2].offset = MemoryLayout.offset(of: \Vertex.texCoord)!
-        vertexDescriptor.attributes[2].bufferIndex = 0
-        
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
-        pipelineDescriptor.vertexDescriptor = vertexDescriptor
         pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
         
         do {
             pipelineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
         } catch let error {
             fatalError("pipeline 생성 실패: \(error)")
         }
+        
+        setupDepthStencilState()
         return
     } // setupPipeline
     
@@ -150,15 +184,15 @@ class RendererViewController: UIViewController {
         guard let drawable = metalLayer?.nextDrawable() else { return }
         
         var projectionMatrix = createPerspectiveMatrix(
-            fov: toRadians(from: 45.0),
-            aspectRatio: Float(view.bounds.width / view.bounds.height),
-            nearPlane: 0.1,
-            farPlane: 100.0)
+            fov: toRadians(from: 30.0), // 시야걱
+            aspectRatio: Float(view.bounds.width / view.bounds.height), // 화면 비율
+            nearPlane: 0.1, // 근평면
+            farPlane: 100.0) // 원평면
         
         let viewMatrix = createViewMatrix(
-            eyePosition: simd_float3(0.0, 5.0, -5.0),
-            targetPosition: simd_float3(0.0, 0.0, 0.0),
-            upVec: simd_float3(0.0, 1.0, 0.0))
+            eyePosition: simd_float3(0.0, 5.0, -5.0), // 카메라 위치
+            targetPosition: simd_float3(0.0, 0.0, 0.0), // 타겟 위치(카메라가 바라보는 위치)
+            upVec: simd_float3(0.0, 1.0, 0.0)) // 위쪽
         
         var modelMatrix = matrix_identity_float4x4
         translate(matrix: &modelMatrix, position: simd_float3(0.0, 0.0, 0.0))
@@ -166,6 +200,7 @@ class RendererViewController: UIViewController {
         scale(matrix: &modelMatrix, scale: simd_float3(1.0, 1.0, 1.0))
         
         // 렌더패스 설정
+        // 색상 텍스처 설정
         let renderPassDescriptor = MTLRenderPassDescriptor()
         renderPassDescriptor.colorAttachments[0].texture = drawable.texture
         renderPassDescriptor.colorAttachments[0].loadAction = .clear
@@ -173,18 +208,21 @@ class RendererViewController: UIViewController {
             red: 0,
             green: 0,
             blue: 0,
-            alpha: 1
+            alpha: 0.5
         )
+        
+        // 깊이 텍스처 설정
+        renderPassDescriptor.depthAttachment.texture = depthTexture
+        renderPassDescriptor.depthAttachment.loadAction = .clear
+        renderPassDescriptor.depthAttachment.storeAction = .dontCare
+        renderPassDescriptor.depthAttachment.clearDepth = 1.0
         
         let commandBuffer = commandQueue.makeCommandBuffer()!
         let renderEncoder = commandBuffer
             .makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
         
-        renderEncoder.setVertexBytes(&projectionMatrix, length: MemoryLayout.stride(ofValue: projectionMatrix), index: 0)
-        var modelViewMatrix = viewMatrix * modelMatrix
-        renderEncoder.setVertexBytes(&modelViewMatrix, length: MemoryLayout.stride(ofValue: modelViewMatrix), index: 1)
-        
         renderEncoder.setRenderPipelineState(pipelineState)
+        renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
         
         renderEncoder.setFragmentTexture(texture1, index: 0)
@@ -194,9 +232,13 @@ class RendererViewController: UIViewController {
         var blendRatio: Float = 0.3
         renderEncoder.setFragmentBytes(&blendRatio, length: MemoryLayout<Float>.stride, index: 1)
         
+        renderEncoder.setVertexBytes(&projectionMatrix, length: MemoryLayout.stride(ofValue: projectionMatrix), index: 1)
+        var modelViewMatrix = viewMatrix * modelMatrix
+        renderEncoder.setVertexBytes(&modelViewMatrix, length: MemoryLayout.stride(ofValue: modelViewMatrix), index: 2)
+
         renderEncoder.drawIndexedPrimitives(
             type: .triangle,
-            indexCount: indices.count,
+            indexCount: cubeIndices.count,
             indexType: .uint16,
             indexBuffer: indexBuffer,
             indexBufferOffset: 0
@@ -205,7 +247,9 @@ class RendererViewController: UIViewController {
         renderEncoder.endEncoding()
         commandBuffer.present(drawable)
         commandBuffer.commit()
+        return
     } // render
+
     
     // MARK: - gameLoop
     @objc private func gameLoop() {
@@ -213,4 +257,17 @@ class RendererViewController: UIViewController {
             render()
         }
     } // gameLoop
+    
+    private func setupDepthBuffer() {
+        let depthTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(
+            pixelFormat: .depth32Float,
+            width: Int(view.bounds.width),
+            height: Int(view.bounds.height),
+            mipmapped: false
+        )
+        depthTextureDescriptor.usage = .renderTarget
+        depthTextureDescriptor.storageMode = .private
+        
+        depthTexture = device.makeTexture(descriptor: depthTextureDescriptor)
+    }
 }

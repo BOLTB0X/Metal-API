@@ -20,17 +20,16 @@ struct VertexOut {
     float2 texCoord;
 };
 
-vertex VertexOut vertexFunction(VertexIn in [[stage_in]],
-                                constant float4x4& projectionMatrix [[buffer(0)]],
-                                constant float4x4& modelViewMatrix [[buffer(1)]]) {
+vertex VertexOut vertexFunction(uint vid [[vertex_id]],
+                                constant VertexIn* vertices [[buffer(0)]],
+                                constant float4x4& projectionMatrix [[buffer(1)]],
+                                constant float4x4& modelViewMatrix [[buffer(2)]]) {
     VertexOut out;
-    out.position = projectionMatrix * modelViewMatrix * float4(in.position, 1.0);
-    out.color = in.color;
-    out.texCoord = in.texCoord;
-    
+    out.position = projectionMatrix * modelViewMatrix * float4(vertices[vid].position, 1.0);
+    out.color = vertices[vid].color;
+    out.texCoord = vertices[vid].texCoord;
     return out;
 }
-
 
 fragment float4 fragmentFunction(VertexOut in [[stage_in]],
                                   texture2d<float> tex1 [[texture(0)]],

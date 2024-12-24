@@ -11,7 +11,7 @@ import simd
 
 extension RendererViewController {
     // MARK: - setupSampler
-    func setupSampler() -> MTLSamplerState {
+    public func setupSampler() -> MTLSamplerState {
         let samplerDescriptor = MTLSamplerDescriptor()
         samplerDescriptor.minFilter = .linear
         samplerDescriptor.magFilter = .linear
@@ -27,7 +27,7 @@ extension RendererViewController {
     } // setupSampler
     
     // MARK: - loadTexture
-    func loadTexture(_ name: String) throws -> MTLTexture {
+    public func loadTexture(_ name: String) throws -> MTLTexture {
         let textureLoader = MTKTextureLoader(device: device)
         
         do {
@@ -36,4 +36,12 @@ extension RendererViewController {
             fatalError("텍스처 로드 실패: \(error)")
         }
     } // loadTexture
+    
+    // MARK: - setupDepthStencilState
+    public func setupDepthStencilState() {
+        let depthStencilDescriptor = MTLDepthStencilDescriptor()
+        depthStencilDescriptor.depthCompareFunction = .less
+        depthStencilDescriptor.isDepthWriteEnabled = true
+        depthStencilState = device.makeDepthStencilState(descriptor: depthStencilDescriptor)
+    } // setupDepthStencilState
 }

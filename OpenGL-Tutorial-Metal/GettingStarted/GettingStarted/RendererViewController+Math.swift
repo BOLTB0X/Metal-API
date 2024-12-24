@@ -10,17 +10,17 @@ import simd
 
 extension RendererViewController {
     // MARK: - toRadians
-    func toRadians(from angle: Float) -> Float {
+    public func toRadians(from angle: Float) -> Float {
         return angle * .pi / 180.0;
     } // toRadians
     
     // MARK: - translate
-    func translate(matrix: inout simd_float4x4, position: simd_float3) {
+    public func translate(matrix: inout simd_float4x4, position: simd_float3) {
         matrix[3] = matrix[0] * position.x + matrix[1] * position.y + matrix[2] * position.z + matrix[3];
     } // translate
     
     // MARK: - rotate
-    func rotate(matrix: inout simd_float4x4, rotation: simd_float3) {
+    public func rotate(matrix: inout simd_float4x4, rotation: simd_float3) {
         //Create quaternion
         let c = cos(rotation * 0.5)
         let s = sin(rotation * 0.5)
@@ -61,7 +61,7 @@ extension RendererViewController {
     } // rotate
     
     // MARK: - scale
-    func scale(matrix: inout simd_float4x4, scale: simd_float3) {
+    public func scale(matrix: inout simd_float4x4, scale: simd_float3) {
         matrix[0] *= scale.x
         matrix[1] *= scale.y
         matrix[2] *= scale.z
@@ -69,7 +69,7 @@ extension RendererViewController {
     } // scale
     
     // MARK: - createViewMatrix
-    func createViewMatrix(eyePosition: simd_float3, targetPosition: simd_float3, upVec: simd_float3) -> simd_float4x4 {
+    public func createViewMatrix(eyePosition: simd_float3, targetPosition: simd_float3, upVec: simd_float3) -> simd_float4x4 {
         let forward = normalize(targetPosition - eyePosition)
         let rightVec = normalize(simd_cross(upVec, forward))
         let up = simd_cross(forward, rightVec)
@@ -92,7 +92,7 @@ extension RendererViewController {
     } // createViewMatrix
     
     // MARK: - createPerspectiveMatrix
-    func createPerspectiveMatrix(fov: Float, aspectRatio: Float, nearPlane: Float, farPlane: Float) -> simd_float4x4 {
+    public func createPerspectiveMatrix(fov: Float, aspectRatio: Float, nearPlane: Float, farPlane: Float) -> simd_float4x4 {
         let tanHalfFov = tan(fov / 2.0)
 
         var matrix = simd_float4x4(0.0)
@@ -104,4 +104,5 @@ extension RendererViewController {
         
         return matrix
     } // createPerspectiveMatrix
+    
 }

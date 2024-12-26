@@ -23,7 +23,9 @@ class RendererViewController: UIViewController {
     var depthTexture: MTLTexture!
     var depthStencilState: MTLDepthStencilState!
     var timer: CADisplayLink!
-    
+    var modelMatrix = matrix_identity_float4x4
+    var rotation = simd_float3(0, 0, 0)
+
     let indices: [UInt16] = [
         0, 1, 2,
         1, 3, 2
@@ -68,6 +70,7 @@ class RendererViewController: UIViewController {
         metalLayer.frame = view.layer.frame
         view.layer.addSublayer(metalLayer)
         
+        setupDepthTexture()
         samplerState = setupSampler()
         return
     } // setupMetal
@@ -90,12 +93,12 @@ class RendererViewController: UIViewController {
             return
         }
         
-        let rectangleVertices: [Vertex] = [
-            Vertex(position: simd_float3(-0.8, 0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 1)),
-            Vertex(position: simd_float3( 0.8, 0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(1, 1)),
-            Vertex(position: simd_float3( -0.8,  -0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 0)),
-            Vertex(position: simd_float3(0.8,  -0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(1, 0))
-        ]
+//        let rectangleVertices: [Vertex] = [
+//            Vertex(position: simd_float3(-0.8, 0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 1)),
+//            Vertex(position: simd_float3( 0.8, 0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(1, 1)),
+//            Vertex(position: simd_float3( -0.8,  -0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 0)),
+//            Vertex(position: simd_float3(0.8,  -0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(1, 0))
+//        ]
         
         let cubeVertices: [Vertex] = [
             // Front
@@ -257,17 +260,4 @@ class RendererViewController: UIViewController {
             render()
         }
     } // gameLoop
-    
-    private func setupDepthBuffer() {
-        let depthTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(
-            pixelFormat: .depth32Float,
-            width: Int(view.bounds.width),
-            height: Int(view.bounds.height),
-            mipmapped: false
-        )
-        depthTextureDescriptor.usage = .renderTarget
-        depthTextureDescriptor.storageMode = .private
-        
-        depthTexture = device.makeTexture(descriptor: depthTextureDescriptor)
-    }
 }

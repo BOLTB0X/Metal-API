@@ -36,12 +36,4 @@ extension RendererViewController {
             fatalError("텍스처 로드 실패: \(error)")
         }
     } // loadTexture
-    
-    // MARK: - setupDepthStencilState
-    public func setupDepthStencilState() {
-        let depthStencilDescriptor = MTLDepthStencilDescriptor()
-        depthStencilDescriptor.depthCompareFunction = .less
-        depthStencilDescriptor.isDepthWriteEnabled = true
-        depthStencilState = device.makeDepthStencilState(descriptor: depthStencilDescriptor)
-    } // setupDepthStencilState
 }

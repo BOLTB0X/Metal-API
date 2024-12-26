@@ -21,42 +21,9 @@ extension RendererViewController {
     
     // MARK: - rotate
     public func rotate(matrix: inout simd_float4x4, rotation: simd_float3) {
-        //Create quaternion
-        let c = cos(rotation * 0.5)
-        let s = sin(rotation * 0.5)
-
-        var quat = simd_float4(repeating: 1.0)
-
-        quat.w = c.x * c.y * c.z + s.x * s.y * s.z
-        quat.x = s.x * c.y * c.z - c.x * s.y * s.z
-        quat.y = c.x * s.y * c.z + s.x * c.y * s.z
-        quat.z = c.x * c.y * s.z - s.x * s.y * c.z
-
-        //Create matrix
-        var rotationMat = matrix_identity_float4x4
-        let qxx = quat.x * quat.x
-        let qyy = quat.y * quat.y
-        let qzz = quat.z * quat.z
-        let qxz = quat.x * quat.z
-        let qxy = quat.x * quat.y
-        let qyz = quat.y * quat.z
-        let qwx = quat.w * quat.x
-        let qwy = quat.w * quat.y
-        let qwz = quat.w * quat.z
-
-        rotationMat[0][0] = 1.0 - 2.0 * (qyy + qzz)
-        rotationMat[0][1] = 2.0 * (qxy + qwz)
-        rotationMat[0][2] = 2.0 * (qxz - qwy)
-
-        rotationMat[1][0] = 2.0 * (qxy - qwz)
-        rotationMat[1][1] = 1.0 - 2.0 * (qxx + qzz)
-        rotationMat[1][2] = 2.0 * (qyz + qwx)
-
-        rotationMat[2][0] = 2.0 * (qxz + qwy)
-        rotationMat[2][1] = 2.0 * (qyz - qwx)
-        rotationMat[2][2] = 1.0 - 2.0 * (qxx + qyy)
-
-        matrix *= rotationMat
+        let quat = simd_quatf(angle: length(rotation), axis: normalize(rotation))
+        let rotationMatrix = simd_float4x4(quat)
+        matrix *= rotationMatrix
         return
     } // rotate
     
@@ -105,4 +72,14 @@ extension RendererViewController {
         return matrix
     } // createPerspectiveMatrix
     
+    // MARK: - rotate3DCube
+    public func rotate3DCube(t: Float) {
+        let rotationSpeed: Float = 45.0 // degrees per second
+        let angleDelta = toRadians(from: rotationSpeed * t)
+        rotation += simd_float3(angleDelta, angleDelta, angleDelta) // x, y, z 축으로 회전
+        
+        modelMatrix = matrix_identity_float4x4 // 초기화
+        rotate(matrix: &modelMatrix, rotation: rotation)
+        return
+    }
 }

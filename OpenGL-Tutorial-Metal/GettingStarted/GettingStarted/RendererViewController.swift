@@ -17,19 +17,19 @@ class RendererViewController: UIViewController {
     var commandQueue: MTLCommandQueue!
     var vertexBuffer: MTLBuffer!
     var indexBuffer: MTLBuffer!
+    var modelMatrixBuffer: MTLBuffer!
     var texture1: MTLTexture!
     var texture2: MTLTexture!
     var samplerState: MTLSamplerState!
     var depthTexture: MTLTexture!
     var depthStencilState: MTLDepthStencilState!
     var timer: CADisplayLink!
-    var modelMatrix = matrix_identity_float4x4
     var rotation = simd_float3(0, 0, 0)
 
-    let indices: [UInt16] = [
-        0, 1, 2,
-        1, 3, 2
-    ]
+//    let indices: [UInt16] = [
+//        0, 1, 2,
+//        1, 3, 2
+//    ]
     
     let cubeIndices: [UInt16] = [
         0, 1, 2,  2, 3, 0,        // Front
@@ -39,6 +39,19 @@ class RendererViewController: UIViewController {
         16, 17, 18,  18, 19, 16,  // Top
         20, 21, 22,  22, 23, 20   // Bottom
     ]
+    
+//    let cubePositions: [simd_float3] = [
+//        simd_float3(1.0, 0.0, 0.0),
+//        simd_float3(2.0, 5.0, -15.0),
+//        simd_float3(-1.5, -2.2, -2.5),
+//        simd_float3(-3.8, -2.0, -12.3),
+//        simd_float3(2.4, -0.4, -3.5),
+//        simd_float3(-1.7, 3.0, -7.5),
+//        simd_float3(1.3, -2.0, -2.5),
+//        simd_float3(1.5, 2.0, -2.5),
+//        simd_float3(1.5, 0.2, -1.5),
+//        simd_float3(-1.3, 1.0, -1.5)
+//    ]
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -138,6 +151,21 @@ class RendererViewController: UIViewController {
             Vertex(position: simd_float3(-0.5, -0.5,  0.5), color: simd_float3(0, 1, 1), texCoord: simd_float2(0, 0)),
         ]
         
+//        // 큐브 위치에 대한 변환 행렬 계산
+//        var modelMatrices: [matrix_float4x4] = []
+//        for i in 0..<cubePositions.count {
+//            var modelMatrix = matrix_identity_float4x4
+//            translate(matrix: &modelMatrix, position: cubePositions[i])
+//            rotate(matrix: &modelMatrix, rotation: simd_float3(1.0, 0.3, 0.5) + simd_float3(0.0, toRadians(from: Float(i) * 20.0), 0.0))
+//            modelMatrices.append(modelMatrix)
+//        }
+//
+//        modelMatrixBuffer = device.makeBuffer(
+//            bytes: modelMatrices,
+//            length: modelMatrices.count * MemoryLayout<matrix_float4x4>.size,
+//            options: .storageModeShared
+//        )
+        
         vertexBuffer = device.makeBuffer(
             bytes: cubeVertices,
             length: cubeVertices.count * MemoryLayout<Vertex>.stride,
@@ -199,7 +227,7 @@ class RendererViewController: UIViewController {
         
         var modelMatrix = matrix_identity_float4x4
         translate(matrix: &modelMatrix, position: simd_float3(0.0, 0.0, 0.0))
-        rotate(matrix: &modelMatrix, rotation: simd_float3(0.0, toRadians(from: 60.0), 0.0))
+        rotate(matrix: &modelMatrix, rotation: rotation)
         scale(matrix: &modelMatrix, scale: simd_float3(1.0, 1.0, 1.0))
         
         // 렌더패스 설정
@@ -227,6 +255,7 @@ class RendererViewController: UIViewController {
         renderEncoder.setRenderPipelineState(pipelineState)
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+        renderEncoder.setVertexBuffer(modelMatrixBuffer, offset: 0, index: 1)
         
         renderEncoder.setFragmentTexture(texture1, index: 0)
         renderEncoder.setFragmentTexture(texture2, index: 1)
@@ -240,12 +269,13 @@ class RendererViewController: UIViewController {
         renderEncoder.setVertexBytes(&modelViewMatrix, length: MemoryLayout.stride(ofValue: modelViewMatrix), index: 2)
 
         renderEncoder.drawIndexedPrimitives(
-            type: .triangle,
-            indexCount: cubeIndices.count,
-            indexType: .uint16,
-            indexBuffer: indexBuffer,
-            indexBufferOffset: 0
-        )
+                type: .triangle,
+                indexCount: cubeIndices.count,
+                indexType: .uint16,
+                indexBuffer: indexBuffer,
+                indexBufferOffset: 0
+            )
+        
         
         renderEncoder.endEncoding()
         commandBuffer.present(drawable)
@@ -257,6 +287,7 @@ class RendererViewController: UIViewController {
     // MARK: - gameLoop
     @objc private func gameLoop() {
         autoreleasepool {
+            rotation += simd_float3(toRadians(from: -1.0), toRadians(from: -1.0), 0.0)
             render()
         }
     } // gameLoop

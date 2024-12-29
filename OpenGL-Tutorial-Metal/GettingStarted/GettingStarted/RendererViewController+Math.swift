@@ -71,15 +71,5 @@ extension RendererViewController {
         
         return matrix
     } // createPerspectiveMatrix
-    
-    // MARK: - rotate3DCube
-    public func rotate3DCube(t: Float) {
-        let rotationSpeed: Float = 45.0 // degrees per second
-        let angleDelta = toRadians(from: rotationSpeed * t)
-        rotation += simd_float3(angleDelta, angleDelta, angleDelta) // x, y, z 축으로 회전
-        
-        modelMatrix = matrix_identity_float4x4 // 초기화
-        rotate(matrix: &modelMatrix, rotation: rotation)
-        return
-    }
+
 }

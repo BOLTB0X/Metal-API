@@ -196,9 +196,7 @@ class RendererViewController: UIViewController {
     // MARK: - render
     private func render() {
         guard let drawable = metalLayer?.nextDrawable() else { return }
-        
-        //updateCameraPosition()
-        
+                
         var projectionMatrix = createPerspectiveMatrix(
             fov: toRadians(from: 30.0), // 시야걱
             aspectRatio: Float(view.bounds.width / view.bounds.height), // 화면 비율

@@ -25,12 +25,7 @@ class RendererViewController: UIViewController {
     var depthStencilState: MTLDepthStencilState!
     var timer: CADisplayLink!
     var rotation = simd_float3(0, 0, 0)
-
-//    let indices: [UInt16] = [
-//        0, 1, 2,
-//        1, 3, 2
-//    ]
-    
+        
     let cubeIndices: [UInt16] = [
         0, 1, 2,  2, 3, 0,        // Front
         4, 5, 6,  6, 7, 4,        // Back
@@ -39,19 +34,6 @@ class RendererViewController: UIViewController {
         16, 17, 18,  18, 19, 16,  // Top
         20, 21, 22,  22, 23, 20   // Bottom
     ]
-    
-//    let cubePositions: [simd_float3] = [
-//        simd_float3(1.0, 0.0, 0.0),
-//        simd_float3(2.0, 5.0, -15.0),
-//        simd_float3(-1.5, -2.2, -2.5),
-//        simd_float3(-3.8, -2.0, -12.3),
-//        simd_float3(2.4, -0.4, -3.5),
-//        simd_float3(-1.7, 3.0, -7.5),
-//        simd_float3(1.3, -2.0, -2.5),
-//        simd_float3(1.5, 2.0, -2.5),
-//        simd_float3(1.5, 0.2, -1.5),
-//        simd_float3(-1.3, 1.0, -1.5)
-//    ]
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -85,6 +67,7 @@ class RendererViewController: UIViewController {
         
         setupDepthTexture()
         samplerState = setupSampler()
+
         return
     } // setupMetal
     
@@ -106,12 +89,12 @@ class RendererViewController: UIViewController {
             return
         }
         
-//        let rectangleVertices: [Vertex] = [
-//            Vertex(position: simd_float3(-0.8, 0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 1)),
-//            Vertex(position: simd_float3( 0.8, 0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(1, 1)),
-//            Vertex(position: simd_float3( -0.8,  -0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 0)),
-//            Vertex(position: simd_float3(0.8,  -0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(1, 0))
-//        ]
+        //        let rectangleVertices: [Vertex] = [
+        //            Vertex(position: simd_float3(-0.8, 0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 1)),
+        //            Vertex(position: simd_float3( 0.8, 0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(1, 1)),
+        //            Vertex(position: simd_float3( -0.8,  -0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(0, 0)),
+        //            Vertex(position: simd_float3(0.8,  -0.8,  0.0), color: simd_float3(0, 0, 0), texCoord: simd_float2(1, 0))
+        //        ]
         
         let cubeVertices: [Vertex] = [
             // Front
@@ -151,20 +134,20 @@ class RendererViewController: UIViewController {
             Vertex(position: simd_float3(-0.5, -0.5,  0.5), color: simd_float3(0, 1, 1), texCoord: simd_float2(0, 0)),
         ]
         
-//        // 큐브 위치에 대한 변환 행렬 계산
-//        var modelMatrices: [matrix_float4x4] = []
-//        for i in 0..<cubePositions.count {
-//            var modelMatrix = matrix_identity_float4x4
-//            translate(matrix: &modelMatrix, position: cubePositions[i])
-//            rotate(matrix: &modelMatrix, rotation: simd_float3(1.0, 0.3, 0.5) + simd_float3(0.0, toRadians(from: Float(i) * 20.0), 0.0))
-//            modelMatrices.append(modelMatrix)
-//        }
-//
-//        modelMatrixBuffer = device.makeBuffer(
-//            bytes: modelMatrices,
-//            length: modelMatrices.count * MemoryLayout<matrix_float4x4>.size,
-//            options: .storageModeShared
-//        )
+        // 큐브 위치에 대한 변환 행렬 계산
+        //        var modelMatrices: [matrix_float4x4] = []
+        //        for i in 0..<cubePositions.count {
+        //            var modelMatrix = matrix_identity_float4x4
+        //            translate(matrix: &modelMatrix, position: cubePositions[i])
+        //            rotate(matrix: &modelMatrix, rotation: simd_float3(1.0, 0.3, 0.5) + simd_float3(0.0, toRadians(from: Float(i) * 20.0), 0.0))
+        //            modelMatrices.append(modelMatrix)
+        //        }
+        
+        //        modelMatrixBuffer = device.makeBuffer(
+        //            bytes: modelMatrices,
+        //            length: modelMatrices.count * MemoryLayout<matrix_float4x4>.size,
+        //            options: .storageModeShared
+        //        )
         
         vertexBuffer = device.makeBuffer(
             bytes: cubeVertices,
@@ -214,21 +197,26 @@ class RendererViewController: UIViewController {
     private func render() {
         guard let drawable = metalLayer?.nextDrawable() else { return }
         
+        //updateCameraPosition()
+        
         var projectionMatrix = createPerspectiveMatrix(
             fov: toRadians(from: 30.0), // 시야걱
             aspectRatio: Float(view.bounds.width / view.bounds.height), // 화면 비율
             nearPlane: 0.1, // 근평면
             farPlane: 100.0) // 원평면
         
+        let camX: Float = sin(Float(CACurrentMediaTime())) * 20.0
+        let camZ: Float = cos(Float(CACurrentMediaTime())) * 20.0
+        
         let viewMatrix = createViewMatrix(
-            eyePosition: simd_float3(0.0, 5.0, -5.0), // 카메라 위치
+            eyePosition: simd_float3(camX, 0.0, camZ), // 카메라 위치
             targetPosition: simd_float3(0.0, 0.0, 0.0), // 타겟 위치(카메라가 바라보는 위치)
             upVec: simd_float3(0.0, 1.0, 0.0)) // 위쪽
-        
-        var modelMatrix = matrix_identity_float4x4
-        translate(matrix: &modelMatrix, position: simd_float3(0.0, 0.0, 0.0))
-        rotate(matrix: &modelMatrix, rotation: rotation)
-        scale(matrix: &modelMatrix, scale: simd_float3(1.0, 1.0, 1.0))
+//
+//        var modelMatrix = matrix_identity_float4x4
+//        translate(matrix: &modelMatrix, position: simd_float3(0.0, 0.0, 0.0))
+//        rotate(matrix: &modelMatrix, rotation: rotation)
+//        scale(matrix: &modelMatrix, scale: simd_float3(1.0, 1.0, 1.0))
         
         // 렌더패스 설정
         // 색상 텍스처 설정
@@ -263,31 +251,60 @@ class RendererViewController: UIViewController {
         
         var blendRatio: Float = 0.3
         renderEncoder.setFragmentBytes(&blendRatio, length: MemoryLayout<Float>.stride, index: 1)
-        
         renderEncoder.setVertexBytes(&projectionMatrix, length: MemoryLayout.stride(ofValue: projectionMatrix), index: 1)
-        var modelViewMatrix = viewMatrix * modelMatrix
-        renderEncoder.setVertexBytes(&modelViewMatrix, length: MemoryLayout.stride(ofValue: modelViewMatrix), index: 2)
-
-        renderEncoder.drawIndexedPrimitives(
+        
+        let cubePositions: [simd_float3] = [
+            simd_float3(-1.0, 1.0, -6.0),  // 상좌
+            simd_float3(0.0, 1.0, 2.5),   // 상중앙
+            simd_float3(1.0, 1.0, -9.0),   // 상우
+            simd_float3(-1.0, 0.5, -8.5),  // 중좌
+            simd_float3(1.0, 0.5, -2.8),   // 중우
+            simd_float3(0.0, 0.0, 0.0),   // 중앙
+            simd_float3(-1.0, -0.5, 3.5), // 하좌
+            simd_float3(0.0, -0.5, -3.8),  // 하중앙
+            simd_float3(1.0, -0.5, -7.0),  // 하우
+            simd_float3(0.5, 0.0, -9.2)    // 중앙 우측
+        ]
+        
+        for i in cubePositions.indices {
+            var modelMatrix = matrix_identity_float4x4
+            translate(matrix: &modelMatrix, position: cubePositions[i])
+            rotate(matrix: &modelMatrix, rotation: simd_float3(toRadians(from: 30.0), toRadians(from: 30.0), 0.0) + simd_float3(Float(i), Float(i), Float(i)))
+            scale(matrix: &modelMatrix, scale: simd_float3(1.0, 1.0, 1.0))
+            
+            var modelViewMatrix = viewMatrix * modelMatrix
+            renderEncoder.setVertexBytes(&modelViewMatrix, length: MemoryLayout.stride(ofValue: modelViewMatrix), index: 2)
+            
+            renderEncoder.drawIndexedPrimitives(
                 type: .triangle,
                 indexCount: cubeIndices.count,
                 indexType: .uint16,
                 indexBuffer: indexBuffer,
                 indexBufferOffset: 0
             )
+        }
         
+        //        var modelViewMatrix = viewMatrix * modelMatrix
+        //        renderEncoder.setVertexBytes(&modelViewMatrix, length: MemoryLayout.stride(ofValue: modelViewMatrix), index: 2)
+        //
+        //        renderEncoder.drawIndexedPrimitives(
+        //                type: .triangle,
+        //                indexCount: cubeIndices.count,
+        //                indexType: .uint16,
+        //                indexBuffer: indexBuffer,
+        //                indexBufferOffset: 0
+        //            )
         
         renderEncoder.endEncoding()
         commandBuffer.present(drawable)
         commandBuffer.commit()
         return
     } // render
-
-    
+        
     // MARK: - gameLoop
     @objc private func gameLoop() {
         autoreleasepool {
-            rotation += simd_float3(toRadians(from: -1.0), toRadians(from: -1.0), 0.0)
+            //rotation += simd_float3(toRadians(from: -1.0), toRadians(from: -1.0), 0.0)
             render()
         }
     } // gameLoop

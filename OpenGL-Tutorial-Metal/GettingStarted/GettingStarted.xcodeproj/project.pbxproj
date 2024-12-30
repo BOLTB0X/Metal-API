@@ -11,6 +11,7 @@
 		BE1AB0792D0FF269006A4AAE /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1AB0782D0FF269006A4AAE /* ContentView.swift */; };
 		BE1AB07B2D0FF270006A4AAE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE1AB07A2D0FF270006A4AAE /* Assets.xcassets */; };
 		BE1AB07E2D0FF270006A4AAE /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE1AB07D2D0FF270006A4AAE /* Preview Assets.xcassets */; };
+		BE47CF002D228DC9008CAF83 /* RendererViewController+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE47CEFF2D228DC9008CAF83 /* RendererViewController+Camera.swift */; };
 		BE6BC28F2D110935006746F0 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE6BC28E2D110935006746F0 /* Shaders.metal */; };
 		BE6BC2912D1109DA006746F0 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6BC2902D1109DA006746F0 /* Vertex.swift */; };
 		BE6BC2932D110A0A006746F0 /* RendererViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6BC2922D110A0A006746F0 /* RendererViewController.swift */; };
@@ -26,6 +27,7 @@
 		BE1AB0782D0FF269006A4AAE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BE1AB07A2D0FF270006A4AAE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE1AB07D2D0FF270006A4AAE /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BE47CEFF2D228DC9008CAF83 /* RendererViewController+Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+Camera.swift"; sourceTree = "<group>"; };
 		BE6BC28E2D110935006746F0 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		BE6BC2902D1109DA006746F0 /* Vertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
 		BE6BC2922D110A0A006746F0 /* RendererViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererViewController.swift; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				BE6BC2982D111469006746F0 /* RendererViewController+Textures.swift */,
 				BE6BC29A2D1114F9006746F0 /* RendererViewController+Math.swift */,
 				BEB7DAF22D1CCD6A001FB802 /* RendererViewController+Depth.swift */,
+				BE47CEFF2D228DC9008CAF83 /* RendererViewController+Camera.swift */,
 				BE6BC2942D110B2A006746F0 /* RendererView.swift */,
 				BE6BC28E2D110935006746F0 /* Shaders.metal */,
 				BE1AB07A2D0FF270006A4AAE /* Assets.xcassets */,
@@ -158,6 +161,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE47CF002D228DC9008CAF83 /* RendererViewController+Camera.swift in Sources */,
 				BE6BC28F2D110935006746F0 /* Shaders.metal in Sources */,
 				BE6BC2912D1109DA006746F0 /* Vertex.swift in Sources */,
 				BE6BC2932D110A0A006746F0 /* RendererViewController.swift in Sources */,

@@ -35,8 +35,8 @@ extension RendererViewController {
         return
     } // scale
     
-    // MARK: - createViewMatrix
-    public func createViewMatrix(eyePosition: simd_float3, targetPosition: simd_float3, upVec: simd_float3) -> simd_float4x4 {
+    // MARK: - lookAt
+    public func lookAt(eyePosition: simd_float3, targetPosition: simd_float3, upVec: simd_float3) -> simd_float4x4 {
         let forward = normalize(targetPosition - eyePosition)
         let rightVec = normalize(simd_cross(upVec, forward))
         let up = simd_cross(forward, rightVec)
@@ -56,10 +56,10 @@ extension RendererViewController {
         matrix[3][2] = -dot(forward, eyePosition)
         
         return matrix
-    } // createViewMatrix
+    } // lookAt
     
-    // MARK: - createPerspectiveMatrix
-    public func createPerspectiveMatrix(fov: Float, aspectRatio: Float, nearPlane: Float, farPlane: Float) -> simd_float4x4 {
+    // MARK: - perspective
+    public func perspective(fov: Float, aspectRatio: Float, nearPlane: Float, farPlane: Float) -> simd_float4x4 {
         let tanHalfFov = tan(fov / 2.0)
 
         var matrix = simd_float4x4(0.0)
@@ -70,6 +70,6 @@ extension RendererViewController {
         matrix[3][2] = -(farPlane * nearPlane) / (farPlane - nearPlane)
         
         return matrix
-    } // createPerspectiveMatrix
+    } // perspective
 
 }

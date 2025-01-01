@@ -11,22 +11,22 @@ import simd
 
 // MARK: - RendererViewController
 class RendererViewController: UIViewController {
-    var device: MTLDevice!
-    var metalLayer: CAMetalLayer!
-    var pipelineState: MTLRenderPipelineState!
-    var commandQueue: MTLCommandQueue!
-    var vertexBuffer: MTLBuffer!
-    var indexBuffer: MTLBuffer!
-    var modelMatrixBuffer: MTLBuffer!
-    var texture1: MTLTexture!
-    var texture2: MTLTexture!
-    var samplerState: MTLSamplerState!
-    var depthTexture: MTLTexture!
-    var depthStencilState: MTLDepthStencilState!
-    var timer: CADisplayLink!
-    var rotation = simd_float3(0, 0, 0)
-        
-    let cubeIndices: [UInt16] = [
+    public var device: MTLDevice!
+    public var metalLayer: CAMetalLayer!
+    
+    private var pipelineState: MTLRenderPipelineState!
+    private var commandQueue: MTLCommandQueue!
+    private var vertexBuffer: MTLBuffer!
+    private var indexBuffer: MTLBuffer!
+    private var modelMatrixBuffer: MTLBuffer!
+    private var texture1: MTLTexture!
+    private var texture2: MTLTexture!
+    private var samplerState: MTLSamplerState!
+    private var depthTexture: MTLTexture!
+    private var depthStencilState: MTLDepthStencilState!
+    private var timer: CADisplayLink!
+    private var rotation = simd_float3(0, 0, 0)
+    private let cubeIndices: [UInt16] = [
         0, 1, 2,  2, 3, 0,        // Front
         4, 5, 6,  6, 7, 4,        // Back
         8, 9, 10,  10, 11, 8,     // Left
@@ -48,7 +48,6 @@ class RendererViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         metalLayer.frame = view.bounds
-        //metalLayer.drawableSize = view.bounds.size
     } // viewDidLayoutSubviews
     
     // MARK: - setupMetal
@@ -65,7 +64,9 @@ class RendererViewController: UIViewController {
         metalLayer.frame = view.layer.frame
         view.layer.addSublayer(metalLayer)
         
-        setupDepthTexture()
+        if let depTex = setupDepthTexture() {
+            depthTexture = depTex
+        }
         samplerState = setupSampler()
 
         return
@@ -134,21 +135,6 @@ class RendererViewController: UIViewController {
             Vertex(position: simd_float3(-0.5, -0.5,  0.5), color: simd_float3(0, 1, 1), texCoord: simd_float2(0, 0)),
         ]
         
-        // 큐브 위치에 대한 변환 행렬 계산
-        //        var modelMatrices: [matrix_float4x4] = []
-        //        for i in 0..<cubePositions.count {
-        //            var modelMatrix = matrix_identity_float4x4
-        //            translate(matrix: &modelMatrix, position: cubePositions[i])
-        //            rotate(matrix: &modelMatrix, rotation: simd_float3(1.0, 0.3, 0.5) + simd_float3(0.0, toRadians(from: Float(i) * 20.0), 0.0))
-        //            modelMatrices.append(modelMatrix)
-        //        }
-        
-        //        modelMatrixBuffer = device.makeBuffer(
-        //            bytes: modelMatrices,
-        //            length: modelMatrices.count * MemoryLayout<matrix_float4x4>.size,
-        //            options: .storageModeShared
-        //        )
-        
         vertexBuffer = device.makeBuffer(
             bytes: cubeVertices,
             length: cubeVertices.count * MemoryLayout<Vertex>.stride,
@@ -182,7 +168,9 @@ class RendererViewController: UIViewController {
             fatalError("pipeline 생성 실패: \(error)")
         }
         
-        setupDepthStencilState()
+        if let deptSten = setupDepthStencilState() {
+            depthStencilState = deptSten
+        }
         return
     } // setupPipeline
     
@@ -197,7 +185,7 @@ class RendererViewController: UIViewController {
     private func render() {
         guard let drawable = metalLayer?.nextDrawable() else { return }
                 
-        var projectionMatrix = createPerspectiveMatrix(
+        var projectionMatrix = perspective(
             fov: toRadians(from: 30.0), // 시야걱
             aspectRatio: Float(view.bounds.width / view.bounds.height), // 화면 비율
             nearPlane: 0.1, // 근평면
@@ -206,15 +194,10 @@ class RendererViewController: UIViewController {
         let camX: Float = sin(Float(CACurrentMediaTime())) * 20.0
         let camZ: Float = cos(Float(CACurrentMediaTime())) * 20.0
         
-        let viewMatrix = createViewMatrix(
+        let viewMatrix = lookAt(
             eyePosition: simd_float3(camX, 0.0, camZ), // 카메라 위치
             targetPosition: simd_float3(0.0, 0.0, 0.0), // 타겟 위치(카메라가 바라보는 위치)
             upVec: simd_float3(0.0, 1.0, 0.0)) // 위쪽
-//
-//        var modelMatrix = matrix_identity_float4x4
-//        translate(matrix: &modelMatrix, position: simd_float3(0.0, 0.0, 0.0))
-//        rotate(matrix: &modelMatrix, rotation: rotation)
-//        scale(matrix: &modelMatrix, scale: simd_float3(1.0, 1.0, 1.0))
         
         // 렌더패스 설정
         // 색상 텍스처 설정
@@ -267,7 +250,8 @@ class RendererViewController: UIViewController {
         for i in cubePositions.indices {
             var modelMatrix = matrix_identity_float4x4
             translate(matrix: &modelMatrix, position: cubePositions[i])
-            rotate(matrix: &modelMatrix, rotation: simd_float3(toRadians(from: 30.0), toRadians(from: 30.0), 0.0) + simd_float3(Float(i), Float(i), Float(i)))
+            rotate(matrix: &modelMatrix, rotation: rotation + simd_float3(Float(i), Float(i), Float(i)))
+//            rotate(matrix: &modelMatrix, rotation: simd_float3(toRadians(from: 30.0), toRadians(from: 30.0), 0.0) + simd_float3(Float(i), Float(i), Float(i)))
             scale(matrix: &modelMatrix, scale: simd_float3(1.0, 1.0, 1.0))
             
             var modelViewMatrix = viewMatrix * modelMatrix
@@ -282,17 +266,6 @@ class RendererViewController: UIViewController {
             )
         }
         
-        //        var modelViewMatrix = viewMatrix * modelMatrix
-        //        renderEncoder.setVertexBytes(&modelViewMatrix, length: MemoryLayout.stride(ofValue: modelViewMatrix), index: 2)
-        //
-        //        renderEncoder.drawIndexedPrimitives(
-        //                type: .triangle,
-        //                indexCount: cubeIndices.count,
-        //                indexType: .uint16,
-        //                indexBuffer: indexBuffer,
-        //                indexBufferOffset: 0
-        //            )
-        
         renderEncoder.endEncoding()
         commandBuffer.present(drawable)
         commandBuffer.commit()
@@ -302,7 +275,7 @@ class RendererViewController: UIViewController {
     // MARK: - gameLoop
     @objc private func gameLoop() {
         autoreleasepool {
-            //rotation += simd_float3(toRadians(from: -1.0), toRadians(from: -1.0), 0.0)
+            rotation += simd_float3(toRadians(from: -1.0), toRadians(from: -1.0), 0.0)
             render()
         }
     } // gameLoop

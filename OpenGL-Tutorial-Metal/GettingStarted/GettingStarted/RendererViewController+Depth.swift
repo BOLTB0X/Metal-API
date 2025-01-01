@@ -5,13 +5,15 @@
 //  Created by KyungHeon Lee on 2024/12/26.
 //
 
-import Foundation
+import UIKit
 import Metal
 
 extension RendererViewController {
     // MARK: - setupDepthTexture
-    public func setupDepthTexture() {
-        guard let drawable = metalLayer.nextDrawable() else { return }
+    public func setupDepthTexture() -> MTLTexture? {
+        guard let drawable = metalLayer.nextDrawable() else {
+            fatalError("metalLayer.nextDrawable() 생성 실패")
+        }
         let depthTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(
             pixelFormat: .depth32Float,
             width: Int(drawable.texture.width),
@@ -20,29 +22,15 @@ extension RendererViewController {
         )
         depthTextureDescriptor.usage = .renderTarget
         depthTextureDescriptor.storageMode = .private
-        depthTexture = device.makeTexture(descriptor: depthTextureDescriptor)
+        return device.makeTexture(descriptor: depthTextureDescriptor)
     } // setupDepthTexture
     
     // MARK: - setupDepthStencilState
-    public func setupDepthStencilState() {
+    public func setupDepthStencilState() -> MTLDepthStencilState? {
         let depthStencilDescriptor = MTLDepthStencilDescriptor()
         depthStencilDescriptor.depthCompareFunction = .less
         depthStencilDescriptor.isDepthWriteEnabled = true
-        depthStencilState = device.makeDepthStencilState(descriptor: depthStencilDescriptor)
+        return device.makeDepthStencilState(descriptor: depthStencilDescriptor)
     } // setupDepthStencilState
-    
-    // MARK: - setupDepthBuffer
-    public func setupDepthBuffer() {
-        let depthTextureDescriptor = MTLTextureDescriptor.texture2DDescriptor(
-            pixelFormat: .depth32Float,
-            width: Int(view.bounds.width),
-            height: Int(view.bounds.height),
-            mipmapped: false
-        )
-        depthTextureDescriptor.usage = .renderTarget
-        depthTextureDescriptor.storageMode = .private
         
-        depthTexture = device.makeTexture(descriptor: depthTextureDescriptor)
-    } // setupDepthBuffer
-    
 }

@@ -35,9 +35,25 @@ class RendererViewController: UIViewController {
         20, 21, 22,  22, 23, 20   // Bottom
     ]
     
+    private var camera = Camera(
+        position: simd_float3(0.0, 0.0, 5.0), // 초기 위치
+        zoomLevel: 30.0,                      // 초기 줌 레벨
+        panDelta: simd_float2(0.0, 0.0)       // 초기 Pan 상태
+    )
+    
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
+        view.addGestureRecognizer(panGesture)
+        
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinchGesture(_:)))
+        view.addGestureRecognizer(pinchGesture)
+        
+        panGesture.delegate = self
+        pinchGesture.delegate = self
+        
         setupMetal()
         setupVertices()
         setupPipeline()
@@ -184,20 +200,41 @@ class RendererViewController: UIViewController {
     // MARK: - render
     private func render() {
         guard let drawable = metalLayer?.nextDrawable() else { return }
-                
+        
         var projectionMatrix = perspective(
-            fov: toRadians(from: 30.0), // 시야걱
-            aspectRatio: Float(view.bounds.width / view.bounds.height), // 화면 비율
-            nearPlane: 0.1, // 근평면
-            farPlane: 100.0) // 원평면
-        
-        let camX: Float = sin(Float(CACurrentMediaTime())) * 20.0
-        let camZ: Float = cos(Float(CACurrentMediaTime())) * 20.0
-        
+                fov: toRadians(from: camera.zoomLevel),
+                aspectRatio: Float(view.bounds.width / view.bounds.height),
+                nearPlane: 0.1,
+                farPlane: 100.0
+            )
+            
+        let adjustedCameraPosition = simd_float3(
+            sin(camera.panDelta.x) * camera.position.z,
+            camera.panDelta.y,
+            cos(camera.panDelta.x) * camera.position.z
+        )
+            
         let viewMatrix = lookAt(
-            eyePosition: simd_float3(camX, 0.0, camZ), // 카메라 위치
-            targetPosition: simd_float3(0.0, 0.0, 0.0), // 타겟 위치(카메라가 바라보는 위치)
-            upVec: simd_float3(0.0, 1.0, 0.0)) // 위쪽
+            eyePosition: simd_float3(camera.position.x + camera.panDelta.x,
+                                     camera.position.y + camera.panDelta.y,
+                                     camera.position.z),
+            targetPosition: simd_float3(0.0, 0.0, 0.5),
+            upVec: simd_float3(0.0, 1.0, 0.0)
+        )
+                
+//        var projectionMatrix = perspective(
+//            fov: toRadians(from: 30.0), // 시야걱
+//            aspectRatio: Float(view.bounds.width / view.bounds.height), // 화면 비율
+//            nearPlane: 0.1, // 근평면
+//            farPlane: 100.0) // 원평면
+//
+//        let camX: Float = sin(Float(CACurrentMediaTime())) * 20.0
+//        let camZ: Float = cos(Float(CACurrentMediaTime())) * 20.0
+//
+//        let viewMatrix = lookAt(
+//            eyePosition: simd_float3(camX, 0.0, camZ), // 카메라 위치
+//            targetPosition: simd_float3(0.0, 0.0, 0.0), // 타겟 위치(카메라가 바라보는 위치)
+//            upVec: simd_float3(0.0, 1.0, 0.0)) // 위쪽
         
         // 렌더패스 설정
         // 색상 텍스처 설정
@@ -279,4 +316,24 @@ class RendererViewController: UIViewController {
             render()
         }
     } // gameLoop
+    
+    // MARK: - handlePanGesture
+    @objc private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: view)
+        
+        let sensitivity: Float = 0.01
+        camera.panDelta.x += Float(translation.x) * sensitivity
+        camera.panDelta.y += Float(translation.y) * sensitivity
+        
+        gesture.setTranslation(.zero, in: view)
+    } // handlePanGesture
+    
+    // MARK: - handlePinchGesture
+    @objc private func handlePinchGesture(_ gesture: UIPinchGestureRecognizer) {
+        let zoomSensitivity: Float = 0.05
+        if gesture.state == .changed {
+            camera.zoomLevel -= Float(gesture.velocity) * zoomSensitivity
+            camera.zoomLevel = max(10.0, min(90.0, camera.zoomLevel)) // 줌 레벨 클램프
+        }
+    }
 }

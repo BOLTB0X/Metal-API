@@ -127,6 +127,8 @@
 
 ~~[OpenGL 튜토리얼](-->) metal로 실습~~
 
+### Getting started
+
 <details>
 <summary> Hello Triangle</summary>
 <br/>
@@ -183,7 +185,16 @@
   <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%B9%B4%EB%A9%94%EB%9D%BC%20%ED%9A%8C%EC%A0%841.gif?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%B9%B4%EB%A9%94%EB%9D%BC--.gif?raw=true" alt="Example Image" width="30%"> 
 </p>
 </details>
+
+### Lighting
+
+<details>
+<summary> Colors </summary>
 <br/>
+<p align="center">
+  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/coral.png?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/A%20lighting%20scene.png?raw=true" alt="Example Image" width="30%"> 
+</p>
+</details>
 
 <!--
 

@@ -22,24 +22,8 @@ class RendererViewController: UIViewController {
     private var depthTexture: MTLTexture!
     private var depthStencilState: MTLDepthStencilState!
     private var timer: CADisplayLink!
-    private let cubeIndices: [UInt16] = [
-        0, 1, 2,  2, 3, 0,        // Front
-        4, 5, 6,  6, 7, 4,        // Back
-        8, 9, 10,  10, 11, 8,     // Left
-        12, 13, 14,  14, 15, 12,  // Right
-        16, 17, 18,  18, 19, 16,  // Top
-        20, 21, 22,  22, 23, 20   // Bottom
-    ]
     
-    private let cubePositions: [simd_float3] = [
-        simd_float3(0.0, 0.0, 0.0),   // 중앙
-        simd_float3(-0.3, 0.3, -1.2)
-    ]
-    
-    private var lightColors: [Colors] = [
-        Colors(lightCoor: simd_float3(1.0, 1.0, 1.0), objectColor: simd_float3(1.0, 0.5, 0.31)),
-        Colors(lightCoor: simd_float3(1.2, 1.0, 2.0),objectColor: simd_float3(1.0, 0.5, 0.31))
-    ]
+    public var cameraPosition = simd_float3(0.0, 0.0, 3.0)
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -80,53 +64,15 @@ class RendererViewController: UIViewController {
     
     // MARK: - setupVertices
     private func setupVertices() {
-        let cubeVertices: [Vertex] = [
-            // Front
-            Vertex(position: simd_float3(-0.5, -0.5, -0.5), normal: simd_float3(0.0, 0.0, -1.0)),
-            Vertex(position: simd_float3(0.5, -0.5, -0.5), normal: simd_float3(0.0, 0.0, -1.0)),
-            Vertex(position: simd_float3(0.5, 0.5, -0.5), normal: simd_float3(0.0, 0.0, -1.0)),
-            Vertex(position: simd_float3(-0.5, 0.5, -0.5), normal: simd_float3(0.0, 0.0, -1.0)),
-            
-            // Back
-            Vertex(position: simd_float3(-0.5, -0.5, 0.5), normal: simd_float3(0.0, 0.0, 1.0)),
-            Vertex(position: simd_float3(0.5, -0.5, 0.5), normal: simd_float3(0.0, 0.0, 1.0)),
-            Vertex(position: simd_float3(0.5, 0.5, 0.5), normal: simd_float3(0.0, 0.0, 1.0)),
-            Vertex(position: simd_float3(-0.5, 0.5, 0.5), normal: simd_float3(0.0, 0.0, 1.0)),
-            
-            // Left
-            Vertex(position: simd_float3(-0.5, -0.5, 0.5), normal: simd_float3(-1.0, 0.0, 0.0)),
-            Vertex(position: simd_float3(-0.5, -0.5, -0.5), normal: simd_float3(-1.0, 0.0, 0.0)),
-            Vertex(position: simd_float3(-0.5, 0.5, -0.5), normal: simd_float3(-1.0, 0.0, 0.0)),
-            Vertex(position: simd_float3(-0.5, 0.5, 0.5), normal: simd_float3(-1.0, 0.0, 0.0)),
-            
-            // Right
-            Vertex(position: simd_float3(0.5, -0.5, -0.5), normal: simd_float3(1.0, 0.0, 0.0)),
-            Vertex(position: simd_float3(0.5, -0.5, 0.5), normal: simd_float3(1.0, 0.0, 0.0)),
-            Vertex(position: simd_float3(0.5, 0.5, 0.5), normal: simd_float3(1.0, 0.0, 0.0)),
-            Vertex(position: simd_float3(0.5, 0.5, -0.5), normal: simd_float3(1.0, 0.0, 0.0)),
-            
-            // Top
-            Vertex(position: simd_float3(-0.5, 0.5, -0.5), normal: simd_float3(0.0, 1.0, 0.0)),
-            Vertex(position: simd_float3(0.5, 0.5, -0.5), normal: simd_float3(0.0, 1.0, 0.0)),
-            Vertex(position: simd_float3(0.5, 0.5, 0.5), normal: simd_float3(0.0, 1.0, 0.0)),
-            Vertex(position: simd_float3(-0.5, 0.5, 0.5), normal: simd_float3(0.0, 1.0, 0.0)),
-            
-            // Bottom
-            Vertex(position: simd_float3(-0.5, -0.5, -0.5), normal: simd_float3(0.0, -1.0, 0.0)),
-            Vertex(position: simd_float3(0.5, -0.5, -0.5), normal: simd_float3(0.0, -1.0, 0.0)),
-            Vertex(position: simd_float3(0.5, -0.5, 0.5), normal: simd_float3(0.0, -1.0, 0.0)),
-            Vertex(position: simd_float3(-0.5, -0.5, 0.5), normal: simd_float3(0.0, -1.0, 0.0)),
-        ]
-        
         vertexBuffer = device.makeBuffer(
-            bytes: cubeVertices,
-            length: cubeVertices.count * MemoryLayout<Vertex>.stride,
+            bytes: RendererResources.cubeVertices,
+            length: RendererResources.cubeVertices.count * MemoryLayout<Vertex>.stride,
             options: []
         )
         
         indexBuffer = device.makeBuffer(
-            bytes: cubeIndices,
-            length: cubeIndices.count * MemoryLayout<UInt16>.stride,
+            bytes: RendererResources.cubeIndices,
+            length: RendererResources.cubeIndices.count * MemoryLayout<UInt16>.stride,
             options: []
         )
         
@@ -168,17 +114,18 @@ class RendererViewController: UIViewController {
     private func render() {
         guard let drawable = metalLayer?.nextDrawable() else { return }
         
-        var projectionMatrix = perspective(
-            fov: toRadians(from: 30.0),
+        var projectionMatrix = simd_float4x4.perspective(
+            fov: Float(30).toRadians(),
             aspectRatio: Float(view.bounds.width / view.bounds.height),
             nearPlane: 0.1,
             farPlane: 100.0
         )
-        
-        let viewMatrix = lookAt(
-            eyePosition: simd_float3(0.0, 0.0, 3.0), // 카메라 위치
-            targetPosition: simd_float3(0.0, 0.0, 0.0), // 타겟 위치(카메라가 바라보는 위치)
-            upVec: simd_float3(0.0, 1.0, 0.0)) // 위쪽
+
+        let viewMatrix = simd_float4x4.lookAt(
+            eyePosition: simd_float3(0.0, 0.0, 3.0),
+            targetPosition: simd_float3(0.0, 0.0, 0.0),
+            upVec: simd_float3(0.0, 1.0, 0.0)
+        )
         
         // 렌더패스 설정
         // 색상 텍스처 설정
@@ -209,36 +156,30 @@ class RendererViewController: UIViewController {
         
         renderEncoder.setVertexBytes(&projectionMatrix, length: MemoryLayout.stride(ofValue: projectionMatrix), index: 1)
         
-//        let cubePositions: [simd_float3] = [
-//            simd_float3(0.0, 0.0, 0.0),   // 중앙
-//            simd_float3(-0.3, 0.3, -1.2)
-//        ]
-//
-//        var lightColors: [simd_float3] = [
-//            simd_float3(1.0, 1.0, 1.0),
-//            simd_float3(1.2, 1.0, 2.0)
-//        ]
-        
-        for i in cubePositions.indices {
-            var modelMatrix = matrix_identity_float4x4
-            translate(matrix: &modelMatrix, position: cubePositions[i])
-            rotate(matrix: &modelMatrix, rotation: simd_float3(toRadians(from: 30.0), toRadians(from: 30.0), 0.0))
-            scale(matrix: &modelMatrix, scale: simd_float3(0.2, 0.2, 0.2))
+        for i in RendererResources.cubePositions.indices {
+            var modelMatrix = simd_float4x4.identity()
+            let ambient: simd_float3 = i == 0 ? simd_float3(0.1, 0.1, 0.1) : simd_float3(0.0, 0.0, 0.0)
+            var uniform = LightUniforms(
+                lightCoor: RendererResources.lightColors[i].lightCoor,
+                objectColor: RendererResources.lightColors[i].objectColor,
+                ambient: ambient)
+            modelMatrix.translate(position: RendererResources.cubePositions[i])
+                
+            modelMatrix.rotate(
+                rotation: simd_float3(Float(30).toRadians(), Float(30).toRadians(), 0.0))
+            
+            modelMatrix.scales(scale: simd_float3(0.2, 0.2, 0.2))
+
                         
             var modelViewMatrix = viewMatrix * modelMatrix
-            var ambient: simd_float3 = i == 0 ? simd_float3(0.1, 0.1, 0.1) : simd_float3(0.0, 0.0, 0.0)
-            var cameraPosition = simd_float3(0.0, 0.0, 3.0)
             
             renderEncoder.setFragmentBytes(&cameraPosition, length: MemoryLayout<simd_float3>.size, index: 1)
-            renderEncoder.setFragmentBytes(&lightColors[i].lightCoor, length: MemoryLayout<simd_float3>.size, index: 2)
-            renderEncoder.setFragmentBytes(&lightColors[i].objectColor, length: MemoryLayout<simd_float3>.size, index: 3)
-            renderEncoder.setFragmentBytes(&ambient, length: MemoryLayout<simd_float3>.size, index: 4)
-            
+            renderEncoder.setFragmentBytes(&uniform, length: MemoryLayout<LightUniforms>.size, index: 2)
             renderEncoder.setVertexBytes(&modelViewMatrix, length: MemoryLayout.stride(ofValue: modelViewMatrix), index: 2)
             
             renderEncoder.drawIndexedPrimitives(
                 type: .triangle,
-                indexCount: cubeIndices.count,
+                indexCount: RendererResources.cubeIndices.count,
                 indexType: .uint16,
                 indexBuffer: indexBuffer,
                 indexBufferOffset: 0

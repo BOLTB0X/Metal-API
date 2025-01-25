@@ -28,12 +28,12 @@ vertex VertexOut vertex_shader(uint vid [[vertex_id]],
 // MARK: - fragment_shader
 fragment float4 fragment_shader(VertexOut in [[stage_in]],
                                 constant float3 &cameraPosition [[buffer(1)]],
-                                constant float3 &lightColor [[buffer(2)]],
-                                constant float3 &objectColor [[buffer(3)]],
-                                constant float3 &ambient [[buffer(4)]]) {
+                                constant LightUniforms &lightUniform [[buffer(2)]]) {
     float3 lightDirection = normalize(-cameraPosition);
     float diffuse = max(dot(in.normal, lightDirection), 0.0);
 
-    return float4(((ambient + diffuse) * lightColor) * objectColor , 1.0);
+    return float4(((lightUniform.ambient + diffuse) * lightUniform.lightColor) * lightUniform.objectColor , 1.0);
 } // fragment_shader
+
+
 

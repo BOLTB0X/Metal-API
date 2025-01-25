@@ -1,42 +1,47 @@
 //
-//  RendererViewController+Math.swift
+//  Extension+simd_float4x4.swift
 //  Lighting
 //
-//  Created by KyungHeon Lee on 2025/01/21.
+//  Created by KyungHeon Lee on 2025/01/25.
 //
 
 import Foundation
 import simd
 
-extension RendererViewController {
-    // MARK: - toRadians
-    public func toRadians(from angle: Float) -> Float {
-        return angle * .pi / 180.0;
-    } // toRadians
+extension simd_float4x4 {
+    // MARK: - Identity Matrix 생성
+    static func identity() -> simd_float4x4 {
+        return matrix_identity_float4x4
+    }
     
     // MARK: - translate
-    public func translate(matrix: inout simd_float4x4, position: simd_float3) {
-        matrix[3] = matrix[0] * position.x + matrix[1] * position.y + matrix[2] * position.z + matrix[3];
+    mutating func translate(position: simd_float3) {
+        self[3] = self[0] * position.x + self[1] * position.y + self[2] * position.z + self[3];
     } // translate
     
     // MARK: - rotate
-    public func rotate(matrix: inout simd_float4x4, rotation: simd_float3) {
+    // 회전 변환 (축과 각도를 기반으로)
+    mutating func rotate(rotation: simd_float3) {
         let quat = simd_quatf(angle: length(rotation), axis: normalize(rotation))
         let rotationMatrix = simd_float4x4(quat)
-        matrix *= rotationMatrix
+        self *= rotationMatrix
         return
     } // rotate
     
     // MARK: - scale
-    public func scale(matrix: inout simd_float4x4, scale: simd_float3) {
-        matrix[0] *= scale.x
-        matrix[1] *= scale.y
-        matrix[2] *= scale.z
+    mutating func scales(scale: simd_float3) {
+        self[0] *= scale.x
+        self[1] *= scale.y
+        self[2] *= scale.z
         return
     } // scale
     
     // MARK: - lookAt
-    public func lookAt(eyePosition: simd_float3, targetPosition: simd_float3, upVec: simd_float3) -> simd_float4x4 {
+    // 카메라의 View Matrix를 생성하는 함수
+    // eyePosition: 카메라 위치
+    // targetPosition: 타겟 위치(카메라가 바라보는 위치
+    // upVec: 위쪽
+    static func lookAt(eyePosition: simd_float3, targetPosition: simd_float3, upVec: simd_float3) -> simd_float4x4 {
         let forward = normalize(targetPosition - eyePosition)
         let rightVec = normalize(simd_cross(upVec, forward))
         let up = simd_cross(forward, rightVec)
@@ -59,7 +64,8 @@ extension RendererViewController {
     } // lookAt
     
     // MARK: - perspective
-    public func perspective(fov: Float, aspectRatio: Float, nearPlane: Float, farPlane: Float) -> simd_float4x4 {
+    // 투영 행렬(Projection Matrix)을 생성하는 함수
+    static func perspective(fov: Float, aspectRatio: Float, nearPlane: Float, farPlane: Float) -> simd_float4x4 {
         let tanHalfFov = tan(fov / 2.0)
 
         var matrix = simd_float4x4(0.0)
@@ -71,5 +77,4 @@ extension RendererViewController {
         
         return matrix
     } // perspective
-
 }

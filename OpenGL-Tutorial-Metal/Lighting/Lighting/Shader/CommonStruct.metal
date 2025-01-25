@@ -20,3 +20,9 @@ struct VertexOut {
     float3 normal;
 }; // VertexOut
 
+// MARK: - LightUniforms
+struct LightUniforms {
+    float3 lightColor;
+    float3 objectColor;
+    float3 ambient;
+}; // LightUniforms

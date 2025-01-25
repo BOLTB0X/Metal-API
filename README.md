@@ -191,9 +191,15 @@
 <details>
 <summary> Colors </summary>
 <br/>
+
 <p align="center">
-  <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/coral.png?raw=true" alt="Example Image" width="30%"> <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/A%20lighting%20scene.png?raw=true" alt="Example Image" width="30%"> 
+
+| Coral (lighting X)                                                              | Ambient lighting                                                                                         | Diffuse lighting                                                                                        |
+| ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| ![Coral](https://github.com/BOLTB0X/Metal-API/blob/main/img/coral.png?raw=true) | ![Ambient Lighting ](https://github.com/BOLTB0X/Metal-API/blob/main/img/ambient%20lighting.png?raw=true) | ![Diffuse lighting](https://github.com/BOLTB0X/Metal-API/blob/main/img/Diffuse%20lighting.png?raw=true) |
+
 </p>
+
 </details>
 
 <!--

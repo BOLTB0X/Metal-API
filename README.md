@@ -134,90 +134,166 @@
 
 <details>
 <summary> Hello Triangle</summary>
-
 <p align="center">
-<table style="width:100%; text-align:center;">
-  <tr>
-    <td style="text-align:center; vertical-align:middle; width:50%;">
-      <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%83%89%EB%B3%80%EA%B2%BD.gif?raw=true" alt="triangle 1" style="width:100%; height:auto;"/>
-    </td>
-    <td style="text-align:center; vertical-align:middle; width:50%;">
-      <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%82%BC%EA%B0%81%ED%98%95%202%EA%B0%9C.png?raw=true" alt="triangle 2" style="width:100%; height:auto;"/>
-    </td>
-  </tr>
-  <tr>
-    <td style="text-align:center;">Triangle 1</td>
-    <td style="text-align:center;">Triangle 2</td>
-  </tr>
-</table>
+  <table style="width:100%; text-align:center; border-spacing:20px;">
+    <tr>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%83%89%EB%B3%80%EA%B2%BD.gif?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%82%BC%EA%B0%81%ED%98%95%202%EA%B0%9C.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Triangle 1
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Triangle 2
+      </p>
+      </td>
+    </tr>
+  </table>
 </p>
+   
 </details>
 
 <details>
 <summary>Shaders</summary>
-
 <p align="center">
-  <table style="width:100%; table-layout:fixed; text-align:center; border-spacing:10px;">
+  <table style="width:100%; text-align:center; border-spacing:20px;">
     <tr>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02.png?raw=true" alt="triangle" style="width:100%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02.png?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain;"/>
+        </p>
       </td>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02-01.png?raw=true" alt="Upside down" style="width:100%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02-01.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain;"/>
+        </p>
       </td>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02-02.png?raw=true" alt="Right side" style="width:100%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Ex02-02.png?raw=true" 
+             alt="image 3" 
+             style="width:200px; height:400px; object-fit:contain;"/>
+        </p>
       </td>
     </tr>
     <tr>
-      <td style="text-align:center;">Triangle</td>
-      <td style="text-align:center;">Upside down</td>
-      <td style="text-align:center;">Right side</td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+        Triangle
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+        Upside down
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+        Right side
+      </p>
+      </td>
     </tr>
   </table>
 </p>
-
 </details>
 
 <details>
 <summary>Textures</summary>
 
-<!-- 첫 번째 테이블 (2개의 이미지) -->
 <p align="center">
-  <table style="width:100%; table-layout:fixed; text-align:center; border-spacing:10px; margin:auto;">
+  <table style="width:100%; text-align:center; border-spacing:20px;">
     <tr>
-      <td style="text-align:center; vertical-align:middle; width:50%;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B2%98%20%EC%82%BC%EA%B0%81%ED%98%95.png?raw=true" alt="Triangle Texture" style="width:100%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B2%98%20%EC%82%BC%EA%B0%81%ED%98%95.png?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
       </td>
-      <td style="text-align:center; vertical-align:middle; width:50%;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B3%90%20%EC%82%AC%EA%B0%81%ED%98%95.png?raw=true" alt="Rectangle Texture" style="width:100%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B3%90%20%EC%82%AC%EA%B0%81%ED%98%95.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
       </td>
     </tr>
     <tr>
-      <td style="text-align:center;">Triangle</td>
-      <td style="text-align:center;">Rectangle</td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Triangle
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Rectangle
+      </p>
+      </td>
     </tr>
   </table>
 </p>
 
-<!-- 두 번째 테이블 (3개의 이미지) -->
 <p align="center">
-  <table style="width:100%; table-layout:fixed; text-align:center; border-spacing:10px;">
+  <table style="width:100%; text-align:center; border-spacing:20px;">
     <tr>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B2%98-mix.png?raw=true" alt="Mixed Texture" style="width:100%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B2%98-mix.png?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain;"/>
+        </p>
       </td>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B3%90-%ED%85%8D%EC%8A%A4%EC%B3%90mix1.png?raw=true" alt="Texture Mix 1" style="width:100%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B3%90-%ED%85%8D%EC%8A%A4%EC%B3%90mix1.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain;"/>
+        </p>
       </td>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B3%90-%ED%85%8D%EC%8A%A4%EC%B3%90mix2.png?raw=true" alt="Texture Mix 2" style="width:100%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%85%8D%EC%8A%A4%EC%B3%90-%ED%85%8D%EC%8A%A4%EC%B3%90mix2.png?raw=true" 
+             alt="image 3" 
+             style="width:200px; height:400px; object-fit:contain;"/>
+        </p>
       </td>
     </tr>
     <tr>
-      <td style="text-align:center;">Mixed</td>
-      <td style="text-align:center;">Mix 1</td>
-      <td style="text-align:center;">Mix 2</td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+        Mixed
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+        Mix 1
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+        Mix 2
+      </p>
+      </td>
     </tr>
   </table>
 </p>
@@ -226,81 +302,148 @@
 
 <details>
 <summary> Transformations</summary>
+
 <p align="center">
-
- <table style="width:100%; table-layout:fixed; text-align:center; border-spacing:10px;">
+  <table style="width:100%; text-align:center; border-spacing:20px;">
     <tr>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%9A%8C%EC%A0%84.gif?raw=true" alt="Transformations 1" style="width:90%; height:auto;"/>
-      </td>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/3d-%EB%A0%8C%EB%8D%94%EB%A7%81-%ED%96%89%EB%A0%AC.png?raw=true" alt="Transformations 2" style="width:90%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%ED%9A%8C%EC%A0%84.gif?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
       </td>
     </tr>
     <tr>
-      <td style="text-align:center;">Transformations 1</td>
-      <td style="text-align:center;">Transformations 2</td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Transformations
+      </p>
+      </td>
     </tr>
-
-  </table>  
+  </table>
 </p>
+
 </details>
 
 <details>
 <summary> Coordinate Systems</summary>
 
 <p align="center">
-
- <table style="width:100%; table-layout:fixed; text-align:center; border-spacing:10px;">
+  <table style="width:100%; text-align:center; border-spacing:20px;">
     <tr>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/3d-%EB%A0%8C%EB%8D%94%EB%A7%81-1.png?raw=true" alt="Depth X" style="width:90%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/3d-%EB%A0%8C%EB%8D%94%EB%A7%81-%ED%96%89%EB%A0%AC.png?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
       </td>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/3d-dpeth%EC%A0%81%EC%9A%A9.png?raw=true" alt="Depth O" style="width:90%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/3d-%EB%A0%8C%EB%8D%94%EB%A7%81-1.png?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/3d-dpeth%EC%A0%81%EC%9A%A9.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
       </td>
     </tr>
     <tr>
-      <td style="text-align:center;">Depth X</td>
-      <td style="text-align:center;">Depth O</td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Coordinate Systems
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Depth X
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Depth O
+      </p>
+      </td>
     </tr>
   </table>
-
-   <table style="width:100%; table-layout:fixed; text-align:center; border-spacing:10px;">
-    <tr>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/3DCube_depth%ED%9A%8C%EC%A0%84.gif?raw=true" alt="3D Rotate 1" style="width:90%; height:auto;"/>
-      </td>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/3d%ED%81%90%EB%B8%8C-%EC%97%AC%EB%9F%AC%EA%B0%9C.png?raw=true" alt="3D Rotate 2" style="width:90%; height:auto;"/>
-      </td>
-    </tr>
-    <tr>
-      <td style="text-align:center;">3D Rotate 1</td>
-      <td style="text-align:center;">3D Rotate 2</td>
-    </tr>
-  </table>
-
 </p>
+
+<p align="center">
+  <table style="width:100%; text-align:center; border-spacing:20px;">
+    <tr>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/3DCube_depth%ED%9A%8C%EC%A0%84.gif?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/3d%ED%81%90%EB%B8%8C-%EC%97%AC%EB%9F%AC%EA%B0%9C.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      3D Rotate 1
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      3D Rotate 2
+      </p>
+      </td>
+    </tr>
+  </table>
+</p>
+
 </details>
 
 <details>
 <summary> Camera</summary>
-
-   <table style="width:100%; table-layout:fixed; text-align:center; border-spacing:10px;">
+   
+<p align="center">
+  <table style="width:100%; text-align:center; border-spacing:20px;">
     <tr>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%B9%B4%EB%A9%94%EB%9D%BC%20%ED%9A%8C%EC%A0%841.gif?raw=true" alt="Camera Rotate" style="width:90%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%B9%B4%EB%A9%94%EB%9D%BC%20%ED%9A%8C%EC%A0%841.gif?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
       </td>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%B9%B4%EB%A9%94%EB%9D%BC--.gif?raw=true" alt="Gesture Rotate" style="width:90%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%B9%B4%EB%A9%94%EB%9D%BC--.gif?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
       </td>
     </tr>
     <tr>
-      <td style="text-align:center;">Camera Rotate</td>
-      <td style="text-align:center;">Gesture Rotate</td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Camera Rotate
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Gesture Rotate
+      </p>
+      </td>
     </tr>
   </table>
+</p>
 
 </details>
 
@@ -310,22 +453,36 @@
 <summary> Colors </summary>
 
 <p align="center">
-
-   <table style="width:100%; table-layout:fixed; text-align:center; border-spacing:10px;">
+  <table style="width:100%; text-align:center; border-spacing:20px;">
     <tr>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/coral.png?raw=true" alt="Coral" style="width:90%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/coral.png?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
       </td>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/A%20lighting%20scene.png?raw=true" alt="A lighting scene" style="width:90%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/A%20lighting%20scene.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
       </td>
     </tr>
     <tr>
-      <td style="text-align:center;">Coral</td>
-      <td style="text-align:center;">A lighting scene</td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Coral
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      A lighting scene
+      </p>
+      </td>
     </tr>
   </table>
-
 </p>
 
 </details>
@@ -334,20 +491,35 @@
 <summary> Basic Lighting
  </summary>
 
-<p align="center">
-
-   <table style="width:100%; table-layout:fixed; text-align:center; border-spacing:10px;">
+ <p align="center">
+  <table style="width:100%; text-align:center; border-spacing:20px;">
     <tr>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/ambient%20lighting.png?raw=true" alt="Ambient lighting" style="width:90%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/ambient%20lighting.png?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
       </td>
-      <td style="width:33%; text-align:center; vertical-align:middle;">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Diffuse%20lighting.png?raw=true" alt="Diffuse lighting" style="width:90%; height:auto;"/>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Diffuse%20lighting.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
       </td>
     </tr>
     <tr>
-      <td style="text-align:center;">Ambient lighting</td>
-      <td style="text-align:center;">Diffuse lighting</td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Ambient lighting
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Diffuse lighting
+      </p>
+      </td>
     </tr>
   </table>
 </p>

@@ -22,9 +22,7 @@ class RendererViewController: UIViewController {
     private var depthTexture: MTLTexture!
     private var depthStencilState: MTLDepthStencilState!
     private var timer: CADisplayLink!
-    
-    public var cameraPosition = simd_float3(0.0, 0.0, 3.0)
-    
+        
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +64,7 @@ class RendererViewController: UIViewController {
     private func setupVertices() {
         vertexBuffer = device.makeBuffer(
             bytes: RendererResources.cubeVertices,
-            length: RendererResources.cubeVertices.count * MemoryLayout<Vertex>.stride,
+            length: RendererResources.cubeVertices.count * MemoryLayout<BasicVertex>.stride,
             options: []
         )
         
@@ -121,11 +119,7 @@ class RendererViewController: UIViewController {
             farPlane: 100.0
         )
 
-        let viewMatrix = simd_float4x4.lookAt(
-            eyePosition: simd_float3(0.0, 0.0, 3.0),
-            targetPosition: simd_float3(0.0, 0.0, 0.0),
-            upVec: simd_float3(0.0, 1.0, 0.0)
-        )
+        let viewMatrix = RendererResources.viewMatrix
         
         // 렌더패스 설정
         // 색상 텍스처 설정
@@ -158,24 +152,26 @@ class RendererViewController: UIViewController {
         
         for i in RendererResources.cubePositions.indices {
             var modelMatrix = simd_float4x4.identity()
-            let ambient: simd_float3 = i == 0 ? simd_float3(0.1, 0.1, 0.1) : simd_float3(0.0, 0.0, 0.0)
+            var ambient: simd_float3 = i == 0 ? simd_float3(0.1, 0.1, 0.1) : simd_float3(0.0, 0.0, 0.0)
             var uniform = LightUniforms(
-                lightCoor: RendererResources.lightColors[i].lightCoor,
-                objectColor: RendererResources.lightColors[i].objectColor,
-                ambient: ambient)
+                lightPosition: simd_float3(0.0, 1.0, 2.0),
+                cameraPosition: simd_float3(0.0, 0.0, 3.0),
+                lightColor: RendererResources.lightColors[i].lightColor,
+                objectColor: RendererResources.lightColors[i].objectColor)
             modelMatrix.translate(position: RendererResources.cubePositions[i])
                 
             modelMatrix.rotate(
                 rotation: simd_float3(Float(30).toRadians(), Float(30).toRadians(), 0.0))
             
             modelMatrix.scales(scale: simd_float3(0.2, 0.2, 0.2))
-
                         
-            var modelViewMatrix = viewMatrix * modelMatrix
+            var transformUniforms = TransformUniforms(projectionMatrix: projectionMatrix, modelViewMatrix: viewMatrix * modelMatrix)
+
+            renderEncoder.setFragmentBytes(&uniform, length: MemoryLayout<LightUniforms>.size, index: 1)
+            renderEncoder.setFragmentBytes(&uniform, length: MemoryLayout<TransformUniforms>.size, index: 2)
+            renderEncoder.setFragmentBytes(&ambient, length: MemoryLayout<simd_float3>.size, index: 3)
             
-            renderEncoder.setFragmentBytes(&cameraPosition, length: MemoryLayout<simd_float3>.size, index: 1)
-            renderEncoder.setFragmentBytes(&uniform, length: MemoryLayout<LightUniforms>.size, index: 2)
-            renderEncoder.setVertexBytes(&modelViewMatrix, length: MemoryLayout.stride(ofValue: modelViewMatrix), index: 2)
+            renderEncoder.setVertexBytes(&transformUniforms, length: MemoryLayout<TransformUniforms>.size, index: 1)
             
             renderEncoder.drawIndexedPrimitives(
                 type: .triangle,

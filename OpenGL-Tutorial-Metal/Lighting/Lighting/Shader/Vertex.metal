@@ -1,8 +1,8 @@
 //
-//  CommonStruct.metal
+//  Vertex.metal
 //  Lighting
 //
-//  Created by KyungHeon Lee on 2025/01/23.
+//  Created by KyungHeon Lee on 2025/01/26.
 //
 
 #include <metal_stdlib>
@@ -19,10 +19,3 @@ struct VertexOut {
     float4 position [[position]];
     float3 normal;
 }; // VertexOut
-
-// MARK: - LightUniforms
-struct LightUniforms {
-    float3 lightColor;
-    float3 objectColor;
-    float3 ambient;
-}; // LightUniforms

@@ -22,6 +22,7 @@ class RendererViewController: UIViewController {
     private var depthTexture: MTLTexture!
     private var depthStencilState: MTLDepthStencilState!
     private var timer: CADisplayLink!
+    private var rotation = simd_float3(0, 0, 0)
         
     // MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -160,8 +161,13 @@ class RendererViewController: UIViewController {
                 objectColor: RendererResources.lightColors[i].objectColor)
             modelMatrix.translate(position: RendererResources.cubePositions[i])
                 
+//            modelMatrix.rotate(
+//                rotation: simd_float3(Float(30).toRadians(), Float(30).toRadians(), 0.0)
+//            )
+            
             modelMatrix.rotate(
-                rotation: simd_float3(Float(30).toRadians(), Float(30).toRadians(), 0.0))
+                rotation: rotation + simd_float3(Float(i), Float(i), Float(i))
+            )
             
             modelMatrix.scales(scale: simd_float3(0.2, 0.2, 0.2))
                         
@@ -191,6 +197,7 @@ class RendererViewController: UIViewController {
     // MARK: - gameLoop
     @objc private func gameLoop() {
         autoreleasepool {
+            rotation += simd_float3(Float(1).toRadians(), Float(1).toRadians(), 0.0)
             render()
         }
     } // gameLoop

@@ -11,11 +11,11 @@ import UIKit
 // MARK: - RendererView
 struct RendererView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> RendererViewController {
-         let viewController = RendererViewController()
-         return viewController
-     }
-     
-     func updateUIViewController(_ uiViewController: RendererViewController, context: Context) {
-     }
-
+        let viewController = RendererViewController()
+        return viewController
+    }
+    
+    func updateUIViewController(_ uiViewController: RendererViewController, context: Context) {
+    }
+    
 } // RendererView

@@ -13,8 +13,10 @@ import simd
 class RendererViewController: UIViewController {
     public var device: MTLDevice!
     public var metalLayer: CAMetalLayer!
+    public var rotation = simd_float3(0, 0, 0)
     
-    private var pipelineState: MTLRenderPipelineState!
+    private var mainPipelineState: MTLRenderPipelineState!
+    private var subPipelineState: MTLRenderPipelineState!
     private var commandQueue: MTLCommandQueue!
     private var vertexBuffer: MTLBuffer!
     private var indexBuffer: MTLBuffer!
@@ -22,8 +24,7 @@ class RendererViewController: UIViewController {
     private var depthTexture: MTLTexture!
     private var depthStencilState: MTLDepthStencilState!
     private var timer: CADisplayLink!
-    private var rotation = simd_float3(0, 0, 0)
-        
+    
     // MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,8 +83,9 @@ class RendererViewController: UIViewController {
     private func setupPipeline() {
         let library = device.makeDefaultLibrary()
         let vertexFunction = library?.makeFunction(name: "vertex_shader")
-        let fragmentFunction = library?.makeFunction(name: "fragment_shader")
+        let fragmentFunction = library?.makeFunction(name: "fragment_shader_main")
         
+        // 기존 큐브
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
         pipelineDescriptor.vertexFunction = vertexFunction
         pipelineDescriptor.fragmentFunction = fragmentFunction
@@ -91,9 +93,24 @@ class RendererViewController: UIViewController {
         pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
         
         do {
-            pipelineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+            mainPipelineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
         } catch let error {
             fatalError("pipeline 생성 실패: \(error)")
+        }
+        
+        // 광원 큐브
+        let fragmentSubFunction = library?.makeFunction(name: "fragment_shader_sub")
+        
+        let subPipelineDescriptor = MTLRenderPipelineDescriptor()
+        subPipelineDescriptor.vertexFunction = vertexFunction //
+        subPipelineDescriptor.fragmentFunction = fragmentSubFunction
+        subPipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        subPipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+        
+        do {
+            subPipelineState = try device.makeRenderPipelineState(descriptor: subPipelineDescriptor)
+        } catch let error {
+            fatalError("광원 큐브 pipeline 생성 실패: \(error)")
         }
         
         if let deptSten = setupDepthStencilState() {
@@ -113,15 +130,12 @@ class RendererViewController: UIViewController {
     private func render() {
         guard let drawable = metalLayer?.nextDrawable() else { return }
         
-        var projectionMatrix = simd_float4x4.perspective(
-            fov: Float(30).toRadians(),
+        let projectionMatrix = simd_float4x4.perspective(
+            fov: Float(45).toRadians(),
             aspectRatio: Float(view.bounds.width / view.bounds.height),
             nearPlane: 0.1,
             farPlane: 100.0
-        )
-
-        let viewMatrix = RendererResources.viewMatrix
-        
+        )        
         // 렌더패스 설정
         // 색상 텍스처 설정
         let renderPassDescriptor = MTLRenderPassDescriptor()
@@ -141,52 +155,24 @@ class RendererViewController: UIViewController {
         renderPassDescriptor.depthAttachment.clearDepth = 1.0
         
         let commandBuffer = commandQueue.makeCommandBuffer()!
-        let renderEncoder = commandBuffer
+        var renderEncoder = commandBuffer
             .makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
         
-        renderEncoder.setRenderPipelineState(pipelineState)
+        renderEncoder.setRenderPipelineState(mainPipelineState)
         renderEncoder.setDepthStencilState(depthStencilState)
         renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
         renderEncoder.setVertexBuffer(modelMatrixBuffer, offset: 0, index: 1)
         
-        renderEncoder.setVertexBytes(&projectionMatrix, length: MemoryLayout.stride(ofValue: projectionMatrix), index: 1)
-        
-        for i in RendererResources.cubePositions.indices {
-            var modelMatrix = simd_float4x4.identity()
-            var ambient: simd_float3 = i == 0 ? simd_float3(0.1, 0.1, 0.1) : simd_float3(0.0, 0.0, 0.0)
-            var uniform = LightUniforms(
-                lightPosition: simd_float3(0.0, 1.0, 2.0),
-                cameraPosition: simd_float3(0.0, 0.0, 3.0),
-                lightColor: RendererResources.lightColors[i].lightColor,
-                objectColor: RendererResources.lightColors[i].objectColor)
-            modelMatrix.translate(position: RendererResources.cubePositions[i])
+        renderObjectCube(renderEncoder: &renderEncoder,
+                         indexBuffer: indexBuffer,
+                         projectionMatrix: projectionMatrix
+        )
                 
-//            modelMatrix.rotate(
-//                rotation: simd_float3(Float(30).toRadians(), Float(30).toRadians(), 0.0)
-//            )
-            
-            modelMatrix.rotate(
-                rotation: rotation + simd_float3(Float(i), Float(i), Float(i))
-            )
-            
-            modelMatrix.scales(scale: simd_float3(0.2, 0.2, 0.2))
-                        
-            var transformUniforms = TransformUniforms(projectionMatrix: projectionMatrix, modelViewMatrix: viewMatrix * modelMatrix)
-
-            renderEncoder.setFragmentBytes(&uniform, length: MemoryLayout<LightUniforms>.size, index: 1)
-            renderEncoder.setFragmentBytes(&uniform, length: MemoryLayout<TransformUniforms>.size, index: 2)
-            renderEncoder.setFragmentBytes(&ambient, length: MemoryLayout<simd_float3>.size, index: 3)
-            
-            renderEncoder.setVertexBytes(&transformUniforms, length: MemoryLayout<TransformUniforms>.size, index: 1)
-            
-            renderEncoder.drawIndexedPrimitives(
-                type: .triangle,
-                indexCount: RendererResources.cubeIndices.count,
-                indexType: .uint16,
-                indexBuffer: indexBuffer,
-                indexBufferOffset: 0
-            )
-        }
+        renderEncoder.setRenderPipelineState(subPipelineState)
+        renderLightSourceCube(renderEncoder: &renderEncoder,
+                              indexBuffer: indexBuffer,
+                              projectionMatrix: projectionMatrix
+        )
         
         renderEncoder.endEncoding()
         commandBuffer.present(drawable)

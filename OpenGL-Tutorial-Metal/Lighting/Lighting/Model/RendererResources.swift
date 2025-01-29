@@ -73,7 +73,7 @@ struct RendererResources {
     
     // viewMatrix
     static let viewMatrix = simd_float4x4.lookAt(
-        eyePosition: simd_float3(0.0, 0.0, 3.0),
+        eyePosition: simd_float3(1.0, 1.0, 3.0),
         targetPosition: simd_float3(0.0, 0.0, 0.0),
         upVec: simd_float3(0.0, 1.0, 0.0)
     )

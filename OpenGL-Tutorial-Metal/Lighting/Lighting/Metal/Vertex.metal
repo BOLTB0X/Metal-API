@@ -18,4 +18,5 @@ struct VertexIn {
 struct VertexOut {
     float4 position [[position]];
     float3 normal;
+    float3 fragPosition;
 }; // VertexOut

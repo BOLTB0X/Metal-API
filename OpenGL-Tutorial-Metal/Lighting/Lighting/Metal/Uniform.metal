@@ -11,6 +11,7 @@ using namespace metal;
 // MARK: - TransformUniforms
 struct TransformUniforms {
     float4x4 projectionMatrix;
+    float4x4 modelMatrix;
     float4x4 modelViewMatrix;
 }; // TransformUniforms
 

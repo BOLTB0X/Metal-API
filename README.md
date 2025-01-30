@@ -508,13 +508,6 @@
              style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
         </p>
       </td>
-      <td style="text-align:center; vertical-align:middle;">
-        <p align="center">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/ambient%20lighting.png?raw=true" 
-             alt="image 1" 
-             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
-        </p>
-      </td>
     </tr>
     <tr>
       <td style="text-align:center; font-size:14px; font-weight:bold;">
@@ -527,16 +520,19 @@
       Diffuse lighting
       </p>
       </td>
-      <td style="text-align:center; font-size:14px; font-weight:bold;">
-      <p align="center">
-      Specular Lighting
-      </p>
-      </td>
     </tr>
   </table>
 
+<p align="center">
   <table style="width:100%; text-align:center; border-spacing:20px;">
     <tr>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Specular%20Lighting-32.png?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
       <td style="text-align:center; vertical-align:middle;">
         <p align="center">
         <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Specular%20Lighting-32-rotate.gif?raw=true" 
@@ -548,7 +544,44 @@
     <tr>
       <td style="text-align:center; font-size:14px; font-weight:bold;">
       <p align="center">
+      Specular Lighting
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
       Specular Lighting 32 rotate
+      </p>
+      </td>
+    </tr>
+  </table>
+</p>
+
+<table style="width:100%; text-align:center; border-spacing:20px;">
+    <tr>
+        <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/phong1.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+        <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/phong2.gif?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Phong
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Phong rotate
       </p>
       </td>
     </tr>

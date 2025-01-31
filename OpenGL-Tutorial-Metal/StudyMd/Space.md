@@ -295,41 +295,45 @@ $$
 
    - 평행한 광선을 유지하며 객체를 투영하는 방식
    - 단순히 공간을 정규화하는 역할
+   - `(l, r)` : _왼쪽 / 오른쪽 평면_ , `(b, t)` : _아래 / 위쪽 평면_ , `(n, f)` : _가까운 / 먼 평면_
 
-   $$
-   P_{ortho} = \begin{bmatrix}
-   \frac{2}{r-l} && 0 && 0 && -\frac{r+l}{r-l} \\ 0 && \frac{2}{t-b} && 0 && -\frac{t+b}{t-b} \\ 0 && 0 && -\frac{2}{f-n} && -\frac{f+b}{f-b} \\ 0 && 0 && 0 && 1
-   \end{bmatrix}
-   $$
+$$
+P_{ortho} =
+\begin{bmatrix}
+\frac{2}{r-l} & 0 & 0 & -\frac{r+l}{r-l} \\
+0 & \frac{2}{t-b} & 0 & -\frac{t+b}{t-b} \\
+0 & 0 & -\frac{2}{f-n} & -\frac{f+n}{f-n} \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
 
-   `(l, r)` : _왼쪽/오른쪽 평면_ , `(b, t)` : _아래/위쪽 평면_ , `(n, f)` : _가까운/먼 평면_
    <br/>
 
-   ```cpp
-   // C++ (OpenGL)
-   glm::ortho(left, right, bottom, top, near, far);
-   ```
+```cpp
+// C++ (OpenGL)
+glm::ortho(left, right, bottom, top, near, far);
+```
 
-   ```swift
-   // Swift (Metal)
-   func ortho(left: Float, right: Float, bottom: Float, top: Float, near: Float, far: Float) -> simd_float4x4 {
-      let r_l = right - left
-      let t_b = top - bottom
-      let f_n = far - near
+```swift
+// Swift (Metal)
+func ortho(left: Float, right: Float, bottom: Float, top: Float, near: Float, far: Float) -> simd_float4x4 {
+   let r_l = right - left
+   let t_b = top - bottom
+   let f_n = far - near
 
-      return simd_float4x4(
-        (2.0 / r_l, 0, 0, -(right + left) / r_l),
-        (0, 2.0 / t_b, 0, -(top + bottom) / t_b),
-        (0, 0, -2.0 / f_n, -(far + near) / f_n),
-        (0, 0, 0, 1)
-      )
-   }
-   ```
+   return simd_float4x4(
+     (2.0 / r_l, 0, 0, -(right + left) / r_l),
+     (0, 2.0 / t_b, 0, -(top + bottom) / t_b),
+     (0, 0, -2.0 / f_n, -(far + near) / f_n),
+     (0, 0, 0, 1)
+   )
+}
+```
 
-   - z축 depth 값도 `[-1, 1]` 범위로 변환해서 정규화
-   - 원근 효과 없음 (멀리 있는 물체도 크기가 동일)
-   - 주로 UI 렌더링, CAD, 2D 게임 등에 사용
-     <br/>
+- z축 depth 값도 `[-1, 1]` 범위로 변환해서 정규화
+- 원근 효과 없음 (멀리 있는 물체도 크기가 동일)
+- 주로 UI 렌더링, CAD, 2D 게임 등에 사용
+  <br/>
 
 2. **원근 투영(Perspective Projection)**
    <p align="center">
@@ -339,40 +343,45 @@ $$
    - 멀리 있는 물체는 작아지고, 가까운 물체는 커지는 원근법을 적용
    - 이를 위해 `w` 좌표에 깊이 정보를 포함하고, 나중에 `w` 로 나누어 원근감을 적용
 
-   $$
-   P_{persp} = \begin{bmatrix}
-   \frac{1}{tan(\frac{fov}{2}) ⋅ aspect} && 0 && 0 && 0 \\ 0 && \frac{1}{tan(\frac{fov}{2})} && 0 && 0 \\ 0 && 0 && \frac{(f+n)}{n-f} && \frac{2fn}{n-f} \\ 0 && 0 && -1 && 0
-   \end{bmatrix}
-   $$
+   - `fov` : _시야각 (degree)_ , `aspect` : _화면 비율_ , `near` : _가까운 평면_ , `far` : _먼 평면_
 
-   `fov` : _시야각 (degree)_ , `aspect` : _화면 비율_ , `near` : _가까운 평면_ , `far` : _먼 평면_
+$$
+P_{persp} =
+\begin{bmatrix}
+\frac{1}{\tan(\frac{fov}{2}) \cdot aspect} & 0 & 0 & 0 \\
+0 & \frac{1}{\tan(\frac{fov}{2})} & 0 & 0 \\
+0 & 0 & \frac{f+n}{n-f} & \frac{2fn}{n-f} \\
+0 & 0 & -1 & 0
+\end{bmatrix}
+$$
+
    <br/>
 
-   ```cpp
-   // C++(OpenGL)
-   glm::perspective(glm::radians(fov), aspect, near, far);
-   ```
+```cpp
+// C++(OpenGL)
+glm::perspective(glm::radians(fov), aspect, near, far);
+```
 
-   ```swift
-   // Swift (Metal)
-   func perspective(fov: Float, aspectRatio: Float, nearPlane: Float, farPlane: Float) -> simd_float4x4 {
-        let tanHalfFov = tan(fov / 2.0)
+```swift
+// Swift (Metal)
+func perspective(fov: Float, aspectRatio: Float, nearPlane: Float, farPlane: Float) -> simd_float4x4 {
+     let tanHalfFov = tan(fov / 2.0)
 
-        var matrix = simd_float4x4(0.0)
-        matrix[0][0] = 1.0 / (aspectRatio * tanHalfFov)
-        matrix[1][1] = 1.0 / (tanHalfFov)
-        matrix[2][2] = farPlane / (farPlane - nearPlane)
-        matrix[2][3] = 1.0
-        matrix[3][2] = -(farPlane * nearPlane) / (farPlane - nearPlane)
+     var matrix = simd_float4x4(0.0)
+     matrix[0][0] = 1.0 / (aspectRatio * tanHalfFov)
+     matrix[1][1] = 1.0 / (tanHalfFov)
+     matrix[2][2] = farPlane / (farPlane - nearPlane)
+     matrix[2][3] = 1.0
+     matrix[3][2] = -(farPlane * nearPlane) / (farPlane - nearPlane)
 
-        return matrix
-    } // perspective
-   ```
+     return matrix
+ } // perspective
+```
 
-   - Perspective Projection을 적용하면 `z`축에 따라 원근감이 적용
-   - 원근 감이 적용됨 (멀리 있는 물체가 작아짐)
-   - 일반적인 3D 게임, 그래픽스에서 사용됨
-     <br/>
+- Perspective Projection을 적용하면 `z`축에 따라 원근감이 적용
+- 원근 감이 적용됨 (멀리 있는 물체가 작아짐)
+- 일반적인 3D 게임, 그래픽스에서 사용됨
+  <br/>
 
 ### 클리핑(Clipping) 과정
 
@@ -397,9 +406,11 @@ $$
 
 - Clip Space에서 얻은 좌표는 GPU에서 자동으로 w로 나누어 NDC로 변환 (`w` 좌표로 나누는 과정)
 
-  $$
-  x_{ndc} = \frac{x_{clip}}{w_{clip}} , y_{ndc} = \frac{y_{clip}}{w_{clip}} , z_{ndc} = \frac{z_{clip}}{w_{clip}}
-  $$
+$$
+x_{ndc} = \frac{x_{clip}}{w_{clip}}, \quad
+y_{ndc} = \frac{y_{clip}}{w_{clip}}, \quad
+z_{ndc} = \frac{z_{clip}}{w_{clip}}
+$$
 
 - 적용한 후, Viewport으로 변환하는 준비가 완료
 

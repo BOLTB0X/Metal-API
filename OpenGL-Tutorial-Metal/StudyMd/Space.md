@@ -23,14 +23,14 @@ NDC (Normalized Device Coordinates)
     <tr>
       <td style="text-align:center; vertical-align:middle;">
         <p align="center">
-        <img src="" 
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%99%BC%EC%86%90.png?raw=true" 
              alt="image 1" 
              style="width:200px; height:200px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
         </p>
       </td>
       <td style="text-align:center; vertical-align:middle;">
         <p align="center">
-        <img src="" 
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%98%A4%EB%A5%B8%EC%86%90.png?raw=true" 
              alt="image 2" 
              style="width:200px; height:200px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
         </p>

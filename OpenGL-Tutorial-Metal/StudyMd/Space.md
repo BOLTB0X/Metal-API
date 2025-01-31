@@ -160,7 +160,7 @@ $$
   - $R_{up}$ : 위쪽(`Y`)
   - $R_{forward}$ : 바라보는 방향(`-Z`)
 
-\[
+$$
 V =
 \begin{bmatrix}
 R*{right} & R*{up} & R\_{forward} & 0 \\
@@ -172,7 +172,7 @@ R*{right} & R*{up} & R\_{forward} & 0 \\
 0 & 0 & 1 & -P_z \\
 0 & 0 & 0 & 1
 \end{bmatrix}
-\]
+$$
 
 - 주로 `lookAt` 메서드로 구현
 
@@ -403,7 +403,7 @@ $$
 
 - 적용한 후, Viewport으로 변환하는 준비가 완료
 
-- [Noramlize Device Coordinate 관련 md 링크]()
+- [Noramlize Device Coordinate 관련 md 링크](https://github.com/BOLTB0X/Metal-API/blob/main/OpenGL-Tutorial-Metal/StudyMd/NDC.md)
   <br/>
 
 ## Screen Space

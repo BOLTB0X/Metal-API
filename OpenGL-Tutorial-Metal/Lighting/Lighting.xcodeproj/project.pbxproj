@@ -12,6 +12,7 @@
 		BE9A59892D4670F600D070F5 /* RendererResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9A59882D4670F600D070F5 /* RendererResources.swift */; };
 		BE9A598B2D46762700D070F5 /* Vertex.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE9A598A2D46762700D070F5 /* Vertex.metal */; };
 		BE9D0E5C2D4655A900C5947F /* Uniform.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9D0E5B2D4655A900C5947F /* Uniform.swift */; };
+		BEA5414F2D53227400544CE2 /* Extension+simd_float3x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA5414E2D53227400544CE2 /* Extension+simd_float3x3.swift */; };
 		BEA704A92D44AEFF00ED727D /* Extension+Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA704A82D44AEFF00ED727D /* Extension+Float.swift */; };
 		BEA704AB2D44AF4000ED727D /* Extension+simd_float4x4.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA704AA2D44AF4000ED727D /* Extension+simd_float4x4.swift */; };
 		BEAD3F772D3F5FF1001093DD /* LightingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAD3F762D3F5FF1001093DD /* LightingApp.swift */; };
@@ -31,6 +32,7 @@
 		BE9A59882D4670F600D070F5 /* RendererResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererResources.swift; sourceTree = "<group>"; };
 		BE9A598A2D46762700D070F5 /* Vertex.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Vertex.metal; sourceTree = "<group>"; };
 		BE9D0E5B2D4655A900C5947F /* Uniform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uniform.swift; sourceTree = "<group>"; };
+		BEA5414E2D53227400544CE2 /* Extension+simd_float3x3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+simd_float3x3.swift"; sourceTree = "<group>"; };
 		BEA704A82D44AEFF00ED727D /* Extension+Float.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Float.swift"; sourceTree = "<group>"; };
 		BEA704AA2D44AF4000ED727D /* Extension+simd_float4x4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+simd_float4x4.swift"; sourceTree = "<group>"; };
 		BEAD3F732D3F5FF1001093DD /* Lighting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lighting.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -100,6 +102,7 @@
 			children = (
 				BEA704A82D44AEFF00ED727D /* Extension+Float.swift */,
 				BEA704AA2D44AF4000ED727D /* Extension+simd_float4x4.swift */,
+				BEA5414E2D53227400544CE2 /* Extension+simd_float3x3.swift */,
 			);
 			path = Math;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEA5414F2D53227400544CE2 /* Extension+simd_float3x3.swift in Sources */,
 				BEAD3F8D2D3F7423001093DD /* Shader.metal in Sources */,
 				BE4769162D43732A0076CE6F /* Uniform.metal in Sources */,
 				BE9A598B2D46762700D070F5 /* Vertex.metal in Sources */,

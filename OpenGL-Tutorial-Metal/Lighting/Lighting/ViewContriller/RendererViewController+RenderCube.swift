@@ -18,21 +18,28 @@ extension RendererViewController {
         for i in RendererResources.cubePositions.indices {
             var modelMatrix = simd_float4x4.identity()
             var ambient: simd_float3 = i == 0 ? simd_float3(0.1, 0.1, 0.1) : simd_float3(0.0, 0.0, 0.0)
-            var uniform = LightUniforms(
-                lightPosition: simd_float3(0.3, 0.3, 0.3),
-                cameraPosition: simd_float3(0.0, 0.0, 0.3),
-                lightColor: RendererResources.lightColors[i].lightColor,
-                objectColor: RendererResources.lightColors[i].objectColor
-            )
             
             modelMatrix.translate(position: RendererResources.cubePositions[i])
             modelMatrix.rotate(rotation: rotation + simd_float3(Float(i), Float(i), Float(i)))
             modelMatrix.scales(scale: simd_float3(0.3, 0.3, 0.3))
             
+            var modelViewMatrix4x4 = RendererResources.viewMatrix * modelMatrix
+            let modelViewMatrix3x3 = modelViewMatrix4x4.conversion_3x3()
+            let inverseMatrix = modelViewMatrix3x3.inverse
+            let inverseTranspose = inverseMatrix.transpose
+            
+            var uniform = LightUniforms(
+                lightPosition: modelMatrix.conversion_3x3() * simd_float3(0.3, 0.3, 0.3),
+                cameraPosition: simd_float3(0.0, 0.0, 0.3),
+                lightColor: RendererResources.lightColors[i].lightColor,
+                objectColor: RendererResources.lightColors[i].objectColor
+            )
+            
             var transformUniforms = TransformUniforms(
                 projectionMatrix: projectionMatrix,
+                normalMatrix: inverseTranspose,
                 modelMatrix: modelMatrix,
-                modelViewMatrix: RendererResources.viewMatrix * modelMatrix
+                modelViewMatrix: modelViewMatrix4x4
             )
 
             // Fragment
@@ -65,11 +72,16 @@ extension RendererViewController {
         lightSourceCubeMatrix.rotate(rotation: rotation)
         lightSourceCubeMatrix.scales(scale: simd_float3(0.1, 0.1, 0.1))
         var lightColor = simd_float3(1.0, 1.0, 1.0);
+        var modelViewMatrix4x4 = RendererResources.viewMatrix * lightSourceCubeMatrix
+        let modelViewMatrix3x3 = modelViewMatrix4x4.conversion_3x3()
+        let inverseMatrix = modelViewMatrix3x3.inverse
+        let inverseTranspose = inverseMatrix.transpose
         
         var lightTransformUniforms = TransformUniforms(
             projectionMatrix: projectionMatrix,
+            normalMatrix: inverseTranspose,
             modelMatrix: lightSourceCubeMatrix,
-            modelViewMatrix: RendererResources.viewMatrix * lightSourceCubeMatrix
+            modelViewMatrix: modelViewMatrix4x4
         )
         
         // Fragment

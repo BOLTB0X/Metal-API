@@ -14,6 +14,15 @@ extension simd_float4x4 {
         return matrix_identity_float4x4
     }
     
+    // MARK: - conversion_3x3
+    mutating func conversion_3x3() -> simd_float3x3 {
+        return simd_float3x3(
+            simd_float3(columns.0.x, columns.0.y, columns.0.z),
+            simd_float3(columns.1.x, columns.1.y, columns.1.z),
+            simd_float3(columns.2.x, columns.2.y, columns.2.z)
+        )
+    } // conversion_3x3
+    
     // MARK: - translate
     mutating func translate(position: simd_float3) {
         self[3] = self[0] * position.x + self[1] * position.y + self[2] * position.z + self[3];

@@ -32,12 +32,12 @@ fragment float4 fragment_shader_main(VertexOut in [[stage_in]],
                                      constant MaterialUniforms& materialUniforms [[buffer(3)]]) {
     float3 ambient = lightUniform.ambient * materialUniforms.ambient;
     
-    float3 lightDir = normalize(lightUniform.lightPosition - in.fragPosition);
+    float3 lightDir = normalize(in.fragPosition - lightUniform.lightPosition);
     float diffuseStrength = max(dot(normalize(in.normal), lightDir), 0.0);
     float3 diffuse = lightUniform.diffuse * (diffuseStrength * materialUniforms.diffuse);
     
-    float3 viewDir = normalize(lightUniform.cameraPosition - in.fragPosition);
-    float3 reflectDir = reflect(-lightDir, in.normal);
+    float3 viewDir = normalize(in.fragPosition - lightUniform.cameraPosition);
+    float3 reflectDir = reflect(lightDir, in.normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16.0);
     float3 specular = (spec * materialUniforms.specular) * lightUniform.specular;
     

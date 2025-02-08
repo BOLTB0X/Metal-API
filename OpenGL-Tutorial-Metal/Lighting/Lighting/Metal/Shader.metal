@@ -14,13 +14,14 @@ using namespace metal;
 // MARK: - vertex_shader
 vertex VertexOut vertex_shader(uint vid [[vertex_id]],
                                constant VertexIn* vertices [[buffer(0)]],
-                               constant TransformUniforms& transformUniforms [[buffer(1)]]) {
+                               constant TransformUniforms& transformUniforms [[buffer(1)]],
+                               constant float3x3& normalMatrix [[buffer(2)]]) {
     VertexOut out;
     
-    out.position = transformUniforms.projectionMatrix * transformUniforms.modelViewMatrix * float4(vertices[vid].position, 1.0);
-    
-    out.normal = normalize(transformUniforms.normalMatrix * vertices[vid].normal).xyz;
-    out.fragPosition = (transformUniforms.modelMatrix * float4(vertices[vid].position, 1.0)).xyz;
+    float3 worldPosition = (transformUniforms.modelMatrix * float4(vertices[vid].position, 1.0)).xyz;
+    out.position = transformUniforms.projectionMatrix * transformUniforms.viewMatrix * float4(worldPosition, 1.0);
+    out.normal = normalize(normalMatrix * vertices[vid].normal);
+    out.fragPosition = worldPosition;
     return out;
 } // vertex_shader
 
@@ -29,17 +30,19 @@ fragment float4 fragment_shader_main(VertexOut in [[stage_in]],
                                      constant LightUniforms& lightUniform [[buffer(1)]],
                                      constant TransformUniforms& transformUniforms [[buffer(2)]],
                                      constant float3& ambient [[buffer(3)]]) {
+    float3 worldLightPosition = (float4(lightUniform.lightPosition, 1.0) * transformUniforms.modelMatrix).xyz;
+
     // 1. 광원 방향 (Point Light)
-    float3 lightDir = normalize(lightUniform.lightPosition - in.fragPosition);
+    float3 lightDir = normalize(in.fragPosition - worldLightPosition);
     
     // 2. Diffuse
-    float diffuseStrength = max(dot(in.normal, lightDir), 0.0);
+    float diffuseStrength = max(dot(in.normal, -lightDir), 0.0);
     float3 diffuse = diffuseStrength * lightUniform.lightColor;
     
     // 3. Specular
-    float3 viewDir = normalize(lightUniform.cameraPosition - in.fragPosition);
-    float3 reflectDir = reflect(-lightDir, in.normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16.0);
+    float3 viewDir = normalize(in.fragPosition - lightUniform.cameraPosition);
+    float3 reflectDir = reflect(lightDir, in.normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
     float3 specular = spec * lightUniform.lightColor;
     
     // 4. 조명 값

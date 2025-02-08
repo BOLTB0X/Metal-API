@@ -14,6 +14,8 @@ class RendererViewController: UIViewController {
     public var device: MTLDevice!
     public var metalLayer: CAMetalLayer!
     public var rotation = simd_float3(0, 0, 0)
+    public var lightPosition = simd_float3(1.0, 1.0, 1.0)
+    public var cameraPosition = simd_float3(5.0, 3.0, 5.0)
     
     private var mainPipelineState: MTLRenderPipelineState!
     private var subPipelineState: MTLRenderPipelineState!
@@ -129,13 +131,7 @@ class RendererViewController: UIViewController {
     // MARK: - render
     private func render() {
         guard let drawable = metalLayer?.nextDrawable() else { return }
-        
-        let projectionMatrix = simd_float4x4.perspective(
-            fov: Float(45).toRadians(),
-            aspectRatio: Float(view.bounds.width / view.bounds.height),
-            nearPlane: 0.1,
-            farPlane: 100.0
-        )        
+                
         // 렌더패스 설정
         // 색상 텍스처 설정
         let renderPassDescriptor = MTLRenderPassDescriptor()
@@ -164,14 +160,13 @@ class RendererViewController: UIViewController {
         renderEncoder.setVertexBuffer(modelMatrixBuffer, offset: 0, index: 1)
         
         renderObjectCube(renderEncoder: &renderEncoder,
-                         indexBuffer: indexBuffer,
-                         projectionMatrix: projectionMatrix
+                         indexBuffer: indexBuffer
         )
                 
         renderEncoder.setRenderPipelineState(subPipelineState)
+        
         renderLightSourceCube(renderEncoder: &renderEncoder,
-                              indexBuffer: indexBuffer,
-                              projectionMatrix: projectionMatrix
+                              indexBuffer: indexBuffer
         )
         
         renderEncoder.endEncoding()
@@ -183,7 +178,7 @@ class RendererViewController: UIViewController {
     // MARK: - gameLoop
     @objc private func gameLoop() {
         autoreleasepool {
-            rotation += simd_float3(Float(1).toRadians(), Float(1).toRadians(), 0.0)
+            rotation += simd_float3(0.0, Float(1).toRadians(), 0.0)
             render()
         }
     } // gameLoop

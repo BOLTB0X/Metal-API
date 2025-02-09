@@ -79,7 +79,7 @@ struct RendererResources {
     // cubePositions
     static let cubePositions: [simd_float3] = [
         simd_float3(0.0, 0.0, 0.0),   // 중앙
-        //simd_float3(0.3, 0.0, -0.3)
+        simd_float3(0.5, -0.5, -0.5)
     ]
     
     // lightColors

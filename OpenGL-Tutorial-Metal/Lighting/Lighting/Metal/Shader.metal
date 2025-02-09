@@ -8,6 +8,7 @@
 #include <metal_stdlib>
 #include "Uniform.metal"
 #include "Vertex.metal"
+#include "Lightings.metal"
 
 using namespace metal;
 
@@ -30,23 +31,12 @@ fragment float4 fragment_shader_main(VertexOut in [[stage_in]],
                                      constant LightUniforms& lightUniform [[buffer(1)]],
                                      constant TransformUniforms& transformUniforms [[buffer(2)]],
                                      constant float3& ambient [[buffer(3)]]) {
-    float3 worldLightPosition = (float4(lightUniform.lightPosition, 1.0) * transformUniforms.modelMatrix).xyz;
-
-    // 1. 광원 방향 (Point Light)
-    float3 lightDir = normalize(in.fragPosition - worldLightPosition);
+    float3 worldLightPosition = (transformUniforms.viewMatrix * float4(lightUniform.lightPosition, 1.0)).xyz;
+    float3 worldViewPosition = (transformUniforms.viewMatrix * float4(lightUniform.cameraPosition, 1.0)).xyz;
     
-    // 2. Diffuse
-    float diffuseStrength = max(dot(in.normal, -lightDir), 0.0);
-    float3 diffuse = diffuseStrength * lightUniform.lightColor;
+    float3 lighting = phongLighting(ambient, in.fragPosition, worldLightPosition,
+                                    worldViewPosition, in.normal, lightUniform.lightColor);
     
-    // 3. Specular
-    float3 viewDir = normalize(in.fragPosition - lightUniform.cameraPosition);
-    float3 reflectDir = reflect(lightDir, in.normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 128);
-    float3 specular = spec * lightUniform.lightColor;
-    
-    // 4. 조명 값
-    float3 lighting = ambient + diffuse + specular;
     return float4(lighting * lightUniform.objectColor, 1.0);
 } // fragment_shader_main
 

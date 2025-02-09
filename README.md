@@ -571,7 +571,7 @@
       </td>
         <td style="text-align:center; vertical-align:middle;">
         <p align="center">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/phong2.gif?raw=true" 
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/basicLighting-%EC%88%98%EC%A0%95.gif?raw=true" 
              alt="image 2" 
              style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
         </p>

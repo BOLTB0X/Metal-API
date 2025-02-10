@@ -26,7 +26,7 @@ extension RendererViewController {
 
             modelMatrix.translate(position: RendererResources.cubePositions[i])
             modelMatrix.rotate(rotation: rotation)
-            modelMatrix.scales(scale: simd_float3(0.2, 0.2, 0.2))
+            modelMatrix.scales(scale: simd_float3(0.5, 0.5, 0.5))
             
             var inverseTranspose = modelMatrix.conversion_3x3().inverse.transpose
 
@@ -49,7 +49,7 @@ extension RendererViewController {
             )
                         
             renderEncoder.setVertexBytes(&transformUniforms, length: MemoryLayout<TransformUniforms>.size, index: 1)
-            renderEncoder.setVertexBytes(&inverseTranspose, length: MemoryLayout<simd_float4x4>.size, index: 2)
+            renderEncoder.setVertexBytes(&inverseTranspose, length: MemoryLayout<simd_float3x3>.size, index: 2)
 
             renderEncoder.setFragmentBytes(&uniform, length: MemoryLayout<LightUniforms>.size, index: 1)
             renderEncoder.setFragmentBytes(&transformUniforms, length: MemoryLayout<TransformUniforms>.size, index: 2)

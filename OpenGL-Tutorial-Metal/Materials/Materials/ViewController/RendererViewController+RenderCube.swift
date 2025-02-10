@@ -13,34 +13,47 @@ import QuartzCore
 extension RendererViewController {
     // MARK: - renderObjectCube
     public func renderObjectCube(renderEncoder: inout MTLRenderCommandEncoder,
-                                  indexBuffer: MTLBuffer,
-                                  projectionMatrix: simd_float4x4) {
+                                  indexBuffer: MTLBuffer) {
+        let projectionMatrix = simd_float4x4.perspective(
+            fov: Float(30).toRadians(),
+            aspectRatio: 1.0,
+            nearPlane: 0.1,
+            farPlane: 100.0
+        )
+        
         for i in RendererResources.cubePositions.indices {
             var modelMatrix = simd_float4x4.identity()
             
             modelMatrix.translate(position: RendererResources.cubePositions[i])
-            let modelViewMatrix4x4 = RendererResources.viewMatrix * modelMatrix
+            modelMatrix.rotate(rotation: rotation)
             
-            let inverseTranspose = modelMatrix.conversion_3x3().inverse.transpose
+            var inverseTranspose = modelMatrix.conversion_3x3().inverse.transpose
+            
             lightColor.x = sin(Float(CACurrentMediaTime() * 2.0))
             lightColor.y = sin(Float(CACurrentMediaTime() * 0.7))
             lightColor.z = sin(Float(CACurrentMediaTime() * 1.3))
+            
             let diffuse = lightColor * simd_float3(0.5, 0.5, 0.5)
             let ambient = diffuse * simd_float3(0.2, 0.2, 0.2)
 
             var uniform = LightUniforms(
-                lightPosition: modelMatrix.conversion_3x3() * lightPosition,
-                cameraPosition: simd_float3(0, 0, 3),
+                lightPosition: lightPosition,
+                cameraPosition: cameraPosition,
                 ambient: ambient,
                 diffuse: diffuse,
                 specular: simd_float3(1.0, 1.0, 1.0)
             )
+            
+            let viewMatrix = simd_float4x4.lookAt(
+                eyePosition: cameraPosition,
+                targetPosition: simd_float3(0.0, 0.0, 0.0),
+                upVec: simd_float3(0.0, 1.0, 0.0)
+            )
                         
             var transformUniforms = TransformUniforms(
                 projectionMatrix: projectionMatrix,
-                normalMatrix: inverseTranspose,
                 modelMatrix: modelMatrix,
-                modelViewMatrix:  modelViewMatrix4x4
+                viewMatrix: viewMatrix
             )
             
             var materialUniforms = MaterialUniforms(
@@ -56,6 +69,7 @@ extension RendererViewController {
             
             // Vertex
             renderEncoder.setVertexBytes(&transformUniforms, length: MemoryLayout<TransformUniforms>.size, index: 1)
+            renderEncoder.setVertexBytes(&inverseTranspose, length: MemoryLayout<simd_float3x3>.size, index: 2)
             
             renderEncoder.drawIndexedPrimitives(
                 type: .triangle,
@@ -71,30 +85,40 @@ extension RendererViewController {
     
     // MARK: - renderLightSourceCube
     public func renderLightSourceCube(renderEncoder: inout MTLRenderCommandEncoder,
-                         indexBuffer: MTLBuffer,
-                         projectionMatrix: simd_float4x4) {
-        var lightSourceCubeMatrix = simd_float4x4.identity()
-        lightSourceCubeMatrix.translate(position: lightPosition)
-        lightSourceCubeMatrix.scales(scale: simd_float3(0.3, 0.3, 0.3))
-        var lightColor = simd_float3(1.0, 1.0, 1.0);        
-        var modelViewMatrix4x4 = RendererResources.viewMatrix * lightSourceCubeMatrix
-        let modelViewMatrix3x3 = modelViewMatrix4x4.conversion_3x3()
-        let inverseMatrix = modelViewMatrix3x3.inverse
-        let inverseTranspose = inverseMatrix.transpose
-        
-        var transformUniforms = TransformUniforms(
-            projectionMatrix: projectionMatrix,
-            normalMatrix: inverseTranspose,
-            modelMatrix: lightSourceCubeMatrix,
-            modelViewMatrix:  modelViewMatrix4x4
+                         indexBuffer: MTLBuffer) {
+        let projectionMatrix = simd_float4x4.perspective(
+            fov: Float(45).toRadians(),
+            aspectRatio: 1.0,
+            nearPlane: 0.1,
+            farPlane: 100.0
         )
         
+        var lightSourceCubeMatrix = simd_float4x4.identity()
+        lightSourceCubeMatrix.translate(position: lightSourceCubeMatrix.conversion_3x3() * lightPosition)
+        lightSourceCubeMatrix.scales(scale: simd_float3(0.3, 0.3, 0.3))
+        
+        var lightColor = simd_float3(1.0, 1.0, 1.0)
+        var inverseTranspose = lightSourceCubeMatrix.conversion_3x3().inverse.transpose
+        
+        let viewMatrix = simd_float4x4.lookAt(
+            eyePosition: cameraPosition,
+            targetPosition: simd_float3(0.0, 0.0, 0.0),
+            upVec: simd_float3(0.0, 1.0, 0.0)
+        )
+
+        var transformUniforms = TransformUniforms(
+            projectionMatrix: projectionMatrix,
+            modelMatrix: lightSourceCubeMatrix,
+            viewMatrix: viewMatrix
+        )
+    
         // Fragment
         renderEncoder.setFragmentBytes(&lightColor, length: MemoryLayout<simd_float3>.size, index: 1)
         
         // Vertex
         renderEncoder.setVertexBytes(&transformUniforms, length: MemoryLayout<TransformUniforms>.size, index: 1)
-        
+        renderEncoder.setVertexBytes(&inverseTranspose, length: MemoryLayout<simd_float3x3>.size, index: 2)
+
         //
         renderEncoder.drawIndexedPrimitives(
             type: .triangle,

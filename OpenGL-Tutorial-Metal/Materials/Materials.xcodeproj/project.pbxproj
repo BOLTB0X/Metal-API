@@ -23,6 +23,7 @@
 		BE8AC2AD2D51D64200E5228A /* Uniform.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE8AC2AC2D51D64200E5228A /* Uniform.metal */; };
 		BE8AC2AF2D51D66C00E5228A /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE8AC2AE2D51D66C00E5228A /* Shader.metal */; };
 		BE9BA8172D52FC10007CF617 /* Extension+simd_float3x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9BA8162D52FC10007CF617 /* Extension+simd_float3x3.swift */; };
+		BECFC0E62D58D40000CCEB8E /* Lightings.metal in Sources */ = {isa = PBXBuildFile; fileRef = BECFC0E52D58D40000CCEB8E /* Lightings.metal */; };
 		BEEDE26C2D54A320004AC778 /* RendererViewController+Depth.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEDE26B2D54A320004AC778 /* RendererViewController+Depth.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 		BE8AC2AC2D51D64200E5228A /* Uniform.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Uniform.metal; sourceTree = "<group>"; };
 		BE8AC2AE2D51D66C00E5228A /* Shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
 		BE9BA8162D52FC10007CF617 /* Extension+simd_float3x3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+simd_float3x3.swift"; sourceTree = "<group>"; };
+		BECFC0E52D58D40000CCEB8E /* Lightings.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Lightings.metal; sourceTree = "<group>"; };
 		BEEDE26B2D54A320004AC778 /* RendererViewController+Depth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+Depth.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,6 +144,7 @@
 				BE8AC2AA2D51D62700E5228A /* Vertex.metal */,
 				BE8AC2AC2D51D64200E5228A /* Uniform.metal */,
 				BE8AC2AE2D51D66C00E5228A /* Shader.metal */,
+				BECFC0E52D58D40000CCEB8E /* Lightings.metal */,
 			);
 			path = Metal;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 				BE8AC2862D51D26800E5228A /* MaterialsApp.swift in Sources */,
 				BE8AC29D2D51D45600E5228A /* Extension+Float.swift in Sources */,
 				BE9BA8172D52FC10007CF617 /* Extension+simd_float3x3.swift in Sources */,
+				BECFC0E62D58D40000CCEB8E /* Lightings.metal in Sources */,
 				BEEDE26C2D54A320004AC778 /* RendererViewController+Depth.swift in Sources */,
 				BE8AC29F2D51D47C00E5228A /* Extension+simd_float4x4.swift in Sources */,
 				BE8AC2A12D51D4D600E5228A /* Vertex.swift in Sources */,

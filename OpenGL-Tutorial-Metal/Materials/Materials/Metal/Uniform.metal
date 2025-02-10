@@ -8,12 +8,14 @@
 #include <metal_stdlib>
 using namespace metal;
 
+#ifndef COMMON_METAL
+#define COMMON_METAL
+
 // MARK: - TransformUniforms
 struct TransformUniforms {
     float4x4 projectionMatrix;
-    float3x3 normalMatrix;
     float4x4 modelMatrix;
-    float4x4 modelViewMatrix;
+    float4x4 viewMatrix;
 }; // TransformUniforms
 
 // MARK: - LightUniforms
@@ -31,3 +33,5 @@ struct MaterialUniforms {
     float3 diffuse;
     float3 specular;
 }; // MeterialUniforms
+
+#endif // COMMON_METAL

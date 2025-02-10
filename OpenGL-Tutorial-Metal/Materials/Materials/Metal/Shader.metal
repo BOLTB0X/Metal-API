@@ -8,20 +8,23 @@
 #include <metal_stdlib>
 #include "Uniform.metal"
 #include "Vertex.metal"
+#include "Lightings.metal"
 
 using namespace metal;
 
 // MARK: - vertex_shader
 vertex VertexOut vertex_shader(uint vid [[vertex_id]],
                                constant VertexIn* vertices [[buffer(0)]],
-                               constant TransformUniforms& transformUniforms [[buffer(1)]]) {
+                               constant TransformUniforms& transformUniforms [[buffer(1)]],
+                               constant float3x3& normalMatrix [[buffer(2)]]) {
     VertexOut out;
-        
-    out.position = transformUniforms.projectionMatrix * transformUniforms.modelViewMatrix * float4(vertices[vid].position, 1.0);
+     
+    float3 worldPosition = (transformUniforms.modelMatrix * float4(vertices[vid].position, 1.0)).xyz;
 
-    out.normal = normalize(transformUniforms.normalMatrix * vertices[vid].normal).xyz;
-    out.fragPosition = (transformUniforms.modelMatrix * float4(vertices[vid].position, 1.0)).xyz;
-    
+    out.position = transformUniforms.projectionMatrix * transformUniforms.viewMatrix * float4(worldPosition, 1.0);
+    out.normal = normalize(normalMatrix * vertices[vid].normal);
+    out.fragPosition = worldPosition;
+
     return out;
 } // vertex_shader
 
@@ -30,18 +33,15 @@ fragment float4 fragment_shader_main(VertexOut in [[stage_in]],
                                      constant LightUniforms& lightUniform [[buffer(1)]],
                                      constant TransformUniforms& transformUniforms [[buffer(2)]],
                                      constant MaterialUniforms& materialUniforms [[buffer(3)]]) {
-    float3 ambient = lightUniform.ambient * materialUniforms.ambient;
+    float3 viewLightPosition = (transformUniforms.viewMatrix * float4(lightUniform.lightPosition, 1.0)).xyz;
+    float3 viewViewPosition = (transformUniforms.viewMatrix * float4(lightUniform.cameraPosition, 1.0)).xyz;
     
-    float3 lightDir = normalize(in.fragPosition - lightUniform.lightPosition);
-    float diffuseStrength = max(dot(normalize(in.normal), lightDir), 0.0);
-    float3 diffuse = lightUniform.diffuse * (diffuseStrength * materialUniforms.diffuse);
-    
-    float3 viewDir = normalize(in.fragPosition - lightUniform.cameraPosition);
-    float3 reflectDir = reflect(lightDir, in.normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16.0);
-    float3 specular = (spec * materialUniforms.specular) * lightUniform.specular;
-    
-    float3 lighting = ambient + diffuse + specular;
+    float3 lighting = phong_Lighting(in.fragPosition,
+                                     lightUniform.cameraPosition,
+                                     in.normal,
+                                     lightUniform.lightPosition,
+                                     lightUniform,
+                                     materialUniforms);
     return float4(lighting, 1.0);
 } // fragment_shader_main
 

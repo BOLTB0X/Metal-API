@@ -10,7 +10,7 @@ using namespace metal;
 
 // MARK: - diffuseLighting
 inline float3 diffuseLighting(float3 normal, float3 lightDir, float3 lightColor) {
-    float diffuseStrength = max(dot(normal, -lightDir), 0.0);
+    float diffuseStrength = max(dot(normal, lightDir), 0.0);
     float3 diffuse = diffuseStrength * lightColor;
     
     return diffuse;
@@ -19,8 +19,8 @@ inline float3 diffuseLighting(float3 normal, float3 lightDir, float3 lightColor)
 // MARK: - specularLighting
 inline float3 specularLighting(float3 fragPosition, float3 viewPosition, float3 lightDir,
                                float3 normal, float3 lightColor) {
-    float3 viewDir = normalize(fragPosition - viewPosition);
-    float3 reflectDir = reflect(lightDir, normal);
+    float3 viewDir = normalize(viewPosition - fragPosition);
+    float3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     float3 specular = spec * lightColor;
     
@@ -31,7 +31,7 @@ inline float3 specularLighting(float3 fragPosition, float3 viewPosition, float3 
 inline float3 phongLighting(float3 ambient, float3 fragPosition, float3 lightPosition,
                             float3 viewPosition, float3 normal, float3 lightColor) {
     
-    float3 lightDir = normalize(fragPosition - lightPosition);
+    float3 lightDir = normalize(lightPosition - fragPosition);
     
     return ambient + diffuseLighting(normal, lightDir, lightColor) + specularLighting(fragPosition, viewPosition, lightDir, normal, lightColor);
 } // phongLighting

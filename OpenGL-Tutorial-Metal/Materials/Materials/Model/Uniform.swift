@@ -11,15 +11,13 @@ import simd
 // MARK: - TransformUniforms
 struct TransformUniforms {
     var projectionMatrix: simd_float4x4
-    var normalMatrix: simd_float3x3
     var modelMatrix: simd_float4x4
-    var modelViewMatrix: simd_float4x4
+    var viewMatrix: simd_float4x4
     
-    init(projectionMatrix: simd_float4x4, normalMatrix: simd_float3x3, modelMatrix: simd_float4x4, modelViewMatrix: simd_float4x4) {
+    init(projectionMatrix: simd_float4x4, modelMatrix: simd_float4x4, viewMatrix: simd_float4x4) {
         self.projectionMatrix = projectionMatrix
-        self.normalMatrix = normalMatrix
         self.modelMatrix = modelMatrix
-        self.modelViewMatrix = modelViewMatrix
+        self.viewMatrix = viewMatrix
     } // init
     
 } // TransformUniforms

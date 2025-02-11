@@ -14,8 +14,8 @@ class RendererViewController: UIViewController {
     public var device: MTLDevice!
     public var metalLayer: CAMetalLayer!
     public var rotation = simd_float3(0, 0, 0)
-    public var lightPosition = simd_float3(1.0, 2.5, 2.5)
-    public var cameraPosition = simd_float3(5.0, -5.0, 8.0)
+    public var lightPosition = simd_float3(0.0, 0.75, 0.0)
+    public var cameraPosition = simd_float3(3.0, 2.0, 5.0)
     public var lightColor = simd_float3(0.0, 0.0, 0.0)
 
     private var mainPipelineState: MTLRenderPipelineState!

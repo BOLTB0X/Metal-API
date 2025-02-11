@@ -26,6 +26,7 @@ extension RendererViewController {
             
             modelMatrix.translate(position: RendererResources.cubePositions[i])
             modelMatrix.rotate(rotation: rotation)
+            modelMatrix.scales(scale: simd_float3(0.5, 0.5, 0.5))
             
             var inverseTranspose = modelMatrix.conversion_3x3().inverse.transpose
             
@@ -95,7 +96,7 @@ extension RendererViewController {
         
         var lightSourceCubeMatrix = simd_float4x4.identity()
         lightSourceCubeMatrix.translate(position: lightSourceCubeMatrix.conversion_3x3() * lightPosition)
-        lightSourceCubeMatrix.scales(scale: simd_float3(0.3, 0.3, 0.3))
+        lightSourceCubeMatrix.scales(scale: simd_float3(0.1, 0.1, 0.1))
         
         var lightColor = simd_float3(1.0, 1.0, 1.0)
         var inverseTranspose = lightSourceCubeMatrix.conversion_3x3().inverse.transpose

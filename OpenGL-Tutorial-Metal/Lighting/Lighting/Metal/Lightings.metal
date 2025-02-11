@@ -21,7 +21,7 @@ inline float3 specularLighting(float3 fragPosition, float3 viewPosition, float3 
                                float3 normal, float3 lightColor) {
     float3 viewDir = normalize(viewPosition - fragPosition);
     float3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 64);
     float3 specular = spec * lightColor;
     
     return specular;

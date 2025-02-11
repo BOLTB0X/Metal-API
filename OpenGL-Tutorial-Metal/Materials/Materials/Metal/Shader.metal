@@ -33,13 +33,8 @@ fragment float4 fragment_shader_main(VertexOut in [[stage_in]],
                                      constant LightUniforms& lightUniform [[buffer(1)]],
                                      constant TransformUniforms& transformUniforms [[buffer(2)]],
                                      constant MaterialUniforms& materialUniforms [[buffer(3)]]) {
-    float3 viewLightPosition = (transformUniforms.viewMatrix * float4(lightUniform.lightPosition, 1.0)).xyz;
-    float3 viewViewPosition = (transformUniforms.viewMatrix * float4(lightUniform.cameraPosition, 1.0)).xyz;
-    
     float3 lighting = phong_Lighting(in.fragPosition,
-                                     lightUniform.cameraPosition,
                                      in.normal,
-                                     lightUniform.lightPosition,
                                      lightUniform,
                                      materialUniforms);
     return float4(lighting, 1.0);

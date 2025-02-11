@@ -14,8 +14,8 @@ class RendererViewController: UIViewController {
     public var device: MTLDevice!
     public var metalLayer: CAMetalLayer!
     public var rotation = simd_float3(0, 0, 0)
-    public var lightPosition = simd_float3(0.2, 1.5, 1.0)
-    public var cameraPosition = simd_float3(3.0, 3.0, 3.0)
+    public var lightPosition = simd_float3(0.0, 0.5, 0.0)
+    public var cameraPosition = simd_float3(3.0, 2.0, 5.0)
     
     private var mainPipelineState: MTLRenderPipelineState!
     private var subPipelineState: MTLRenderPipelineState!
@@ -178,7 +178,7 @@ class RendererViewController: UIViewController {
     // MARK: - gameLoop
     @objc private func gameLoop() {
         autoreleasepool {
-            rotation += simd_float3(Float(1).toRadians(), Float(1).toRadians(), 0.0)
+            rotation += simd_float3(Float(1).toRadians(), 0.0, 0.0)
             render()
         }
     } // gameLoop

@@ -31,11 +31,8 @@ fragment float4 fragment_shader_main(VertexOut in [[stage_in]],
                                      constant LightUniforms& lightUniform [[buffer(1)]],
                                      constant TransformUniforms& transformUniforms [[buffer(2)]],
                                      constant float3& ambient [[buffer(3)]]) {
-    float3 worldLightPosition = (transformUniforms.viewMatrix * float4(lightUniform.lightPosition, 1.0)).xyz;
-    float3 worldViewPosition = (transformUniforms.viewMatrix * float4(lightUniform.cameraPosition, 1.0)).xyz;
-    
-    float3 lighting = phongLighting(ambient, in.fragPosition, worldLightPosition,
-                                    worldViewPosition, in.normal, lightUniform.lightColor);
+    float3 lighting = phongLighting(ambient, in.fragPosition, lightUniform.lightPosition,
+                                    lightUniform.cameraPosition, in.normal, lightUniform.lightColor);
     
     return float4(lighting * lightUniform.objectColor, 1.0);
 } // fragment_shader_main

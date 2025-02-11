@@ -35,10 +35,10 @@ inline float3 specular_Lighting(float3 fragPosition, float3 viewPosition, float3
 } // specular_Lighting
 
 // MARK: - phong_Lighting
-inline float3 phong_Lighting(float3 fragPosition, float3 viewPosition, float3 normal,
-                            float3 lightPosition, LightUniforms lightUniforms, MaterialUniforms materialUniforms) {
+inline float3 phong_Lighting(float3 fragPosition, float3 normal,
+                        LightUniforms lightUniforms, MaterialUniforms materialUniforms) {
     
-    float3 lightDir = normalize(lightPosition - fragPosition);
+    float3 lightDir = normalize(lightUniforms.lightPosition - fragPosition);
     
-    return ambient_Lighting(lightUniforms.diffuse, materialUniforms.diffuse) + diffuse_Lighting(normal, lightDir, lightUniforms.diffuse, materialUniforms.diffuse) + specular_Lighting(fragPosition, viewPosition, lightDir, normal, lightUniforms.specular, materialUniforms.specular);
+    return ambient_Lighting(lightUniforms.diffuse, materialUniforms.diffuse) + diffuse_Lighting(normal, lightDir, lightUniforms.diffuse, materialUniforms.diffuse) + specular_Lighting(fragPosition, lightUniforms.cameraPosition, lightDir, normal, lightUniforms.specular, materialUniforms.specular);
 } // phong_Lighting

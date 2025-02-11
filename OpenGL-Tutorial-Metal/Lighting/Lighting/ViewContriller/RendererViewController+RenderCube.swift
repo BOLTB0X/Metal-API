@@ -77,8 +77,8 @@ extension RendererViewController {
             farPlane: 100.0
         )
         var lightSourceCubeMatrix = simd_float4x4.identity()
-        lightSourceCubeMatrix.translate(position: lightSourceCubeMatrix.conversion_3x3() * lightPosition)
-        lightSourceCubeMatrix.rotate(rotation: rotation)
+        lightSourceCubeMatrix.translate(position: lightPosition)
+        //lightSourceCubeMatrix.rotate(rotation: rotation)
         lightSourceCubeMatrix.scales(scale: simd_float3(0.1, 0.1, 0.1))
         var lightColor = simd_float3(1.0, 1.0, 1.0);
         let viewMatrix = simd_float4x4.lookAt(

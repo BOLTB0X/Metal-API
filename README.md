@@ -571,7 +571,7 @@
       </td>
         <td style="text-align:center; vertical-align:middle;">
         <p align="center">
-        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/basicLighting-%EC%88%98%EC%A0%95.gif?raw=true" 
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/basicLight-%EC%9E%AC%EC%88%98%EC%A0%95.gif?raw=true" 
              alt="image 2" 
              style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
         </p>
@@ -586,6 +586,30 @@
       <td style="text-align:center; font-size:14px; font-weight:bold;">
       <p align="center">
       Phong rotate
+      </p>
+      </td>
+    </tr>
+  </table>
+</p>
+
+</details>
+
+<details>
+<summary> Materials </summary>
+
+<table style="width:100%; text-align:center; border-spacing:20px;">
+    <tr>
+        <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/materials%20-%203.gif?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+    </tr>
+    <tr>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Materials
       </p>
       </td>
     </tr>

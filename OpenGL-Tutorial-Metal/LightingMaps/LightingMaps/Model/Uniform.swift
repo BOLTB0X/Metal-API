@@ -7,6 +7,7 @@
 
 import Foundation
 import simd
+import Metal
 
 // MARK: - TransformUniforms
 struct TransformUniforms {
@@ -40,16 +41,3 @@ struct LightUniforms {
     
 } // LightUniforms
 
-// MARK: - MaterialUniforms
-struct MaterialUniforms {
-    var ambient: simd_float3
-    var diffuse: simd_float3
-    var specular: simd_float3
-    
-    init(ambient: simd_float3, diffuse: simd_float3, specular: simd_float3) {
-        self.ambient = ambient
-        self.diffuse = diffuse
-        self.specular = specular
-    } // init
-    
-} // MaterialUniforms

@@ -8,7 +8,6 @@
 #include <metal_stdlib>
 #include "Uniform.metal"
 #include "Vertex.metal"
-#include "Lightings.metal"
 
 using namespace metal;
 
@@ -31,19 +30,18 @@ vertex VertexOut vertex_shader(uint vid [[vertex_id]],
 
 // MARK: - fragment_shader_main
 fragment float4 fragment_shader_main(VertexOut in [[stage_in]],
-                                     texture2d<float> ambTex [[texture(0)]],
-                                     texture2d<float> diffTex [[texture(1)]],
+                                     texture2d<float> diffTex [[texture(0)]],
+                                     texture2d<float> specTex [[texture(1)]],
                                      sampler sam [[sampler(0)]],
                                      constant LightUniforms& lightUniform [[buffer(1)]],
-                                     constant TransformUniforms& transformUniforms [[buffer(2)]],
-                                     constant MaterialUniforms& materialUniforms [[buffer(3)]]) {
+                                     constant TransformUniforms& transformUniforms [[buffer(2)]]) {
     
-    float3 ambientTextureColor = ambTex.sample(sam, in.texCoord).rgb;
     float3 diffuseTextureColor = diffTex.sample(sam, in.texCoord).rgb;
+    float3 specularTextureColor = specTex.sample(sam, in.texCoord).rgb;
     
     float3 lightDir = normalize(lightUniform.lightPosition - in.fragPosition);
     
-    float3 ambient = lightUniform.ambient * ambientTextureColor;
+    float3 ambient = lightUniform.ambient * diffuseTextureColor;
     
     float diff = max(dot(in.normal, lightDir), 0.0);
     float3 diffuse = lightUniform.diffuse * diff * diffuseTextureColor;
@@ -51,7 +49,7 @@ fragment float4 fragment_shader_main(VertexOut in [[stage_in]],
     float3 viewDir = normalize(lightUniform.cameraPosition - in.fragPosition);
     float3 reflectDir = reflect(-lightDir, in.normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 64.0);
-    float3 specular = lightUniform.specular * spec * materialUniforms.specular;
+    float3 specular = lightUniform.specular * spec * specularTextureColor;
     
     float3 lighting = ambient + diffuse + specular;
     return float4(lighting, 1.0);

@@ -25,7 +25,6 @@
 		BEEDE2582D549FF1004AC778 /* Uniform.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEDE2572D549FF1004AC778 /* Uniform.swift */; };
 		BEEDE25A2D54A00A004AC778 /* RendererResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEDE2592D54A00A004AC778 /* RendererResources.swift */; };
 		BEEDE25C2D54A05D004AC778 /* RendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEEDE25B2D54A05D004AC778 /* RendererView.swift */; };
-		BEF230A02D5A03E1007D615D /* Lightings.metal in Sources */ = {isa = PBXBuildFile; fileRef = BEF2309F2D5A03E1007D615D /* Lightings.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,7 +48,6 @@
 		BEEDE2592D54A00A004AC778 /* RendererResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererResources.swift; sourceTree = "<group>"; };
 		BEEDE25B2D54A05D004AC778 /* RendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererView.swift; sourceTree = "<group>"; };
 		BEEDE27B2D54A9D6004AC778 /* RendererViewController+Depth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+Depth.swift"; sourceTree = "<group>"; };
-		BEF2309F2D5A03E1007D615D /* Lightings.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Lightings.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +78,6 @@
 				BE1BE6E92D54AB26001FA7A3 /* Shader.metal */,
 				BE1BE6EA2D54AB26001FA7A3 /* Vertex.metal */,
 				BE1BE6EB2D54AB26001FA7A3 /* Uniform.metal */,
-				BEF2309F2D5A03E1007D615D /* Lightings.metal */,
 			);
 			path = Metal;
 			sourceTree = "<group>";
@@ -232,7 +229,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEF230A02D5A03E1007D615D /* Lightings.metal in Sources */,
 				BE1BE6EC2D54AB26001FA7A3 /* Shader.metal in Sources */,
 				BE1BE6E62D54AAFF001FA7A3 /* RendererViewController+RenderCube.swift in Sources */,
 				BE1BE6E72D54AAFF001FA7A3 /* RendererViewController.swift in Sources */,

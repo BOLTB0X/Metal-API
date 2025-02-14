@@ -13,21 +13,24 @@ import simd
 class RendererViewController: UIViewController {
     public var device: MTLDevice!
     public var metalLayer: CAMetalLayer!
-    public var lightPosition = simd_float3(-0.5, 0.75, -0.5)
-    public var cameraPosition = simd_float3(3.0, 2.0, 5.0)
-
+    
     private var mainPipelineState: MTLRenderPipelineState!
     private var subPipelineState: MTLRenderPipelineState!
     private var commandQueue: MTLCommandQueue!
     private var vertexBuffer: MTLBuffer!
     private var indexBuffer: MTLBuffer!
     private var modelMatrixBuffer: MTLBuffer!
-    private var ambientTexture: MTLTexture!
-    private var diffuseTexture: MTLTexture!
     private var samplerState: MTLSamplerState!
     private var depthTexture: MTLTexture!
     private var depthStencilState: MTLDepthStencilState!
     private var timer: CADisplayLink!
+    
+    private var rotation = simd_float3(0, 0, 0)
+    private var lightPosition = simd_float3(-0.5, 0.75, 1.0)
+    private var cameraPosition = simd_float3(3.0, 2.0, 5.0)
+    
+    private var diffuseTexture: MTLTexture!
+    private var specularTexture: MTLTexture!
     
     // MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -87,18 +90,19 @@ class RendererViewController: UIViewController {
     // MARK: - setupTexture
     private func setupTexture() {
         do {
-            ambientTexture = try loadTexture("container2")
-        } catch {
-            print("텍스처 로드 실패: \(error)")
-        }
-        
-        do {
             diffuseTexture = try loadTexture("container2")
         } catch {
             print("텍스처 로드 실패: \(error)")
         }
         
+        do {
+            specularTexture = try loadTexture("container2")
+        } catch {
+            print("텍스처 로드 실패: \(error)")
+        }
+        
         samplerState = setupSampler()
+        
         
         return
     } // setupTexture
@@ -178,20 +182,28 @@ class RendererViewController: UIViewController {
         
         renderEncoder.setRenderPipelineState(mainPipelineState)
         renderEncoder.setDepthStencilState(depthStencilState)
+        
+        // Buffer
         renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
         renderEncoder.setVertexBuffer(modelMatrixBuffer, offset: 0, index: 1)
         
-        renderEncoder.setFragmentTexture(ambientTexture, index: 0)
-        renderEncoder.setFragmentTexture(diffuseTexture, index: 1)
-
+        // Texture
+        renderEncoder.setFragmentTexture(diffuseTexture, index: 0)
+        renderEncoder.setFragmentTexture(specularTexture, index: 1)
         renderEncoder.setFragmentSamplerState(samplerState, index: 0)
         
         renderObjectCube(renderEncoder: &renderEncoder,
-                         indexBuffer: indexBuffer)
+                         indexBuffer: indexBuffer,
+                         rotation: rotation,
+                         lightPosition: lightPosition,
+                         cameraPosition: cameraPosition)
         
         renderEncoder.setRenderPipelineState(subPipelineState)
+        
         renderLightSourceCube(renderEncoder: &renderEncoder,
-                              indexBuffer: indexBuffer)
+                              indexBuffer: indexBuffer,
+                              lightPosition: lightPosition,
+                              cameraPosition: cameraPosition)
         
         renderEncoder.endEncoding()
         commandBuffer.present(drawable)
@@ -202,6 +214,7 @@ class RendererViewController: UIViewController {
     // MARK: - gameLoop
     @objc private func gameLoop() {
         autoreleasepool {
+            rotation += simd_float3(Float(1).toRadians(), 0.0, 0.0)
             render()
         }
     } // gameLoop

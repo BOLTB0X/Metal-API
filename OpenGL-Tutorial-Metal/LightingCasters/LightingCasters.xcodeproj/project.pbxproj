@@ -1,0 +1,456 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BE56AA332D604C85001BE5B2 /* LightingCastersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA322D604C85001BE5B2 /* LightingCastersApp.swift */; };
+		BE56AA352D604C85001BE5B2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA342D604C85001BE5B2 /* ContentView.swift */; };
+		BE56AA372D604C87001BE5B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE56AA362D604C87001BE5B2 /* Assets.xcassets */; };
+		BE56AA3A2D604C87001BE5B2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE56AA392D604C87001BE5B2 /* Preview Assets.xcassets */; };
+		BE56AA482D604EB8001BE5B2 /* Extension+Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA472D604EB7001BE5B2 /* Extension+Float.swift */; };
+		BE56AA4A2D604ECC001BE5B2 /* Extension+simd_float3x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA492D604ECC001BE5B2 /* Extension+simd_float3x3.swift */; };
+		BE56AA4C2D604F1B001BE5B2 /* Extension+simd_float4x4.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA4B2D604F1B001BE5B2 /* Extension+simd_float4x4.swift */; };
+		BE56AA4E2D604FAD001BE5B2 /* Vertex.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA4D2D604FAD001BE5B2 /* Vertex.swift */; };
+		BE56AA502D604FE6001BE5B2 /* Uniform.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA4F2D604FE6001BE5B2 /* Uniform.swift */; };
+		BE56AA522D605034001BE5B2 /* RendererResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA512D605034001BE5B2 /* RendererResources.swift */; };
+		BE56AA542D6050C8001BE5B2 /* RendererViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA532D6050C8001BE5B2 /* RendererViewController.swift */; };
+		BE56AA562D605125001BE5B2 /* RendererViewController+Textures.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA552D605125001BE5B2 /* RendererViewController+Textures.swift */; };
+		BE56AA582D60516A001BE5B2 /* RendererViewController+RenderCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA572D60516A001BE5B2 /* RendererViewController+RenderCube.swift */; };
+		BE56AA5A2D60518F001BE5B2 /* RendererViewController+Depth.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA592D60518F001BE5B2 /* RendererViewController+Depth.swift */; };
+		BE56AA5C2D6051BA001BE5B2 /* Vertex.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA5B2D6051BA001BE5B2 /* Vertex.metal */; };
+		BE56AA5E2D6052B8001BE5B2 /* Uniform.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA5D2D6052B8001BE5B2 /* Uniform.metal */; };
+		BE56AA602D6052DA001BE5B2 /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA5F2D6052DA001BE5B2 /* Shader.metal */; };
+		BE56AA622D605303001BE5B2 /* RendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA612D605303001BE5B2 /* RendererView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BE56AA2F2D604C85001BE5B2 /* LightingCasters.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LightingCasters.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE56AA322D604C85001BE5B2 /* LightingCastersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingCastersApp.swift; sourceTree = "<group>"; };
+		BE56AA342D604C85001BE5B2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		BE56AA362D604C87001BE5B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BE56AA392D604C87001BE5B2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		BE56AA472D604EB7001BE5B2 /* Extension+Float.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Float.swift"; sourceTree = "<group>"; };
+		BE56AA492D604ECC001BE5B2 /* Extension+simd_float3x3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+simd_float3x3.swift"; sourceTree = "<group>"; };
+		BE56AA4B2D604F1B001BE5B2 /* Extension+simd_float4x4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+simd_float4x4.swift"; sourceTree = "<group>"; };
+		BE56AA4D2D604FAD001BE5B2 /* Vertex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vertex.swift; sourceTree = "<group>"; };
+		BE56AA4F2D604FE6001BE5B2 /* Uniform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uniform.swift; sourceTree = "<group>"; };
+		BE56AA512D605034001BE5B2 /* RendererResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererResources.swift; sourceTree = "<group>"; };
+		BE56AA532D6050C8001BE5B2 /* RendererViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererViewController.swift; sourceTree = "<group>"; };
+		BE56AA552D605125001BE5B2 /* RendererViewController+Textures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+Textures.swift"; sourceTree = "<group>"; };
+		BE56AA572D60516A001BE5B2 /* RendererViewController+RenderCube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+RenderCube.swift"; sourceTree = "<group>"; };
+		BE56AA592D60518F001BE5B2 /* RendererViewController+Depth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+Depth.swift"; sourceTree = "<group>"; };
+		BE56AA5B2D6051BA001BE5B2 /* Vertex.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Vertex.metal; sourceTree = "<group>"; };
+		BE56AA5D2D6052B8001BE5B2 /* Uniform.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Uniform.metal; sourceTree = "<group>"; };
+		BE56AA5F2D6052DA001BE5B2 /* Shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
+		BE56AA612D605303001BE5B2 /* RendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BE56AA2C2D604C85001BE5B2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BE56AA262D604C85001BE5B2 = {
+			isa = PBXGroup;
+			children = (
+				BE56AA312D604C85001BE5B2 /* LightingCasters */,
+				BE56AA302D604C85001BE5B2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BE56AA302D604C85001BE5B2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BE56AA2F2D604C85001BE5B2 /* LightingCasters.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BE56AA312D604C85001BE5B2 /* LightingCasters */ = {
+			isa = PBXGroup;
+			children = (
+				BE56AA462D604E8A001BE5B2 /* Root */,
+				BE56AA402D604DAC001BE5B2 /* Common */,
+				BE56AA412D604DB6001BE5B2 /* Model */,
+				BE56AA422D604DBE001BE5B2 /* View */,
+				BE56AA432D604DF6001BE5B2 /* ViewController */,
+				BE56AA442D604E05001BE5B2 /* Metal */,
+				BE56AA452D604E4B001BE5B2 /* Resoures */,
+				BE56AA382D604C87001BE5B2 /* Preview Content */,
+			);
+			path = LightingCasters;
+			sourceTree = "<group>";
+		};
+		BE56AA382D604C87001BE5B2 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				BE56AA392D604C87001BE5B2 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		BE56AA402D604DAC001BE5B2 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				BE56AA472D604EB7001BE5B2 /* Extension+Float.swift */,
+				BE56AA492D604ECC001BE5B2 /* Extension+simd_float3x3.swift */,
+				BE56AA4B2D604F1B001BE5B2 /* Extension+simd_float4x4.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		BE56AA412D604DB6001BE5B2 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				BE56AA4D2D604FAD001BE5B2 /* Vertex.swift */,
+				BE56AA4F2D604FE6001BE5B2 /* Uniform.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		BE56AA422D604DBE001BE5B2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BE56AA612D605303001BE5B2 /* RendererView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		BE56AA432D604DF6001BE5B2 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				BE56AA532D6050C8001BE5B2 /* RendererViewController.swift */,
+				BE56AA552D605125001BE5B2 /* RendererViewController+Textures.swift */,
+				BE56AA572D60516A001BE5B2 /* RendererViewController+RenderCube.swift */,
+				BE56AA592D60518F001BE5B2 /* RendererViewController+Depth.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		BE56AA442D604E05001BE5B2 /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+				BE56AA5B2D6051BA001BE5B2 /* Vertex.metal */,
+				BE56AA5D2D6052B8001BE5B2 /* Uniform.metal */,
+				BE56AA5F2D6052DA001BE5B2 /* Shader.metal */,
+			);
+			path = Metal;
+			sourceTree = "<group>";
+		};
+		BE56AA452D604E4B001BE5B2 /* Resoures */ = {
+			isa = PBXGroup;
+			children = (
+				BE56AA512D605034001BE5B2 /* RendererResources.swift */,
+				BE56AA362D604C87001BE5B2 /* Assets.xcassets */,
+			);
+			path = Resoures;
+			sourceTree = "<group>";
+		};
+		BE56AA462D604E8A001BE5B2 /* Root */ = {
+			isa = PBXGroup;
+			children = (
+				BE56AA322D604C85001BE5B2 /* LightingCastersApp.swift */,
+				BE56AA342D604C85001BE5B2 /* ContentView.swift */,
+			);
+			path = Root;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BE56AA2E2D604C85001BE5B2 /* LightingCasters */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BE56AA3D2D604C87001BE5B2 /* Build configuration list for PBXNativeTarget "LightingCasters" */;
+			buildPhases = (
+				BE56AA2B2D604C85001BE5B2 /* Sources */,
+				BE56AA2C2D604C85001BE5B2 /* Frameworks */,
+				BE56AA2D2D604C85001BE5B2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LightingCasters;
+			productName = LightingCasters;
+			productReference = BE56AA2F2D604C85001BE5B2 /* LightingCasters.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BE56AA272D604C85001BE5B2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
+				TargetAttributes = {
+					BE56AA2E2D604C85001BE5B2 = {
+						CreatedOnToolsVersion = 14.2;
+					};
+				};
+			};
+			buildConfigurationList = BE56AA2A2D604C85001BE5B2 /* Build configuration list for PBXProject "LightingCasters" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BE56AA262D604C85001BE5B2;
+			productRefGroup = BE56AA302D604C85001BE5B2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BE56AA2E2D604C85001BE5B2 /* LightingCasters */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BE56AA2D2D604C85001BE5B2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE56AA3A2D604C87001BE5B2 /* Preview Assets.xcassets in Resources */,
+				BE56AA372D604C87001BE5B2 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BE56AA2B2D604C85001BE5B2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE56AA582D60516A001BE5B2 /* RendererViewController+RenderCube.swift in Sources */,
+				BE56AA4A2D604ECC001BE5B2 /* Extension+simd_float3x3.swift in Sources */,
+				BE56AA5C2D6051BA001BE5B2 /* Vertex.metal in Sources */,
+				BE56AA602D6052DA001BE5B2 /* Shader.metal in Sources */,
+				BE56AA352D604C85001BE5B2 /* ContentView.swift in Sources */,
+				BE56AA5A2D60518F001BE5B2 /* RendererViewController+Depth.swift in Sources */,
+				BE56AA332D604C85001BE5B2 /* LightingCastersApp.swift in Sources */,
+				BE56AA562D605125001BE5B2 /* RendererViewController+Textures.swift in Sources */,
+				BE56AA502D604FE6001BE5B2 /* Uniform.swift in Sources */,
+				BE56AA522D605034001BE5B2 /* RendererResources.swift in Sources */,
+				BE56AA482D604EB8001BE5B2 /* Extension+Float.swift in Sources */,
+				BE56AA4C2D604F1B001BE5B2 /* Extension+simd_float4x4.swift in Sources */,
+				BE56AA542D6050C8001BE5B2 /* RendererViewController.swift in Sources */,
+				BE56AA5E2D6052B8001BE5B2 /* Uniform.metal in Sources */,
+				BE56AA4E2D604FAD001BE5B2 /* Vertex.swift in Sources */,
+				BE56AA622D605303001BE5B2 /* RendererView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BE56AA3B2D604C87001BE5B2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		BE56AA3C2D604C87001BE5B2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BE56AA3E2D604C87001BE5B2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LightingCasters/Preview Content\"";
+				DEVELOPMENT_TEAM = 8T9KYF6LUJ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = khl.LightingCasters;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BE56AA3F2D604C87001BE5B2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"LightingCasters/Preview Content\"";
+				DEVELOPMENT_TEAM = 8T9KYF6LUJ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = khl.LightingCasters;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BE56AA2A2D604C85001BE5B2 /* Build configuration list for PBXProject "LightingCasters" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE56AA3B2D604C87001BE5B2 /* Debug */,
+				BE56AA3C2D604C87001BE5B2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BE56AA3D2D604C87001BE5B2 /* Build configuration list for PBXNativeTarget "LightingCasters" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BE56AA3E2D604C87001BE5B2 /* Debug */,
+				BE56AA3F2D604C87001BE5B2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BE56AA272D604C85001BE5B2 /* Project object */;
+}

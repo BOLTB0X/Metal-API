@@ -599,6 +599,13 @@
 
 <table style="width:100%; text-align:center; border-spacing:20px;">
     <tr>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/materials%20-%201.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
         <td style="text-align:center; vertical-align:middle;">
         <p align="center">
         <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/materials%20-%203.gif?raw=true" 
@@ -609,13 +616,53 @@
     <tr>
       <td style="text-align:center; font-size:14px; font-weight:bold;">
       <p align="center">
-      Materials
+      Materials 1
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Materials 2
       </p>
       </td>
     </tr>
   </table>
 </p>
 
+</details>
+
+<details>
+<summary> LightMap </summary>
+<table style="width:100%; text-align:center; border-spacing:20px;">
+    <tr>
+        <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/Diffuse%20maps.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+        <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/LightMap.gif?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Diffuse maps
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Specular maps
+      </p>
+      </td>
+    </tr>
+  </table>
+   
 </details>
 
 <!--

@@ -17,10 +17,16 @@ struct TransformUniforms {
 
 // MARK: - LightUniforms
 struct LightUniforms {
+    float3 position;
     float3 direction;
-    //float3 lightPosition;
-    float3 cameraPosition;
+    float3 cutOff;
+    float3 outerCutOff;
+    
     float3 ambient;
     float3 diffuse;
     float3 specular;
+    
+    float3 constants;
+    float3 linears;
+    float3 quadratics;
 }; // LightUniforms

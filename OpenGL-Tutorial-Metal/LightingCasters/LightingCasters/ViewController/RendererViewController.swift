@@ -25,9 +25,7 @@ class RendererViewController: UIViewController {
     private var depthStencilState: MTLDepthStencilState!
     private var timer: CADisplayLink!
     
-    private var rotation = simd_float3(0, 0, 0)
-    private var lightPosition = simd_float3(-1.2, 1.0, 1.0)
-    private var cameraPosition = simd_float3(10.0, 10.0, 10.0)
+    private var camera = Camera(position: simd_float3(10.0, 10.0, 10.0))
     
     private var diffuseTexture: MTLTexture!
     private var specularTexture: MTLTexture!
@@ -92,13 +90,13 @@ class RendererViewController: UIViewController {
         do {
             diffuseTexture = try loadTexture("container2")
         } catch {
-            print("텍스처 로드 실패: \(error)")
+            print("container2 텍스처 로드 실패: \(error)")
         }
         
         do {
-            specularTexture = try loadTexture("container2")
+            specularTexture = try loadTexture("container2_specular")
         } catch {
-            print("텍스처 로드 실패: \(error)")
+            print("container2_specular 텍스처 로드 실패: \(error)")
         }
         
         samplerState = setupSampler()
@@ -194,16 +192,13 @@ class RendererViewController: UIViewController {
         
         renderObjectCube(renderEncoder: &renderEncoder,
                          indexBuffer: indexBuffer,
-                         rotation: rotation,
-                         lightPosition: lightPosition,
-                         cameraPosition: cameraPosition)
+                         camera: &camera)
         
-//        renderEncoder.setRenderPipelineState(subPipelineState)
-//        
-//        renderLightSourceCube(renderEncoder: &renderEncoder,
-//                              indexBuffer: indexBuffer,
-//                              lightPosition: lightPosition,
-//                              cameraPosition: cameraPosition)
+        renderEncoder.setRenderPipelineState(subPipelineState)
+        
+        renderLightSourceCube(renderEncoder: &renderEncoder,
+                              indexBuffer: indexBuffer,
+                              camera: &camera)
         
         renderEncoder.endEncoding()
         commandBuffer.present(drawable)
@@ -214,7 +209,6 @@ class RendererViewController: UIViewController {
     // MARK: - gameLoop
     @objc private func gameLoop() {
         autoreleasepool {
-            rotation += simd_float3(Float(1).toRadians(), 0.0, 0.0)
             render()
         }
     } // gameLoop

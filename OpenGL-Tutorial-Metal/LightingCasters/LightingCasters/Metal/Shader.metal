@@ -28,32 +28,87 @@ vertex VertexOut vertex_shader(uint vid [[vertex_id]],
     return out;
 } // vertex_shader
 
+// Flashlight
+// MARK: - fragment_shader_Flashlight
+fragment float4 fragment_shader_Flashlight(VertexOut in [[stage_in]],
+                                     texture2d<float> diffTex [[texture(0)]],
+                                     texture2d<float> specTex [[texture(1)]],
+                                     sampler sam [[sampler(0)]],
+                                     constant TransformUniforms& transformUniforms [[buffer(1)]],
+                                     constant LightUniforms& lightUniforms [[buffer(2)]],
+                                     constant float3& cameraPosition [[buffer(3)]]) {
+    float3 result;
+    float3 diffuseTextureColor = diffTex.sample(sam, in.texCoord).rgb;
+    float3 specularTextureColor = specTex.sample(sam, in.texCoord).rgb;
+    
+    float3 lightDir = normalize(lightUniforms.position - in.fragPosition);
+    float theta = dot(lightDir, normalize(-lightUniforms.direction));
+    
+    float3 ambient = lightUniforms.ambient * diffuseTextureColor;
+            
+    if (theta > lightUniforms.cutOff.x) {
+        float diff = max(dot(in.normal, lightDir), 0.0);
+        float3 diffuse = lightUniforms.diffuse * diff * diffuseTextureColor;
+        
+        float3 viewDir = normalize(cameraPosition - in.fragPosition);
+        float3 reflectDir = reflect(-lightDir, in.normal);
+        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+        float3 specular = lightUniforms.specular * spec * specularTextureColor;
+        
+        float dist = length(lightUniforms.position - in.fragPosition);
+        float attenuation = 1.0 / (lightUniforms.constants.x + lightUniforms.linears.x * dist + lightUniforms.quadratics.x * (dist * dist));
+        
+        diffuse *= attenuation;
+        specular *= attenuation;
+        
+        result = ambient + diffuse + specular;
+    }
+    else {
+        result = ambient;
+    }
+    
+    return float4(result, 1.0);
+} // fragment_shader_Flashlight
+
+// spotlight
 // MARK: - fragment_shader_main
 fragment float4 fragment_shader_main(VertexOut in [[stage_in]],
                                      texture2d<float> diffTex [[texture(0)]],
                                      texture2d<float> specTex [[texture(1)]],
                                      sampler sam [[sampler(0)]],
-                                     constant LightUniforms& lightUniform [[buffer(1)]],
-                                     constant TransformUniforms& transformUniforms [[buffer(2)]]) {
-    
+                                     constant TransformUniforms& transformUniforms [[buffer(1)]],
+                                     constant LightUniforms& lightUniforms [[buffer(2)]],
+                                     constant float3& cameraPosition [[buffer(3)]]) {
     float3 diffuseTextureColor = diffTex.sample(sam, in.texCoord).rgb;
     float3 specularTextureColor = specTex.sample(sam, in.texCoord).rgb;
     
-    //float3 lightDir = normalize(lightUniform.lightPosition - in.fragPosition);
+    float3 ambient = lightUniforms.ambient * diffuseTextureColor;
     
-    float3 ambient = lightUniform.ambient * diffuseTextureColor;
-    
-    float3 lightDir = normalize(-lightUniform.direction);
+    float3 lightDir = normalize(lightUniforms.position - in.fragPosition);
     float diff = max(dot(in.normal, lightDir), 0.0);
-    float3 diffuse = lightUniform.diffuse * diff * diffuseTextureColor;
-    
-    float3 viewDir = normalize(lightUniform.cameraPosition - in.fragPosition);
+    float3 diffuse = lightUniforms.diffuse * diff * diffuseTextureColor;
+        
+    float3 viewDir = normalize(cameraPosition - in.fragPosition);
     float3 reflectDir = reflect(-lightDir, in.normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 64.0);
-    float3 specular = lightUniform.specular * spec * specularTextureColor;
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+    float3 specular = lightUniforms.specular * spec * specularTextureColor;
+        
+    // spotlight
+    float theta = dot(lightDir, normalize(-lightUniforms.direction));
+    float epsilon = lightUniforms.cutOff.x - lightUniforms.outerCutOff.x;
+    float intensity = clamp((theta - lightUniforms.outerCutOff.x) / epsilon, 0.0, 1.0);
     
-    float3 lighting = ambient + diffuse + specular;
-    return float4(lighting, 1.0);
+    diffuse *= intensity;
+    specular *= intensity;
+    
+    float dist = length(lightUniforms.position - in.fragPosition);
+    float attenuation = 1.0 / (lightUniforms.constants.x + lightUniforms.linears.x * dist + lightUniforms.quadratics.x * (dist * dist));
+        
+    ambient *= attenuation;
+    diffuse *= attenuation;
+    specular *= attenuation;
+        
+    return float4(ambient + diffuse + specular, 1.0);
 } // fragment_shader_main
 
 // MARK: - fragment_shader_sub

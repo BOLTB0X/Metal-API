@@ -25,6 +25,7 @@
 		BE56AA5E2D6052B8001BE5B2 /* Uniform.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA5D2D6052B8001BE5B2 /* Uniform.metal */; };
 		BE56AA602D6052DA001BE5B2 /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA5F2D6052DA001BE5B2 /* Shader.metal */; };
 		BE56AA622D605303001BE5B2 /* RendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE56AA612D605303001BE5B2 /* RendererView.swift */; };
+		BE9B298E2D630CB800F71297 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9B298D2D630CB800F71297 /* Camera.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 		BE56AA5D2D6052B8001BE5B2 /* Uniform.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Uniform.metal; sourceTree = "<group>"; };
 		BE56AA5F2D6052DA001BE5B2 /* Shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
 		BE56AA612D605303001BE5B2 /* RendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererView.swift; sourceTree = "<group>"; };
+		BE9B298D2D630CB800F71297 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 			children = (
 				BE56AA4D2D604FAD001BE5B2 /* Vertex.swift */,
 				BE56AA4F2D604FE6001BE5B2 /* Uniform.swift */,
+				BE9B298D2D630CB800F71297 /* Camera.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -237,6 +240,7 @@
 			files = (
 				BE56AA582D60516A001BE5B2 /* RendererViewController+RenderCube.swift in Sources */,
 				BE56AA4A2D604ECC001BE5B2 /* Extension+simd_float3x3.swift in Sources */,
+				BE9B298E2D630CB800F71297 /* Camera.swift in Sources */,
 				BE56AA5C2D6051BA001BE5B2 /* Vertex.metal in Sources */,
 				BE56AA602D6052DA001BE5B2 /* Shader.metal in Sources */,
 				BE56AA352D604C85001BE5B2 /* ContentView.swift in Sources */,

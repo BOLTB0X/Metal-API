@@ -96,7 +96,7 @@ class RendererViewController: UIViewController {
         }
         
         do {
-            specularTexture = try loadTexture("container2")
+            specularTexture = try loadTexture("container2_specular")
         } catch {
             print("텍스처 로드 실패: \(error)")
         }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE511A4A2D65AE1900F540EE /* RendererViewController+Textures.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE511A492D65AE1900F540EE /* RendererViewController+Textures.swift */; };
+		BE511A4C2D65AE3D00F540EE /* RendererViewController+Depth.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE511A4B2D65AE3D00F540EE /* RendererViewController+Depth.swift */; };
+		BE511A4E2D65AE6700F540EE /* RendererResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE511A4D2D65AE6700F540EE /* RendererResources.swift */; };
 		BEB09CE22D63F93D006EF083 /* MultipleLightsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB09CE12D63F93D006EF083 /* MultipleLightsApp.swift */; };
 		BEB09CE42D63F93D006EF083 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB09CE32D63F93D006EF083 /* ContentView.swift */; };
 		BEB09CE62D63F940006EF083 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEB09CE52D63F940006EF083 /* Assets.xcassets */; };
@@ -18,10 +21,7 @@
 		BEB09D002D63FAD7006EF083 /* Uniform.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB09CFF2D63FAD7006EF083 /* Uniform.swift */; };
 		BEB09D022D63FAFA006EF083 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB09D012D63FAFA006EF083 /* Camera.swift */; };
 		BEB09D042D63FB29006EF083 /* RendererViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB09D032D63FB29006EF083 /* RendererViewController.swift */; };
-		BEB09D062D63FB55006EF083 /* RendererResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB09D052D63FB55006EF083 /* RendererResources.swift */; };
 		BEB09D082D63FB7E006EF083 /* RendererViewController+RenderCube.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB09D072D63FB7E006EF083 /* RendererViewController+RenderCube.swift */; };
-		BEB09D0A2D63FB9B006EF083 /* RendererViewController+Textures.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB09D092D63FB9B006EF083 /* RendererViewController+Textures.swift */; };
-		BEB09D0C2D63FBBD006EF083 /* RendererViewController+Depth.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB09D0B2D63FBBD006EF083 /* RendererViewController+Depth.swift */; };
 		BEB09D0E2D63FC0C006EF083 /* Vertex.metal in Sources */ = {isa = PBXBuildFile; fileRef = BEB09D0D2D63FC0C006EF083 /* Vertex.metal */; };
 		BEB09D102D63FC26006EF083 /* Uniform.metal in Sources */ = {isa = PBXBuildFile; fileRef = BEB09D0F2D63FC26006EF083 /* Uniform.metal */; };
 		BEB09D122D63FC58006EF083 /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = BEB09D112D63FC58006EF083 /* Shader.metal */; };
@@ -29,6 +29,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BE511A492D65AE1900F540EE /* RendererViewController+Textures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+Textures.swift"; sourceTree = "<group>"; };
+		BE511A4B2D65AE3D00F540EE /* RendererViewController+Depth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+Depth.swift"; sourceTree = "<group>"; };
+		BE511A4D2D65AE6700F540EE /* RendererResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererResources.swift; sourceTree = "<group>"; };
 		BEB09CDE2D63F93D006EF083 /* MultipleLights.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultipleLights.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEB09CE12D63F93D006EF083 /* MultipleLightsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleLightsApp.swift; sourceTree = "<group>"; };
 		BEB09CE32D63F93D006EF083 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -41,10 +44,7 @@
 		BEB09CFF2D63FAD7006EF083 /* Uniform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uniform.swift; sourceTree = "<group>"; };
 		BEB09D012D63FAFA006EF083 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		BEB09D032D63FB29006EF083 /* RendererViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererViewController.swift; sourceTree = "<group>"; };
-		BEB09D052D63FB55006EF083 /* RendererResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererResources.swift; sourceTree = "<group>"; };
 		BEB09D072D63FB7E006EF083 /* RendererViewController+RenderCube.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+RenderCube.swift"; sourceTree = "<group>"; };
-		BEB09D092D63FB9B006EF083 /* RendererViewController+Textures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+Textures.swift"; sourceTree = "<group>"; };
-		BEB09D0B2D63FBBD006EF083 /* RendererViewController+Depth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+Depth.swift"; sourceTree = "<group>"; };
 		BEB09D0D2D63FC0C006EF083 /* Vertex.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Vertex.metal; sourceTree = "<group>"; };
 		BEB09D0F2D63FC26006EF083 /* Uniform.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Uniform.metal; sourceTree = "<group>"; };
 		BEB09D112D63FC58006EF083 /* Shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
@@ -143,8 +143,8 @@
 			children = (
 				BEB09D032D63FB29006EF083 /* RendererViewController.swift */,
 				BEB09D072D63FB7E006EF083 /* RendererViewController+RenderCube.swift */,
-				BEB09D092D63FB9B006EF083 /* RendererViewController+Textures.swift */,
-				BEB09D0B2D63FBBD006EF083 /* RendererViewController+Depth.swift */,
+				BE511A492D65AE1900F540EE /* RendererViewController+Textures.swift */,
+				BE511A4B2D65AE3D00F540EE /* RendererViewController+Depth.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -152,7 +152,7 @@
 		BEB09CF52D63F9F4006EF083 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				BEB09D052D63FB55006EF083 /* RendererResources.swift */,
+				BE511A4D2D65AE6700F540EE /* RendererResources.swift */,
 				BEB09CE52D63F940006EF083 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -239,21 +239,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEB09D082D63FB7E006EF083 /* RendererViewController+RenderCube.swift in Sources */,
-				BEB09D0A2D63FB9B006EF083 /* RendererViewController+Textures.swift in Sources */,
+				BE511A4C2D65AE3D00F540EE /* RendererViewController+Depth.swift in Sources */,
 				BEB09D022D63FAFA006EF083 /* Camera.swift in Sources */,
 				BEB09D102D63FC26006EF083 /* Uniform.metal in Sources */,
 				BEB09D122D63FC58006EF083 /* Shader.metal in Sources */,
 				BEB09D142D63FC81006EF083 /* RendererView.swift in Sources */,
 				BEB09D0E2D63FC0C006EF083 /* Vertex.metal in Sources */,
 				BEB09CFA2D63FA56006EF083 /* Extension+simd_float3x3.swift in Sources */,
-				BEB09D062D63FB55006EF083 /* RendererResources.swift in Sources */,
 				BEB09CE42D63F93D006EF083 /* ContentView.swift in Sources */,
 				BEB09CE22D63F93D006EF083 /* MultipleLightsApp.swift in Sources */,
+				BE511A4E2D65AE6700F540EE /* RendererResources.swift in Sources */,
 				BEB09D002D63FAD7006EF083 /* Uniform.swift in Sources */,
 				BEB09CF82D63FA3D006EF083 /* Extension+Float.swift in Sources */,
-				BEB09D0C2D63FBBD006EF083 /* RendererViewController+Depth.swift in Sources */,
 				BEB09CFC2D63FA9A006EF083 /* Extension+simd_float4x4.swift in Sources */,
 				BEB09D042D63FB29006EF083 /* RendererViewController.swift in Sources */,
+				BE511A4A2D65AE1900F540EE /* RendererViewController+Textures.swift in Sources */,
 				BEB09CFE2D63FAC0006EF083 /* Vertex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

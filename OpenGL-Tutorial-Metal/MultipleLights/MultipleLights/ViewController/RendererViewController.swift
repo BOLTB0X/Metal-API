@@ -25,7 +25,7 @@ class RendererViewController: UIViewController {
     private var depthStencilState: MTLDepthStencilState!
     private var timer: CADisplayLink!
     
-    private var camera = Camera(position: simd_float3(0.0, 0.0, 5.0))
+    private var camera = Camera(position: simd_float3(0.0, 0.0, 10.0))
     
     private var diffuseTexture: MTLTexture!
     private var specularTexture: MTLTexture!

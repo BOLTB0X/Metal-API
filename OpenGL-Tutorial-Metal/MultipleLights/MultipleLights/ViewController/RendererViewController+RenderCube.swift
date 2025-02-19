@@ -42,8 +42,8 @@ extension RendererViewController {
             var spotLight = SpotLight(
                 position: camera.position,
                 direction: camera.up,
-                cutOff: simd_float3(Float(12.5).toRadians(), 0.0, 0.0),
-                outerCutOff: simd_float3(Float(15.0).toRadians(), 0.0, 0.0),
+                cutOff: simd_float3(cos(Float(12.5).toRadians()), 0.0, 0.0),
+                outerCutOff: simd_float3(cos(Float(15.0).toRadians()), 0.0, 0.0),
                 ambient: simd_float3(0.1, 0.1, 0.1),
                 diffuse: simd_float3(0.8, 0.8, 0.8),
                 specular: simd_float3(1.0, 1.0, 1.0),
@@ -89,7 +89,7 @@ extension RendererViewController {
                                       indexBuffer: MTLBuffer,
                                       camera: inout Camera) {
         let projectionMatrix = simd_float4x4.perspective(
-            fov: Float(30).toRadians(),
+            fov: Float(45).toRadians(),
             aspectRatio: 1.0,
             nearPlane: 0.1,
             farPlane: 100.0

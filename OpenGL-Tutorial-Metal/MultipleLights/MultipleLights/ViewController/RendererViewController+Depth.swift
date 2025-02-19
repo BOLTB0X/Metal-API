@@ -32,5 +32,5 @@ extension RendererViewController {
         depthStencilDescriptor.isDepthWriteEnabled = true
         return device.makeDepthStencilState(descriptor: depthStencilDescriptor)
     } // setupDepthStencilState
-        
+    
 }

@@ -20,7 +20,6 @@ extension simd_float3x3 {
         let col1 = columns.1
         let col2 = columns.2
 
-        // 여인자 행렬 (Cofactor matrix) 계산
         let minor0 = simd_float3(
             col1.y * col2.z - col1.z * col2.y,
             col1.z * col2.x - col1.x * col2.z,

@@ -33,10 +33,11 @@ vertex VertexOut vertex_shader(uint vid [[vertex_id]],
 fragment float4 fragment_shader_Flashlight(VertexOut in [[stage_in]],
                                      texture2d<float> diffTex [[texture(0)]],
                                      texture2d<float> specTex [[texture(1)]],
-                                     sampler sam [[sampler(0)]],
                                      constant TransformUniforms& transformUniforms [[buffer(1)]],
                                      constant LightUniforms& lightUniforms [[buffer(2)]],
                                      constant float3& cameraPosition [[buffer(3)]]) {
+    constexpr sampler sam(mip_filter::linear, mag_filter::linear, min_filter::linear, address::repeat);
+
     float3 result;
     float3 diffuseTextureColor = diffTex.sample(sam, in.texCoord).rgb;
     float3 specularTextureColor = specTex.sample(sam, in.texCoord).rgb;
@@ -52,7 +53,7 @@ fragment float4 fragment_shader_Flashlight(VertexOut in [[stage_in]],
         
         float3 viewDir = normalize(cameraPosition - in.fragPosition);
         float3 reflectDir = reflect(-lightDir, in.normal);
-        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
+        float spec = pow(max(dot(viewDir, reflectDir), 0.0), 64.0);
         float3 specular = lightUniforms.specular * spec * specularTextureColor;
         
         float dist = length(lightUniforms.position - in.fragPosition);
@@ -75,21 +76,23 @@ fragment float4 fragment_shader_Flashlight(VertexOut in [[stage_in]],
 fragment float4 fragment_shader_main(VertexOut in [[stage_in]],
                                      texture2d<float> diffTex [[texture(0)]],
                                      texture2d<float> specTex [[texture(1)]],
-                                     sampler sam [[sampler(0)]],
                                      constant TransformUniforms& transformUniforms [[buffer(1)]],
                                      constant LightUniforms& lightUniforms [[buffer(2)]],
                                      constant float3& cameraPosition [[buffer(3)]]) {
+    constexpr sampler sam(mip_filter::linear, mag_filter::linear, min_filter::linear, address::repeat);
+
     float3 diffuseTextureColor = diffTex.sample(sam, in.texCoord).rgb;
     float3 specularTextureColor = specTex.sample(sam, in.texCoord).rgb;
+    float3 norm = normalize(in.normal);
     
     float3 ambient = lightUniforms.ambient * diffuseTextureColor;
     
     float3 lightDir = normalize(lightUniforms.position - in.fragPosition);
-    float diff = max(dot(in.normal, lightDir), 0.0);
+    float diff = max(dot(norm, lightDir), 0.0);
     float3 diffuse = lightUniforms.diffuse * diff * diffuseTextureColor;
         
     float3 viewDir = normalize(cameraPosition - in.fragPosition);
-    float3 reflectDir = reflect(-lightDir, in.normal);
+    float3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
     float3 specular = lightUniforms.specular * spec * specularTextureColor;
         

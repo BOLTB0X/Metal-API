@@ -78,23 +78,16 @@ struct RendererResources {
     
     // cubePositions
     static let cubePositions: [simd_float3] = [
-        simd_float3( 0.0,  0.0,  0.0),
-        simd_float3( 2.0,  5.0, -3.0),
+        simd_float3(0.0, 0.0, 0.0),
+        simd_float3(2.0, 5.0, -15.0),
         simd_float3(-1.5, -2.2, -2.5),
-        simd_float3(-3.8, -2.0, 5.3),
+        simd_float3(-3.8, -2.0, -12.3),
         simd_float3( 2.4, -0.4, -3.5),
-        simd_float3(-1.7,  3.0, 2.5),
+        simd_float3(-1.7,  3.0, 7.5),
         simd_float3( 1.3, -2.0, -2.5),
         simd_float3( 1.5,  2.0, -2.5),
         simd_float3( 1.5,  0.2, -1.5),
         simd_float3(-1.3,  1.0, -1.5)
     ]
-        
-    // viewMatrix
-    static var viewMatrix = simd_float4x4.lookAt(
-        eyePosition: simd_float3(1, 10, -10),
-        targetPosition: simd_float3(0.0, 0.0, 0.0),
-        upVec: simd_float3(0.0, 1.0, 0.0)
-    )
-    
+            
 } // RendererResources

@@ -28,12 +28,12 @@ struct Camera {
          yaw: Float = -90.0,
          pitch: Float = 0.0) {
         self.position = position
-        self.worldUp = position + up
+        self.worldUp = up
         self.yaw = yaw
         self.pitch = pitch
         self.front = simd_float3(0, 0, -1)
         self.right = simd_float3(1, 0, 0)
-        self.up = position + up
+        self.up = up
         
         updateCameraVectors()
     }
@@ -51,5 +51,12 @@ struct Camera {
         right = normalize(cross(front, worldUp))
         up = normalize(cross(right, front))
     } // updateCameraVectors
+    
+    // MARK: - getViewMatrix
+    public func getViewMatrix() -> simd_float4x4 {
+        return simd_float4x4.lookAt(eyePosition: position,
+                                    targetPosition: position + front,
+                                    upVec: up)
+    } // getViewMatrix
     
 } // Camera

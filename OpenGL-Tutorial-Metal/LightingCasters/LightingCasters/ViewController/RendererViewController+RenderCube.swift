@@ -22,7 +22,6 @@ extension RendererViewController {
         )
         
         for i in RendererResources.cubePositions.indices {
-            
             var modelMatrix = simd_float4x4.identity()
             
             modelMatrix.translate(position: RendererResources.cubePositions[i])
@@ -32,10 +31,10 @@ extension RendererViewController {
             var inverseTranspose = modelMatrix.conversion_3x3().inverse.transpose
             
             var uniform = LightUniforms(
-                position: simd_float3(1.2, 1.0, 2.0),
-                direction: camera.up,
-                cutOff: simd_float3(Float(12.5).toRadians(), 0.0, 0.0),
-                outerCutOff: simd_float3(Float(17.5).toRadians(), 0.0, 0.0),
+                position: camera.position,
+                direction: camera.front,
+                cutOff: simd_float3(cos(Float(12.5).toRadians()), 0.0, 0.0),
+                outerCutOff: simd_float3(cos(Float(17.5).toRadians()), 0.0, 0.0),
                 ambient: simd_float3(0.1, 0.1, 0.1),
                 diffuse: simd_float3(0.8, 0.8, 0.8),
                 specular: simd_float3(1.0, 1.0, 1.0),
@@ -44,11 +43,7 @@ extension RendererViewController {
                 quadratics: simd_float3(0.032, 0.0, 0.0)
             )
             
-            let viewMatrix = simd_float4x4.lookAt(
-                eyePosition: camera.position,
-                targetPosition: simd_float3(0.0, 0.0, 0.0),
-                upVec: simd_float3(0.0, 1.0, 0.0)
-            )
+            let viewMatrix = camera.getViewMatrix()
             
             var transformUniforms = TransformUniforms(
                 projectionMatrix: projectionMatrix,
@@ -82,23 +77,19 @@ extension RendererViewController {
                                       indexBuffer: MTLBuffer,
                                       camera: inout Camera) {
         let projectionMatrix = simd_float4x4.perspective(
-            fov: Float(30).toRadians(),
+            fov: Float(45).toRadians(),
             aspectRatio: 1.0,
             nearPlane: 0.1,
             farPlane: 100.0
         )
         var lightSourceCubeMatrix = simd_float4x4.identity()
-        lightSourceCubeMatrix.translate(position: simd_float3(1.2, 1.0, 2.0))
-        lightSourceCubeMatrix.scales(scale: simd_float3(0.3, 0.3, 0.3))
+        lightSourceCubeMatrix.translate(position: camera.position)
+        lightSourceCubeMatrix.scales(scale: simd_float3(0.2, 0.2, 0.2))
         
         var lightColor = simd_float3(1.0, 1.0, 1.0);
         var inverseTranspose = lightSourceCubeMatrix.conversion_3x3().inverse.transpose
         
-        let viewMatrix = simd_float4x4.lookAt(
-            eyePosition: camera.position,
-            targetPosition: simd_float3(0.0, 0.0, 0.0),
-            upVec: simd_float3(0.0, 1.0, 0.0)
-        )
+        let viewMatrix = camera.getViewMatrix()
         
         var transformUniforms = TransformUniforms(
             projectionMatrix: projectionMatrix,

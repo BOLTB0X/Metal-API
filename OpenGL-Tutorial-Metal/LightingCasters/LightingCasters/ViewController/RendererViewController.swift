@@ -20,12 +20,11 @@ class RendererViewController: UIViewController {
     private var vertexBuffer: MTLBuffer!
     private var indexBuffer: MTLBuffer!
     private var modelMatrixBuffer: MTLBuffer!
-    private var samplerState: MTLSamplerState!
     private var depthTexture: MTLTexture!
     private var depthStencilState: MTLDepthStencilState!
     private var timer: CADisplayLink!
     
-    private var camera = Camera(position: simd_float3(10.0, 10.0, 10.0))
+    private var camera = Camera(position: simd_float3(-0.5, -0.5, 10.0))
     
     private var diffuseTexture: MTLTexture!
     private var specularTexture: MTLTexture!
@@ -98,9 +97,6 @@ class RendererViewController: UIViewController {
         } catch {
             print("container2_specular 텍스처 로드 실패: \(error)")
         }
-        
-        samplerState = setupSampler()
-        
         
         return
     } // setupTexture
@@ -188,17 +184,16 @@ class RendererViewController: UIViewController {
         // Texture
         renderEncoder.setFragmentTexture(diffuseTexture, index: 0)
         renderEncoder.setFragmentTexture(specularTexture, index: 1)
-        renderEncoder.setFragmentSamplerState(samplerState, index: 0)
         
         renderObjectCube(renderEncoder: &renderEncoder,
                          indexBuffer: indexBuffer,
                          camera: &camera)
         
-        renderEncoder.setRenderPipelineState(subPipelineState)
-        
-        renderLightSourceCube(renderEncoder: &renderEncoder,
-                              indexBuffer: indexBuffer,
-                              camera: &camera)
+//        renderEncoder.setRenderPipelineState(subPipelineState)
+//
+//        renderLightSourceCube(renderEncoder: &renderEncoder,
+//                              indexBuffer: indexBuffer,
+//                              camera: &camera)
         
         renderEncoder.endEncoding()
         commandBuffer.present(drawable)

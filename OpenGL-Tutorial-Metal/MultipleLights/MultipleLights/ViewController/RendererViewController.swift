@@ -19,7 +19,7 @@ class RendererViewController: UIViewController {
     private var commandQueue: MTLCommandQueue!
     private var vertexBuffer: MTLBuffer!
     private var indexBuffer: MTLBuffer!
-    private var modelMatrixBuffer: MTLBuffer!
+    //private var modelMatrixBuffer: MTLBuffer!
     private var samplerState: MTLSamplerState!
     private var depthTexture: MTLTexture!
     private var depthStencilState: MTLDepthStencilState!
@@ -183,7 +183,7 @@ class RendererViewController: UIViewController {
         
         // Buffer
         renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
-        renderEncoder.setVertexBuffer(modelMatrixBuffer, offset: 0, index: 1)
+        //renderEncoder.setVertexBuffer(modelMatrixBuffer, offset: 0, index: 1)
         
         // Texture
         renderEncoder.setFragmentTexture(diffuseTexture, index: 0)

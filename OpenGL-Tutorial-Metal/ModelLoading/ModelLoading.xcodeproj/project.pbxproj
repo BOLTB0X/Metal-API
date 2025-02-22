@@ -84,7 +84,6 @@
 		BE511A512D65B01100F540EE = {
 			isa = PBXGroup;
 			children = (
-				BEE9E74A2D66EE8B0089BA90 /* Resources */,
 				BE511A5C2D65B01200F540EE /* ModelLoading */,
 				BE511A5B2D65B01200F540EE /* Products */,
 			);
@@ -107,8 +106,8 @@
 				BEE9E72F2D66C3F80089BA90 /* View */,
 				BEE9E72E2D66C3DD0089BA90 /* ViewController */,
 				BE511A832D65C10800F540EE /* Metal */,
+				BEE9E74A2D66EE8B0089BA90 /* Resources */,
 				BE511A632D65B01700F540EE /* Preview Content */,
-				BE511A612D65B01700F540EE /* Assets.xcassets */,
 			);
 			path = ModelLoading;
 			sourceTree = "<group>";
@@ -171,6 +170,7 @@
 		BEE9E74A2D66EE8B0089BA90 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BE511A612D65B01700F540EE /* Assets.xcassets */,
 				BEE9E7472D66EE830089BA90 /* roughness.jpg */,
 				BEE9E7462D66EE830089BA90 /* source_attribution.txt */,
 				BEE9E7432D66EE710089BA90 /* ao.jpg */,

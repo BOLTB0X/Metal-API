@@ -28,12 +28,14 @@ struct Mesh {
         encoder.setVertexBuffer(vertexBuffer.buffer, offset: vertexBuffer.offset, index: 0)
 
         for (submesh, texture) in zip(mesh.submeshes, textures) {
-            let frgIndex = getFragmentTextureIndex(texture.type)
-
-            encoder.setFragmentTexture(texture.texture, index: frgIndex)
-                    
+            //print("texture.texture: \(texture.texture)")
+            if texture.type == .diffuse {
+                encoder.setFragmentTexture(texture.texture, index: 0)
+            } else if texture.type == .specular {
+                encoder.setFragmentTexture(texture.texture, index: 1)
+            }
             encoder.drawIndexedPrimitives(
-                type: MTLPrimitiveType.triangle,
+                type: submesh.primitiveType,
                 indexCount: submesh.indexCount,
                 indexType: submesh.indexType,
                 indexBuffer: submesh.indexBuffer.buffer,
@@ -45,16 +47,5 @@ struct Mesh {
         return
     } // draw
     
-    // MARK: - getFragmentTextureIndex
-    private func getFragmentTextureIndex(_ type: TextureType) -> Int {
-        if type == .diffuse {
-            return 0
-        } else if type == .specular {
-            return 1
-        } else if type == .normal {
-            return 2
-        }
-        return 3
-    } // getFragmentTextureIndex
     
 } // Mesh

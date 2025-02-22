@@ -19,6 +19,7 @@ class Renderer: NSObject, MTKViewDelegate {
     var pipelineDescriptor: MTLRenderPipelineDescriptor
     var depthStencilState: MTLDepthStencilState?
     var depthTexture: MTLTexture!
+    var textureLoader: MTKTextureLoader
 
     var model: Model?
     
@@ -50,15 +51,15 @@ class Renderer: NSObject, MTKViewDelegate {
         self.pipelineDescriptor = MTLRenderPipelineDescriptor()
         
         let library = device.makeDefaultLibrary()
-        pipelineDescriptor.vertexFunction = library?.makeFunction(name: "vertex_main")!
-        pipelineDescriptor.fragmentFunction = library?.makeFunction(name: "fragment_main")!
+        self.pipelineDescriptor.vertexFunction = library?.makeFunction(name: "vertex_main")!
+        self.pipelineDescriptor.fragmentFunction = library?.makeFunction(name: "fragment_main")!
         
-        pipelineDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
-        pipelineDescriptor.vertexDescriptor = vertexDescriptor
-        pipelineDescriptor.depthAttachmentPixelFormat = mtkView.depthStencilPixelFormat
+        self.pipelineDescriptor.colorAttachments[0].pixelFormat = mtkView.colorPixelFormat
+        self.pipelineDescriptor.vertexDescriptor = self.vertexDescriptor
+        self.pipelineDescriptor.depthAttachmentPixelFormat = mtkView.depthStencilPixelFormat
         
         do {
-            self.pipelineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+            self.pipelineState = try self.device.makeRenderPipelineState(descriptor: self.pipelineDescriptor)
         } catch {
             fatalError("파이프라인 상태 생성 실패: \(error)")
         }
@@ -66,14 +67,13 @@ class Renderer: NSObject, MTKViewDelegate {
         let depthStencilDescriptor = MTLDepthStencilDescriptor()
         depthStencilDescriptor.depthCompareFunction = MTLCompareFunction.less
         depthStencilDescriptor.isDepthWriteEnabled = true
-        depthStencilState = self.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
-
+        
+        self.depthStencilState = self.device.makeDepthStencilState(descriptor: depthStencilDescriptor)
+        self.textureLoader = MTKTextureLoader(device: self.device)
+        
         super.init()
         
-        mtkView.delegate = self
-        mtkView.device = device
-
-        loadModel(name: "backpack")
+        loadModel(name: "backpack", textureLoader: textureLoader)
     } // init
         
     // MARK: - MTKViewDelegate
@@ -85,6 +85,7 @@ class Renderer: NSObject, MTKViewDelegate {
             return
         }
         
+        print("Renderer Draw")
         let commandBuffer = self.commandQueue.makeCommandBuffer()!
         
         let renderPassDescriptor = view.currentRenderPassDescriptor!
@@ -100,26 +101,8 @@ class Renderer: NSObject, MTKViewDelegate {
         renderPassDescriptor.depthAttachment.clearDepth = 1.0
         
         let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
-        
         encoder.setRenderPipelineState(self.pipelineState)
         encoder.setDepthStencilState(self.depthStencilState)
-        
-        var modelMatrix = simd_float4x4.identity()
-        //modelMatrix.translate(position: simd_float3(repeating: 0.0))
-        modelMatrix.scales(scale: simd_float3(repeating: 5.0))
-        
-        var viewMatrix = simd_float4x4.lookAt(eyePosition: simd_float3(0.0, 0.0, 3.0),
-                                              targetPosition: simd_float3(repeating: 0.0),
-                                              upVec: simd_float3(0.0, 1.0, 0.0))
-        
-        var projectionMatrix = simd_float4x4.perspective(fov: Float(45).toRadians(),
-                                                         aspectRatio: 1.0,
-                                                         nearPlane: 0.1,
-                                                         farPlane: 100.0)
-        
-        encoder.setVertexBytes(&modelMatrix, length: MemoryLayout<simd_float4x4>.size, index: 0)
-        encoder.setVertexBytes(&viewMatrix, length: MemoryLayout<simd_float4x4>.size, index: 1)
-        encoder.setVertexBytes(&projectionMatrix, length: MemoryLayout<simd_float4x4>.size, index: 2)
         
         model?.draw(encoder: encoder)
         
@@ -136,13 +119,14 @@ class Renderer: NSObject, MTKViewDelegate {
     // .....
     
     // MARK: - loadModel
-    private func loadModel(name: String) {
+    private func loadModel(name: String, textureLoader: MTKTextureLoader) {
         guard let modelPath = Bundle.main.path(forResource: name, ofType: "obj") else {
             print("모델 파일을 찾을 수 없음")
             return
         }
-        print("Model load 시작")
-        self.model = Model(device: device, path: modelPath, vertexDescriptor: vertexDescriptor)
+        
+        self.model = Model(device: device, path: modelPath,
+                           vertexDescriptor: vertexDescriptor, textureLoader: textureLoader)
     } // loadModel
     
 } // Renderer

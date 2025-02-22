@@ -10,19 +10,21 @@ import MetalKit
 
 // MARK: - RendererViewController
 class RendererViewController: UIViewController {
-    var metalView: MTKView!
-    var renderer: Renderer!
+    private var renderer: Renderer!
+    private var mtkView: MTKView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         // Metal view 설정
-        metalView = MTKView(frame: self.view.bounds)
-        metalView.device = MTLCreateSystemDefaultDevice()
-        self.view.addSubview(metalView)
+        mtkView = MTKView(frame: self.view.bounds)
+        mtkView.device = MTLCreateSystemDefaultDevice()
+        self.view.addSubview(mtkView)
         
         // 렌더러 설정
-        renderer = Renderer(mtkView: metalView)
+        renderer = Renderer(mtkView: mtkView)
+        renderer.mtkView(mtkView, drawableSizeWillChange: mtkView.drawableSize)
+        mtkView.delegate = renderer
     }
     
 } // RendererViewController

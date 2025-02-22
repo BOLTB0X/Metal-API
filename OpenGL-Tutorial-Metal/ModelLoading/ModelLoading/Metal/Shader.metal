@@ -26,9 +26,7 @@ vertex VertexOut vertex_main(VertexIn in [[stage_in]],
 // fragment Shader
 fragment float4 fragment_main(VertexOut in [[stage_in]],
                               texture2d<float> diffuseTexture [[texture(0)]],
-                              texture2d<float> specularTexture [[texture(1)]],
-                              texture2d<float> normalTexture [[texture(2)]],
-                              texture2d<float> roughnessTexture [[texture(4)]]) {
+                              texture2d<float> specularTexture [[texture(1)]]) {
     constexpr sampler sam(mip_filter::linear, mag_filter::linear, min_filter::linear, address::repeat);
 
     float4 diffuseColor = diffuseTexture.sample(sam, in.texCoord);

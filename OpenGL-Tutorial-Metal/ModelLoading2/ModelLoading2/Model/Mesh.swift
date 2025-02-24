@@ -18,4 +18,4 @@ class Mesh {
         self.materials = materials
     } // init
     
-}
+} // Mesh

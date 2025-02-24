@@ -66,9 +66,12 @@ extension simd_float4x4 {
     
     // MARK: - scales
     mutating func scales(scale: simd_float3) {
-        self[0] *= scale.x
-        self[1] *= scale.y
-        self[2] *= scale.z
+        self = simd_float4x4([
+            simd_float4(scale.x, 0, 0, 0),
+            simd_float4(0, scale.y, 0, 0),
+            simd_float4(0, 0, scale.z, 0),
+            simd_float4(0, 0, 0, 1)
+        ]) * self
         return
     } // scales
     

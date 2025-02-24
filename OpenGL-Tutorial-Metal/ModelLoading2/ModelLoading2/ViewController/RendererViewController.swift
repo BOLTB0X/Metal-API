@@ -25,6 +25,6 @@ class RendererViewController: UIViewController {
         renderer = Renderer(metalKitView: metalView)
         renderer.mtkView(metalView, drawableSizeWillChange: metalView.drawableSize)
         metalView.delegate = renderer
-    }
+    } //
     
 } // RendererViewController

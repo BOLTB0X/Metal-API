@@ -11,9 +11,9 @@ using namespace metal;
 
 // MARK: - vertexFunction
 vertex VertexOut vertexFunction(VertexIn in [[stage_in]],
-                                constant float4x4& projectionMatrix [[buffer(0)]],
+                                constant float4x4& modelMatrix [[buffer(0)]],
                                 constant float4x4& viewMatrix [[buffer(1)]],
-                                constant float4x4& modelMatrix [[buffer(2)]]) {
+                                constant float4x4& projectionMatrix [[buffer(2)]]) {
     VertexOut out;
     out.worldPosition = (modelMatrix * float4(in.position, 1.0)).xyz;
     out.position = projectionMatrix * viewMatrix * float4(out.worldPosition, 1.0);

@@ -35,7 +35,7 @@ class Camera {
         self.right = simd_float3(1, 0, 0)
         self.up = up
         
-        //updateCameraVectors()
+        updateCameraVectors()
     }
     
     // MARK: - getViewMatrix

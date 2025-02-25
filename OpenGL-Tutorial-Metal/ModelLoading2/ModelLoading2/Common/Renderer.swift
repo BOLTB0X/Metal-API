@@ -29,14 +29,14 @@ class Renderer: NSObject, MTKViewDelegate {
         
         metalKitView.depthStencilPixelFormat = MTLPixelFormat.depth32Float
         
-        self.vertexDescriptor = Renderer.buildVertexDescriptor()
-        self.renderPipelineState = Renderer.buildPipeline(device: self.device,
+        self.vertexDescriptor = BuildManager.buildVertexDescriptor()
+        self.renderPipelineState = BuildManager.buildPipeline(device: self.device,
                                                           metalKitView: metalKitView,
                                                           vertexDescriptor: self.vertexDescriptor,
                                                           vertexFunctionName: "vertexFunction",
                                                           fragmentFunctionName: "fragmentFunction")
-        self.depthStencilState = Renderer.buildDepthStencil(device: self.device)
-        self.model = Renderer.buildModel(device: self.device,
+        self.depthStencilState = BuildManager.buildDepthStencil(device: self.device)
+        self.model = BuildManager.buildModel(device: self.device,
                                          vertexDescriptor: self.vertexDescriptor,
                                          modelName: "backpack",
                                          modelType: "obj")
@@ -60,20 +60,20 @@ class Renderer: NSObject, MTKViewDelegate {
         renderEncoder.setRenderPipelineState(self.renderPipelineState!)
         renderEncoder.setDepthStencilState(self.depthStencilState)
         
-        var modelMatrix = matrix_identity_float4x4
-        modelMatrix.translate(position: simd_float3(repeating: 0.0))
-        modelMatrix.scales(scale: simd_float3(repeating: 0.3))
-        var viewMatrix = self.camera.getViewMatrix()
-        var projectionMatrix = simd_float4x4.perspective(fov: camera.zoom.toRadians(),
-                                                         aspectRatio: Float(view.drawableSize.width / view.drawableSize.height),
-                                                         nearPlane: 0.1,
-                                                         farPlane: 100.0)
+        var viewUniform = ViewUniform(viewMatrix: self.camera.getViewMatrix(),
+                                      projectionMatrix: simd_float4x4.perspective(fov: self.camera.zoom.toRadians(),
+                                                                                  aspectRatio: 1.0,
+                                                                                  nearPlane: 0.1,
+                                                                                  farPlane: 100.0))
+        renderEncoder.setVertexBytes(&viewUniform, length: MemoryLayout<ViewUniform>.size, index: 0)
         
-        renderEncoder.setVertexBytes(&modelMatrix, length: MemoryLayout<simd_float4x4>.size, index: 0)
-
-        renderEncoder.setVertexBytes(&viewMatrix, length: MemoryLayout<simd_float4x4>.size, index: 1)
-        renderEncoder.setVertexBytes(&projectionMatrix, length: MemoryLayout<simd_float4x4>.size, index: 2)
-                
+        var lightUniform = LightUniform(position: self.camera.position,
+                                        direction: self.camera.front,
+                                        ambient: simd_float3(repeating: 0.4),
+                                        diffuse: simd_float3(repeating: 1.0),
+                                        specular: simd_float3(repeating: 0.8))
+        renderEncoder.setFragmentBytes(&lightUniform, length: MemoryLayout<LightUniform>.size, index: 0)
+        
         model?.draw(renderEncoder: renderEncoder)
         
         renderEncoder.endEncoding()
@@ -82,86 +82,9 @@ class Renderer: NSObject, MTKViewDelegate {
         commandBuffer.present(drawable)
         commandBuffer.commit()
     } // draw
-
+    
     // MARK: - mtkView
     func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
     } // mtkView
     
 } // Renderer
-
-// MARK: - build Setup
-extension Renderer {
-    // MARK: - buildVertexDescriptor
-    static private func buildVertexDescriptor() -> MTLVertexDescriptor {
-        let vertexDescriptor = MTLVertexDescriptor()
-        
-        vertexDescriptor.layouts[30].stride = MemoryLayout<Vertex>.stride
-        vertexDescriptor.layouts[30].stepFunction = MTLVertexStepFunction.perVertex
-        vertexDescriptor.layouts[30].stepRate = 1
-
-        vertexDescriptor.attributes[0].format = MTLVertexFormat.float3
-        vertexDescriptor.attributes[0].offset = MemoryLayout.offset(of: \Vertex.position)!
-        vertexDescriptor.attributes[0].bufferIndex = 30
-        
-        vertexDescriptor.attributes[1].format = MTLVertexFormat.float3
-        vertexDescriptor.attributes[1].offset = MemoryLayout.offset(of: \Vertex.normal)!
-        vertexDescriptor.attributes[1].bufferIndex = 30
-
-        vertexDescriptor.attributes[2].format = MTLVertexFormat.float2
-        vertexDescriptor.attributes[2].offset = MemoryLayout.offset(of: \Vertex.texCoord)!
-        vertexDescriptor.attributes[2].bufferIndex = 30
-        
-        return vertexDescriptor
-    } // buildVertexDescriptor
-    
-    // MARK: - buildPipeline
-    static private func buildPipeline(device: MTLDevice,
-                                      metalKitView: MTKView,
-                                      vertexDescriptor: MTLVertexDescriptor,
-                                      vertexFunctionName: String,
-                                      fragmentFunctionName: String) -> MTLRenderPipelineState? {
-        let library = device.makeDefaultLibrary()!
-        let vertexFunction = library.makeFunction(name: vertexFunctionName)!
-        let fragmentFunction = library.makeFunction(name: fragmentFunctionName)!
-        
-        // Render pipeline state
-        let renderPipelineStateDescriptor = MTLRenderPipelineDescriptor()
-        renderPipelineStateDescriptor.vertexFunction = vertexFunction
-        renderPipelineStateDescriptor.fragmentFunction = fragmentFunction
-        renderPipelineStateDescriptor.vertexDescriptor = vertexDescriptor
-        renderPipelineStateDescriptor.colorAttachments[0].pixelFormat = metalKitView.colorPixelFormat
-        renderPipelineStateDescriptor.depthAttachmentPixelFormat = metalKitView.depthStencilPixelFormat
-        
-        do {
-            return try device.makeRenderPipelineState(descriptor: renderPipelineStateDescriptor)
-        } catch {
-            fatalError("renderPipelineState 생성 실패 \(error)")
-        } // do - catch
-        
-    } // buildPipeline
-    
-    // MARK: - buildDepthStencil
-    static private func buildDepthStencil(device: MTLDevice) -> MTLDepthStencilState? {
-        let depthStencilDescriptor = MTLDepthStencilDescriptor()
-        depthStencilDescriptor.depthCompareFunction = .less
-        depthStencilDescriptor.isDepthWriteEnabled = true
-        
-        if let depth = device.makeDepthStencilState(descriptor: depthStencilDescriptor) {
-            return depth
-        }
-        
-        return nil
-    } // buildDepthStencil
-    
-    // MARK: - buildModel
-    static private func buildModel(device: MTLDevice, vertexDescriptor: MTLVertexDescriptor,
-                                   modelName: String, modelType: String) -> Model? {
-        let textureLoader = MTKTextureLoader(device: device)
-        let url = Bundle.main.url(forResource: modelName, withExtension: modelType)!
-        let model = Model()
-        
-        model.loadModel(device: device, url: url, vertexDescriptor: vertexDescriptor, textureLoader: textureLoader)
-        
-        return model
-    } // buildModel
-}

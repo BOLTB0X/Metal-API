@@ -11,14 +11,41 @@ import MetalKit
 class Model {
     // Model property
     private var meshes: [Mesh] = []
-    private let position: simd_float3 = simd_float3(repeating: 0.0)
-    private let rotate: (angle: Float, axis: simd_float3) = (30.0, simd_float3(0.0, 1.0, 0.0))
-    private let sacles: simd_float3 = simd_float3(repeating: 0.4)
     
+    // property
+    private let position: simd_float3 = simd_float3(repeating: 0.0)
+    private let angle: Float = 30.0
+    private let axis: simd_float3 = simd_float3(0.0, 1.0, 0.0)
+    private let scales: simd_float3 = simd_float3(repeating: 0.4)
+    
+    // MARK: - init
+    init(device: MTLDevice,
+         url: URL,
+         vertexDescriptor: MTLVertexDescriptor,
+         textureLoader: MTKTextureLoader) {
+        loadModel(device: device, url: url, vertexDescriptor: vertexDescriptor, textureLoader: textureLoader)
+    } // init
+    
+    // MARK: - draw
+    func draw(renderEncoder: MTLRenderCommandEncoder) {
+        var modelUniform = ModelUniform(position: self.position,
+                                        angle: self.angle,
+                                        axis: self.axis,
+                                        scales: self.scales)
+        renderEncoder.setVertexBytes(&modelUniform, length: MemoryLayout<ModelUniform>.size, index: VertexBufferIndex.modelUniform.rawValue)
+        
+        for mesh in self.meshes {
+            mesh.draw(renderEncoder: renderEncoder)
+        } // for
+        
+    } // draw
+    
+    // MARK: - Private
+    // ...
     // MARK: - loadModel
-    func loadModel(device: MTLDevice, url: URL,
+    private func loadModel(device: MTLDevice, url: URL,
                    vertexDescriptor: MTLVertexDescriptor, textureLoader: MTKTextureLoader) {
-        let modelVertexDescriptor = BuildManager.buildMDLVertexDescriptor(vertexDescriptor: vertexDescriptor)
+        let modelVertexDescriptor = VertexDescriptorManager.buildMDLVertexDescriptor(vertexDescriptor: vertexDescriptor)
         let bufferAllocator = MTKMeshBufferAllocator(device: device)
         let asset = MDLAsset(url: url, vertexDescriptor: modelVertexDescriptor, bufferAllocator: bufferAllocator)
         
@@ -35,35 +62,22 @@ class Model {
             mdlMesh.addOrthTanBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
                                     normalAttributeNamed: MDLVertexAttributeNormal,
                                     tangentAttributeNamed: MDLVertexAttributeTangent)
-            
-            var materials: [Material] = []
-            for mdlSubmesh in mdlMesh.submeshes as! [MDLSubmesh] {
-                let material = Material(mdlMaterial: mdlSubmesh.material, textureLoader: textureLoader)
-                materials.append(material)
-            } // for
-            
-            let mesh = Mesh(mesh: mtkMesh, materials: materials)
+            let mesh = processMesh(mdlMesh: mdlMesh, mtkMesh: mtkMesh, textureLoader: textureLoader)
             self.meshes.append(mesh)
-            
         } // for
         
     } // loadModel
     
-    // MARK: - draw
-    func draw(renderEncoder: MTLRenderCommandEncoder) {
-        var modelMatrix = matrix_identity_float4x4
-        modelMatrix.translate(position: self.position)
-        modelMatrix.rotate(angle: self.rotate.angle.toRadians(), axis: self.rotate.axis)
-        modelMatrix.scales(scale: self.sacles)
-        let normalMatrix = modelMatrix.conversion_3x3().inverse.transpose
-        var modelUniform = ModelUniform(modelMatrix: modelMatrix, normalMatrix: normalMatrix)
+    // MARK: - processMesh
+    private func processMesh(mdlMesh: MDLMesh, mtkMesh: MTKMesh, textureLoader: MTKTextureLoader) -> Mesh {
+        var materials: [Material] = []
         
-        renderEncoder.setVertexBytes(&modelUniform, length: MemoryLayout<ModelUniform>.size, index: 1)
-        
-        for mesh in self.meshes {
-            mesh.draw(renderEncoder: renderEncoder)
+        for mdlSubmesh in mdlMesh.submeshes as! [MDLSubmesh] {
+            let material = Material(mdlMaterial: mdlSubmesh.material, textureLoader: textureLoader)
+            materials.append(material)
         } // for
         
-    } // draw
+        return Mesh(mesh: mtkMesh, materials: materials)
+    } // processMesh
     
 } // Model

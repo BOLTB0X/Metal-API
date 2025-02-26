@@ -13,9 +13,15 @@ struct ModelUniform {
     var modelMatrix: simd_float4x4
     var normalMatrix: simd_float3x3
     
-    init(modelMatrix: simd_float4x4, normalMatrix: simd_float3x3) {
-        self.modelMatrix = modelMatrix
-        self.normalMatrix = normalMatrix
+    init(position: simd_float3,
+         angle: Float,
+         axis: simd_float3,
+         scales: simd_float3) {
+        self.modelMatrix = matrix_identity_float4x4
+        self.modelMatrix.translate(position: position)
+        self.modelMatrix.rotate(angle: angle.toRadians(), axis: axis)
+        self.modelMatrix.scales(scale: scales)
+        self.normalMatrix = self.modelMatrix.conversion_3x3().inverse.transpose
     } // init
     
 } // ModelUniform
@@ -24,7 +30,7 @@ struct ModelUniform {
 struct ViewUniform {
     var viewMatrix: simd_float4x4
     var projectionMatrix: simd_float4x4
-
+    
     init(viewMatrix: simd_float4x4,
          projectionMatrix: simd_float4x4) {
         self.viewMatrix = viewMatrix
@@ -57,10 +63,25 @@ struct MaterialStateUniform {
     var hasDiffuseTexture: Bool
     var hasSpecularTexture: Bool
     var hasNormalTexture: Bool
+    var hasRoughnessTexture: Bool
+    var hasAoTexture: Bool
     
-    init(hasDiffuseTexture: Bool, hasSpecularTexture: Bool, hasNormalTexture: Bool) {
+    init(hasDiffuseTexture: Bool,
+         hasSpecularTexture: Bool,
+         hasNormalTexture: Bool,
+         hasRoughnessTexture: Bool,
+         hasAoTexture: Bool) {
         self.hasDiffuseTexture = hasDiffuseTexture
         self.hasSpecularTexture = hasSpecularTexture
         self.hasNormalTexture = hasNormalTexture
-    }
+        self.hasRoughnessTexture = hasRoughnessTexture
+        self.hasAoTexture = hasAoTexture
+    } // init
+    
 } // MaterialStateUniform
+
+// MARK: - FragmentBufferIndex
+enum FragmentBufferIndex: Int {
+    case lightUniform
+    case materialStateUniform
+} // FragmentBufferIndex

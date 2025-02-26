@@ -45,6 +45,14 @@ class Camera {
                                     upVec: up)
     } // getViewMatrix
     
+    // MARK: - getProjectionMatrix
+    func getProjectionMatrix() -> simd_float4x4 {
+        return simd_float4x4.perspective(fov: self.zoom.toRadians(),
+                                         aspectRatio: 1.0,
+                                         nearPlane: 0.1,
+                                         farPlane: 100.0)
+    } // getProjectionMatrix
+    
     // MARK: - updateCameraVectors
     private func updateCameraVectors() {
         let yawRad = yaw.toRadians()

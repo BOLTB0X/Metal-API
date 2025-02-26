@@ -34,4 +34,6 @@ struct MaterialStateUniform {
     bool hasDiffuseTexture;
     bool hasSpecularTexture;
     bool hasNormalTexture;
+    bool hasRoughnessTexture;
+    bool hasAoTexture;
 }; // MaterialStateUniform

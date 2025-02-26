@@ -12,14 +12,18 @@ struct Material {
     var diffuseTexture: MTLTexture?
     var specularTexture: MTLTexture?
     var normalTexture: MTLTexture?
+    var roughnessTexture: MTLTexture?
+    var aoTexture: MTLTexture?
     
     static private var textureMap: [MDLTexture?: MTLTexture?] = [:]
     
     // MARK: - init
     init(mdlMaterial: MDLMaterial?, textureLoader: MTKTextureLoader) {
         self.diffuseTexture = loadTexture(.baseColor, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
-        self.specularTexture = loadTexture(.specular,  mdlMaterial: mdlMaterial, textureLoader: textureLoader)
+        self.specularTexture = loadTexture(.specular, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
         self.normalTexture = loadTexture(.tangentSpaceNormal, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
+        self.roughnessTexture = loadTexture(.roughness, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
+        self.aoTexture = loadTexture(.ambientOcclusion, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
     } // init
     
     // MARK: - loadTexture
@@ -40,3 +44,12 @@ struct Material {
     } // loadTexture
     
 } // Material
+
+// MARK: - MaterialIndex
+enum MaterialIndex: Int {
+    case diffuseTexture
+    case specularTexture
+    case normalTexture
+    case roughnessTexture
+    case aoTexture
+} // MaterialIndex

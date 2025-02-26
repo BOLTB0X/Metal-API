@@ -20,18 +20,27 @@ class Mesh {
     
     // MARK: - draw
     func draw(renderEncoder: MTLRenderCommandEncoder) {
-        let vertexBuffer = mesh.vertexBuffers[0]
-        renderEncoder.setVertexBuffer(vertexBuffer.buffer, offset: vertexBuffer.offset, index: 30)
+        guard let vertexBuffer = mesh.vertexBuffers.first else {
+            return
+        }
+        
+        renderEncoder.setVertexBuffer(vertexBuffer.buffer,
+                                      offset: vertexBuffer.offset,
+                                      index: VertexBufferIndex.attributes.rawValue)
         
         for (submesh, material) in zip(mesh.submeshes, materials) {
-            renderEncoder.setFragmentTexture(material.diffuseTexture, index: 0)
-            renderEncoder.setFragmentTexture(material.specularTexture, index: 1)
-            renderEncoder.setFragmentTexture(material.normalTexture, index: 2)
+            renderEncoder.setFragmentTexture(material.diffuseTexture, index: MaterialIndex.diffuseTexture.rawValue)
+            renderEncoder.setFragmentTexture(material.specularTexture, index: MaterialIndex.specularTexture.rawValue)
+            renderEncoder.setFragmentTexture(material.normalTexture, index: MaterialIndex.normalTexture.rawValue)
+            renderEncoder.setFragmentTexture(material.roughnessTexture, index: MaterialIndex.roughnessTexture.rawValue)
+            renderEncoder.setFragmentTexture(material.aoTexture, index: MaterialIndex.aoTexture.rawValue)
             
             var stateUniform = MaterialStateUniform(hasDiffuseTexture: material.diffuseTexture != nil,
-                                             hasSpecularTexture: material.specularTexture != nil,
-                                             hasNormalTexture: material.normalTexture != nil)
-            renderEncoder.setFragmentBytes(&stateUniform, length: MemoryLayout<MaterialStateUniform>.size, index: 1)
+                                                    hasSpecularTexture: material.specularTexture != nil,
+                                                    hasNormalTexture: material.normalTexture != nil,
+                                                    hasRoughnessTexture: material.roughnessTexture != nil,
+                                                    hasAoTexture: material.aoTexture != nil)
+            renderEncoder.setFragmentBytes(&stateUniform, length: MemoryLayout<MaterialStateUniform>.size, index: FragmentBufferIndex.materialStateUniform.rawValue)
             
             // Draw
             renderEncoder.drawIndexedPrimitives(type: MTLPrimitiveType.triangle,

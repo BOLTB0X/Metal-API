@@ -5,8 +5,7 @@
 //  Created by KyungHeon Lee on 2025/02/25.
 //
 
-import Foundation
-import simd
+import MetalKit
 
 // MARK: - ModelUniform
 struct ModelUniform {
@@ -66,18 +65,14 @@ struct MaterialStateUniform {
     var hasRoughnessTexture: Bool
     var hasAoTexture: Bool
     
-    init(hasDiffuseTexture: Bool,
-         hasSpecularTexture: Bool,
-         hasNormalTexture: Bool,
-         hasRoughnessTexture: Bool,
-         hasAoTexture: Bool) {
-        self.hasDiffuseTexture = hasDiffuseTexture
-        self.hasSpecularTexture = hasSpecularTexture
-        self.hasNormalTexture = hasNormalTexture
-        self.hasRoughnessTexture = hasRoughnessTexture
-        self.hasAoTexture = hasAoTexture
+    init(textures: [MTLTexture?]) {
+        self.hasDiffuseTexture = textures[MaterialIndex.diffuseTexture.rawValue] != nil
+        self.hasSpecularTexture = textures[MaterialIndex.specularTexture.rawValue] != nil
+        self.hasNormalTexture = textures[MaterialIndex.normalTexture.rawValue] != nil
+        self.hasRoughnessTexture = textures[MaterialIndex.roughnessTexture.rawValue] != nil
+        self.hasAoTexture = textures[MaterialIndex.aoTexture.rawValue] != nil
     } // init
-    
+
 } // MaterialStateUniform
 
 // MARK: - FragmentBufferIndex

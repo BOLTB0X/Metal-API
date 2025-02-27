@@ -50,8 +50,8 @@ inline float4 applyNormalmaps(LightUniform light,
 
 // MARK: - vertexFunction
 vertex VertexOut vertexFunction(VertexIn in [[stage_in]],
-                                constant ViewUniform& viewUniform [[buffer(0)]],
-                                constant ModelUniform& modelUniform [[buffer(1)]]) {
+                                constant ViewUniform& viewUniform [[buffer(vertexBufferIndexView)]],
+                                constant ModelUniform& modelUniform [[buffer(vertexBufferIndexModel)]]) {
     VertexOut out;
     out.worldPosition = (modelUniform.modelMatrix * float4(in.position, 1.0)).xyz;
     out.position = viewUniform.projectionMatrix * viewUniform.viewMatrix * float4(out.worldPosition, 1.0);
@@ -74,13 +74,13 @@ vertex VertexOut vertexFunction(VertexIn in [[stage_in]],
 
 // MARK: - fragmentFunction
 fragment float4 fragmentFunction(VertexOut in [[stage_in]],
-                                 texture2d<float> diffuseTexture [[texture(0)]],
-                                 texture2d<float> specularTexture [[texture(1)]],
-                                 texture2d<float> normalTexture [[texture(2)]],
-                                 texture2d<float> roughnessTexture [[texture(3)]],
-                                 texture2d<float> aoTexture [[texture(4)]],
-                                 constant LightUniform& lightUniform [[buffer(0)]],
-                                 constant MaterialStateUniform& stateUniform [[buffer(1)]]) {
+                                 texture2d<float> diffuseTexture [[texture(textureIndexDiffuse)]],
+                                 texture2d<float> specularTexture [[texture(textureIndexSpecular)]],
+                                 texture2d<float> normalTexture [[texture(textureIndexNormal)]],
+                                 texture2d<float> roughnessTexture [[texture(textureIndexRoughness)]],
+                                 texture2d<float> aoTexture [[texture(textureIndexAo)]],
+                                 constant LightUniform& lightUniform [[buffer(fragmentBufferIndexLight)]],
+                                 constant MaterialStateUniform& stateUniform [[buffer(fragmentBufferIndexMaterialState)]]) {
     constexpr sampler colorSampler(mip_filter::linear, mag_filter::linear, min_filter::linear, address::repeat);
 
     float4 diffuseColor = (stateUniform.hasDiffuseTexture ? diffuseTexture.sample(colorSampler, in.texCoord) : float4(1.0));

@@ -37,3 +37,18 @@ struct MaterialStateUniform {
     bool hasRoughnessTexture;
     bool hasAoTexture;
 }; // MaterialStateUniform
+
+// MARK: - TextureIndex
+enum TextureIndex {
+    textureIndexDiffuse,
+    textureIndexSpecular,
+    textureIndexNormal,
+    textureIndexRoughness,
+    textureIndexAo
+}; // TextureIndex
+
+// MARK: - FragmentBufferIndex
+enum FragmentBufferIndex {
+    fragmentBufferIndexLight,
+    fragmentBufferIndexMaterialState
+}; // FragmentBufferIndex

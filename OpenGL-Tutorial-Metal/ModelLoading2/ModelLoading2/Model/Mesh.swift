@@ -29,18 +29,14 @@ class Mesh {
                                       index: VertexBufferIndex.attributes.rawValue)
         
         for (submesh, material) in zip(mesh.submeshes, materials) {
-            renderEncoder.setFragmentTexture(material.diffuseTexture, index: MaterialIndex.diffuseTexture.rawValue)
-            renderEncoder.setFragmentTexture(material.specularTexture, index: MaterialIndex.specularTexture.rawValue)
-            renderEncoder.setFragmentTexture(material.normalTexture, index: MaterialIndex.normalTexture.rawValue)
-            renderEncoder.setFragmentTexture(material.roughnessTexture, index: MaterialIndex.roughnessTexture.rawValue)
-            renderEncoder.setFragmentTexture(material.aoTexture, index: MaterialIndex.aoTexture.rawValue)
-            
-            var stateUniform = MaterialStateUniform(hasDiffuseTexture: material.diffuseTexture != nil,
-                                                    hasSpecularTexture: material.specularTexture != nil,
-                                                    hasNormalTexture: material.normalTexture != nil,
-                                                    hasRoughnessTexture: material.roughnessTexture != nil,
-                                                    hasAoTexture: material.aoTexture != nil)
-            renderEncoder.setFragmentBytes(&stateUniform, length: MemoryLayout<MaterialStateUniform>.size, index: FragmentBufferIndex.materialStateUniform.rawValue)
+            MaterialIndex.allCases.forEach { index in
+                renderEncoder.setFragmentTexture(material.textures[index.rawValue], index: index.rawValue)
+            } // forEach
+                        
+            var stateUniform = MaterialStateUniform(textures: material.textures)
+            renderEncoder.setFragmentBytes(&stateUniform,
+                                           length: MemoryLayout<MaterialStateUniform>.size,
+                                           index: FragmentBufferIndex.materialStateUniform.rawValue)
             
             // Draw
             renderEncoder.drawIndexedPrimitives(type: MTLPrimitiveType.triangle,

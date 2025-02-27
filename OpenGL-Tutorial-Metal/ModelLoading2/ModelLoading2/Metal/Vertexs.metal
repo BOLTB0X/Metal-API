@@ -26,3 +26,9 @@ struct VertexOut {
     float3 B;
     float3 N;
 }; // VertexOut
+
+// MARK: - VertexBufferIndex
+enum VertexBufferIndex {
+    vertexBufferIndexView,
+    vertexBufferIndexModel
+}; // VertexBufferIndex

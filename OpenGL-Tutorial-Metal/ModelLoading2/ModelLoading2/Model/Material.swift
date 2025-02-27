@@ -9,21 +9,15 @@ import MetalKit
 
 // MARK: - Material
 struct Material {
-    var diffuseTexture: MTLTexture?
-    var specularTexture: MTLTexture?
-    var normalTexture: MTLTexture?
-    var roughnessTexture: MTLTexture?
-    var aoTexture: MTLTexture?
+    var textures: [MTLTexture?] = Array(repeating: nil, count: MaterialIndex.allCases.count)
     
     static private var textureMap: [MDLTexture?: MTLTexture?] = [:]
     
     // MARK: - init
     init(mdlMaterial: MDLMaterial?, textureLoader: MTKTextureLoader) {
-        self.diffuseTexture = loadTexture(.baseColor, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
-        self.specularTexture = loadTexture(.specular, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
-        self.normalTexture = loadTexture(.tangentSpaceNormal, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
-        self.roughnessTexture = loadTexture(.roughness, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
-        self.aoTexture = loadTexture(.ambientOcclusion, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
+        MaterialIndex.allCases.forEach { index in
+            textures[index.rawValue] = loadTexture(index.semantic, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
+        } // forEach
     } // init
     
     // MARK: - loadTexture
@@ -46,10 +40,21 @@ struct Material {
 } // Material
 
 // MARK: - MaterialIndex
-enum MaterialIndex: Int {
+enum MaterialIndex: Int, CaseIterable {
     case diffuseTexture
     case specularTexture
     case normalTexture
     case roughnessTexture
     case aoTexture
+    
+    var semantic: MDLMaterialSemantic {
+        switch self {
+        case .diffuseTexture: return .baseColor
+        case .specularTexture: return .specular
+        case .normalTexture: return .tangentSpaceNormal
+        case .roughnessTexture: return .roughness
+        case .aoTexture: return .ambientOcclusion
+        }
+    } // semantic
+    
 } // MaterialIndex

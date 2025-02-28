@@ -751,6 +751,268 @@
 
 </details>
 
+### Model Loading
+
+<details>
+<summary> Mesh </summary>
+
+```swift
+// MARK: - Material
+struct Material {
+    var textures: [MTLTexture?] = Array(repeating: nil, count: MaterialIndex.allCases.count)
+
+    static private var textureMap: [MDLTexture?: MTLTexture?] = [:]
+
+    // MARK: - init
+    init(mdlMaterial: MDLMaterial?, textureLoader: MTKTextureLoader) {
+        MaterialIndex.allCases.forEach { index in
+            textures[index.rawValue] = loadTexture(index.semantic, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
+        } // forEach
+    } // init
+
+    // MARK: - loadTexture
+    private func loadTexture(_ semantic: MDLMaterialSemantic,
+                             mdlMaterial: MDLMaterial?,
+                             textureLoader: MTKTextureLoader) -> MTLTexture? {
+        guard let materialProperty = mdlMaterial?.property(with: semantic) else { return nil }
+        guard let sourceTexture = materialProperty.textureSamplerValue?.texture else { return nil }
+
+        if let texture = Material.textureMap[sourceTexture] {
+            return texture
+        }
+
+        let texture = try? textureLoader.newTexture(texture: sourceTexture, options: nil)
+        Material.textureMap[sourceTexture] = texture
+
+        return texture
+    } // loadTexture
+
+} // Material
+```
+
+<br/>
+
+```swift
+// MARK: - Mesh
+class Mesh {
+    private var mesh: MTKMesh
+    private var materials: [Material]
+
+    // MARK: - init
+    init(mesh: MTKMesh, materials: [Material]) {
+        self.mesh = mesh
+        self.materials = materials
+    } // init
+
+    // MARK: - draw
+    func draw(renderEncoder: MTLRenderCommandEncoder) {
+        guard let vertexBuffer = mesh.vertexBuffers.first else {
+            return
+        }
+
+        renderEncoder.setVertexBuffer(vertexBuffer.buffer,
+                                      offset: vertexBuffer.offset,
+                                      index: VertexBufferIndex.attributes.rawValue)
+
+        for (submesh, material) in zip(mesh.submeshes, materials) {
+            MaterialIndex.allCases.forEach { index in
+                renderEncoder.setFragmentTexture(material.textures[index.rawValue], index: index.rawValue)
+            } // forEach
+
+            var stateUniform = MaterialStateUniform(textures: material.textures)
+            renderEncoder.setFragmentBytes(&stateUniform,
+                                           length: MemoryLayout<MaterialStateUniform>.size,
+                                           index: FragmentBufferIndex.materialStateUniform.rawValue)
+
+            // Draw
+            renderEncoder.drawIndexedPrimitives(type: MTLPrimitiveType.triangle,
+                                                indexCount: submesh.indexCount,
+                                                indexType: submesh.indexType,
+                                                indexBuffer: submesh.indexBuffer.buffer,
+                                                indexBufferOffset: submesh.indexBuffer.offset)
+        } // for
+
+    } // draw
+
+} // Mesh
+```
+
+<br/>
+
+```swift
+// MARK: - Model
+class Model {
+    // Model property
+    private var meshes: [Mesh] = []
+
+    // property
+    private let position: simd_float3 = simd_float3(repeating: 0.0)
+    private let angle: Float = 30.0
+    private let axis: simd_float3 = simd_float3(0.0, 1.0, 0.0)
+    private let scales: simd_float3 = simd_float3(repeating: 0.4)
+
+    // MARK: - init
+    init(device: MTLDevice,
+         url: URL,
+         vertexDescriptor: MTLVertexDescriptor,
+         textureLoader: MTKTextureLoader) {
+        loadModel(device: device, url: url, vertexDescriptor: vertexDescriptor, textureLoader: textureLoader)
+    } // init
+
+    // MARK: - draw
+    func draw(renderEncoder: MTLRenderCommandEncoder) {
+        var modelUniform = ModelUniform(position: self.position,
+                                        angle: self.angle,
+                                        axis: self.axis,
+                                        scales: self.scales)
+        renderEncoder.setVertexBytes(&modelUniform, length: MemoryLayout<ModelUniform>.size, index: VertexBufferIndex.modelUniform.rawValue)
+
+        for mesh in self.meshes {
+            mesh.draw(renderEncoder: renderEncoder)
+        } // for
+
+    } // draw
+
+    // MARK: - Private
+    // ...
+    // MARK: - loadModel
+    private func loadModel(device: MTLDevice, url: URL,
+                   vertexDescriptor: MTLVertexDescriptor, textureLoader: MTKTextureLoader) {
+        let modelVertexDescriptor = VertexDescriptorManager.buildMDLVertexDescriptor(vertexDescriptor: vertexDescriptor)
+        let bufferAllocator = MTKMeshBufferAllocator(device: device)
+        let asset = MDLAsset(url: url, vertexDescriptor: modelVertexDescriptor, bufferAllocator: bufferAllocator)
+
+        asset.loadTextures()
+
+        guard let (mdlMeshes, mtkMeshes) = try? MTKMesh.newMeshes(asset: asset, device: device) else {
+            print("meshes 생성 실패")
+            return
+        }
+
+        self.meshes.reserveCapacity(mdlMeshes.count)
+
+        for (mdlMesh, mtkMesh) in zip(mdlMeshes, mtkMeshes) {
+            mdlMesh.addOrthTanBasis(forTextureCoordinateAttributeNamed: MDLVertexAttributeTextureCoordinate,
+                                    normalAttributeNamed: MDLVertexAttributeNormal,
+                                    tangentAttributeNamed: MDLVertexAttributeTangent)
+            let mesh = processMesh(mdlMesh: mdlMesh, mtkMesh: mtkMesh, textureLoader: textureLoader)
+            self.meshes.append(mesh)
+        } // for
+
+    } // loadModel
+
+    // MARK: - processMesh
+    private func processMesh(mdlMesh: MDLMesh, mtkMesh: MTKMesh, textureLoader: MTKTextureLoader) -> Mesh {
+        var materials: [Material] = []
+
+        for mdlSubmesh in mdlMesh.submeshes as! [MDLSubmesh] {
+            let material = Material(mdlMaterial: mdlSubmesh.material, textureLoader: textureLoader)
+            materials.append(material)
+        } // for
+
+        return Mesh(mesh: mtkMesh, materials: materials)
+    } // processMesh
+
+} // Model
+```
+
+</details>
+
+<details>
+<summary> Model </summary>
+
+<p align="center">
+  <table style="width:100%; text-align:center; border-spacing:20px;">
+    <tr>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/model%20loading.png?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/model%20loading2.png?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EB%AA%A8%EB%8D%B8%EB%A7%811.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Model 1
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Model 2
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Model 3
+      </p>
+      </td>
+    </tr>
+  </table>
+</p>
+
+<p align="center">
+  <table style="width:100%; text-align:center; border-spacing:20px;">
+    <tr>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EC%A1%B0%EB%AA%85%EC%A0%81%EC%9A%A9.png?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/%EB%85%B8%EB%A7%90%EB%A7%B5%EC%A0%81%EC%9A%A9.png?raw=true" 
+             alt="image 1" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+      <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/roughness-ao-%EC%A0%81%EC%9A%A9.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      조명 적용
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Normal map
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Roughness + AO
+      </p>
+      </td>
+    </tr>
+  </table>
+</p>
+
+</details>
+
 <!--
 
 - Lesson 1: Hello Metal
@@ -770,6 +1032,10 @@
 
 - [공식문서 - Metal](https://developer.apple.com/documentation/metal)
 
+- [공식문서 - Model I/O](https://developer.apple.com/documentation/modelio)
+
+- [공식문서 - MetalKit](https://developer.apple.com/documentation/metalkit)
+
 - [Metal Tutorial](https://metaltutorial.com/)
 
 - [kodeco - metal tutorial](https://www.kodeco.com/7475-metal-tutorial-getting-started#toc-anchor-011)
@@ -785,3 +1051,5 @@
 - [블로그 참조 - eunjin3786(샘플러에 대해 알아보자)](https://eunjin3786.tistory.com/190)
 
 - [블로그 참조 - ally10(Metal 스터디)](https://ally10.tistory.com/57)
+
+- [블로그 참조 - Rendering Physically-Based ModelIO Materials](https://metalbyexample.com/modelio-materials/)

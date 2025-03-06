@@ -32,7 +32,7 @@ inline float4 calcPhongLight(float4 diffuseColor,
     float3 viewDir = normalize(cameraPosition - worldPosition);
     float3 reflectDir = reflect(lightDirection, norm);
     float spec = pow(max(dot(reflectDir, viewDir), 0.0), 32.0);
-    float3 specular = spec * lightSpecular * specularColor.rgb;
+    float3 specular = spec * lightSpecular * specularColor.r;
     
     return float4(ambient + (diffuse + specular) * visibility, 1.0);
 } // calcPhongLight
@@ -66,7 +66,7 @@ vertex float4 shadow_VertexFunction(VertexIn in [[stage_in]],
                                     constant ViewUniform& viewUniform [[buffer(vertexBufferIndexView)]],
                                     constant ModelUniform& modelUniform [[buffer(vertexBufferIndexModel)]]) {
     float3 worldPosition = (modelUniform.modelMatrix * float4(in.position, 1.0)).xyz;
-    float4 position = viewUniform.viewMatrix * float4(worldPosition, 1.0);
+    float4 position = (viewUniform.viewMatrix * viewUniform.projectionMatrix) * float4(worldPosition, 1.0);
     
     return position;
 } // shadow_VertexFunction
@@ -85,7 +85,7 @@ fragment float4 fragmentFunction(VertexOut in [[stage_in]],
 
     float4 diffuseColor = (stateUniform.hasDiffuseTexture ? diffuseTexture.sample(colorSampler, in.texCoord) : float4(1.0));
     float4 specularColor = (stateUniform.hasSpecularTexture ? specularTexture.sample(colorSampler, in.texCoord) : float4(1.0));
-    float4 normalColor = (stateUniform.hasNormalTexture ? normalTexture.sample(colorSampler, in.texCoord) : float4(1.0));
+    float4 normalColor = (stateUniform.hasNormalTexture ? normalTexture.sample(colorSampler, in.texCoord) : float4(0.5, 0.5, 1.0, 1.0));
     
     // normal
     normalColor = normalize(normalColor * 2.0 - 1.0);

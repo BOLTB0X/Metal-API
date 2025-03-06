@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BE483CAE2D77007700DACB6E /* Sponza.usdz in Resources */ = {isa = PBXBuildFile; fileRef = BE483CAD2D77007700DACB6E /* Sponza.usdz */; };
 		BE6412842D6AFF6F007621DA /* Extension+Float.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6412832D6AFF6F007621DA /* Extension+Float.swift */; };
 		BE6412862D6AFFA9007621DA /* Extension+simd_float3x3.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6412852D6AFFA9007621DA /* Extension+simd_float3x3.swift */; };
 		BE6412882D6AFFF8007621DA /* Extension+simd_float4x4.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6412872D6AFFF8007621DA /* Extension+simd_float4x4.swift */; };
@@ -31,11 +30,11 @@
 		BE9DF79C2D6ABC72002D3501 /* RendererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9DF79B2D6ABC72002D3501 /* RendererView.swift */; };
 		BEA41A4B2D6D6B230067BA67 /* Uniforms.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA41A4A2D6D6B230067BA67 /* Uniforms.swift */; };
 		BEA41A4D2D6D70610067BA67 /* Uniforms.metal in Sources */ = {isa = PBXBuildFile; fileRef = BEA41A4C2D6D70610067BA67 /* Uniforms.metal */; };
+		BEAA675D2D7917A100BE8549 /* Sponza_Scene.usdz in Resources */ = {isa = PBXBuildFile; fileRef = BEAA675C2D7917A100BE8549 /* Sponza_Scene.usdz */; };
 		BEAE6C8E2D6D967F003559D6 /* DescriptorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEAE6C8D2D6D967F003559D6 /* DescriptorManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BE483CAD2D77007700DACB6E /* Sponza.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Sponza.usdz; sourceTree = "<group>"; };
 		BE6412832D6AFF6F007621DA /* Extension+Float.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Float.swift"; sourceTree = "<group>"; };
 		BE6412852D6AFFA9007621DA /* Extension+simd_float3x3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+simd_float3x3.swift"; sourceTree = "<group>"; };
 		BE6412872D6AFFF8007621DA /* Extension+simd_float4x4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+simd_float4x4.swift"; sourceTree = "<group>"; };
@@ -60,6 +59,7 @@
 		BE9DF79B2D6ABC72002D3501 /* RendererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererView.swift; sourceTree = "<group>"; };
 		BEA41A4A2D6D6B230067BA67 /* Uniforms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uniforms.swift; sourceTree = "<group>"; };
 		BEA41A4C2D6D70610067BA67 /* Uniforms.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Uniforms.metal; sourceTree = "<group>"; };
+		BEAA675C2D7917A100BE8549 /* Sponza_Scene.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Sponza_Scene.usdz; sourceTree = "<group>"; };
 		BEAE6C8D2D6D967F003559D6 /* DescriptorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptorManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,7 +117,7 @@
 		BE7920C62D6AF18B00C4025E /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				BE483CAD2D77007700DACB6E /* Sponza.usdz */,
+				BEAA675C2D7917A100BE8549 /* Sponza_Scene.usdz */,
 				BE9DF77B2D6AB7F3002D3501 /* Assets.xcassets */,
 			);
 			path = Resource;
@@ -260,7 +260,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE483CAE2D77007700DACB6E /* Sponza.usdz in Resources */,
+				BEAA675D2D7917A100BE8549 /* Sponza_Scene.usdz in Resources */,
 				BE9DF77F2D6AB7F3002D3501 /* Preview Assets.xcassets in Resources */,
 				BE9DF77C2D6AB7F3002D3501 /* Assets.xcassets in Resources */,
 			);

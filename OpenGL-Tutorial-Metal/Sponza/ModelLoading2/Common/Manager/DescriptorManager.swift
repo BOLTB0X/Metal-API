@@ -56,7 +56,31 @@ struct DescriptorManager {
             fatalError("renderPipelineState 생성 실패 \(error)")
         } // do - catch
         
-    } // buildPipeline
+    } // buildPipelineDescriptor
+    
+    // MARK: - buildShadowPipelineDescriptor
+    static func buildShadowPipelineDescriptor(device: MTLDevice,
+                                              shadowMap: MTLTexture?,
+                                              vertexDescriptor: MTLVertexDescriptor,
+                                              vertexFunctionName: String,
+                                              fragmentFunctionName: String) -> MTLRenderPipelineState? {
+        let library = device.makeDefaultLibrary()!
+        let vertexFunction = library.makeFunction(name: vertexFunctionName)!
+        let fragmentFunction = library.makeFunction(name: fragmentFunctionName)!
+        
+        let renderPipelineStateDescriptor = MTLRenderPipelineDescriptor()
+        renderPipelineStateDescriptor.vertexFunction = vertexFunction
+        renderPipelineStateDescriptor.fragmentFunction = fragmentFunction
+        renderPipelineStateDescriptor.vertexDescriptor = vertexDescriptor
+        renderPipelineStateDescriptor.depthAttachmentPixelFormat = shadowMap!.pixelFormat
+        
+        do {
+            return try device.makeRenderPipelineState(descriptor: renderPipelineStateDescriptor)
+        } catch {
+            fatalError("renderPipelineState 생성 실패 \(error)")
+        } // do - catch
+        
+    } // buildShadowPipelineDescriptor
     
     // MARK: - buildDepthStencilDescriptor
     static func buildDepthStencilDescriptor(device: MTLDevice) -> MTLDepthStencilState? {

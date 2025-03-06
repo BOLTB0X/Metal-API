@@ -30,7 +30,7 @@ class RendererManager: NSObject, MTKViewDelegate {
     private let modelFragmentFunction: String = "fragmentFunction"
     private let shadowVertexFunction: String = "shadow_VertexFunction"
     private let shadowFragmentFunction: String = "shadow_FragmentFunction"
-    private let modelName: String = "Sponza"
+    private let modelName: String = "Sponza_Scene"
     private let modelType: String = "usdz"
     
     // MARK: - init
@@ -40,8 +40,8 @@ class RendererManager: NSObject, MTKViewDelegate {
         
         metalKitView.depthStencilPixelFormat = MTLPixelFormat.depth32Float
         
-        self.modelPass = ModelPass(device: self.device, mkView: metalKitView, vertexFunction: modelVertexFunction, fragmentFunction: modelFragmentFunction)
         self.shadowPass = ShadowPass(device: self.device, mkView: metalKitView, vertexFunction: shadowVertexFunction, fragmentFunction: shadowFragmentFunction)
+        self.modelPass = ModelPass(device: self.device, mkView: metalKitView, vertexFunction: modelVertexFunction, fragmentFunction: modelFragmentFunction)
         self.depthStencilState = DescriptorManager.buildDepthStencilDescriptor(device: self.device)
         
         super.init()

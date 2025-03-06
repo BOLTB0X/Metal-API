@@ -15,8 +15,7 @@ class ModelPass {
     private var renderPipelineState: MTLRenderPipelineState?
     private var shadowSampler: MTLSamplerState?
 
-    private let lightInfo: (ambient: simd_float3, diffuse: simd_float3, specular: simd_float3) = (simd_float3(repeating: 0.4), simd_float3(repeating: 1.0), simd_float3(repeating: 0.8))
-    private let lightDir : simd_float3 = simd_float3(0.5, 0.9, 0.2)
+    private let lightDir : simd_float3 = simd_float3(0.436436, -0.872872, 0.218218)
     
     // MARK: - init
     init(device: MTLDevice, mkView: MTKView,
@@ -41,13 +40,16 @@ class ModelPass {
                 camera: inout Camera,
                 shadowMap: MTLTexture?) {
         let renderPassDescriptor = DescriptorManager.buildMTLRenderPassDescriptor(view: mkView,
-                                                                                        r: 0.0,
-                                                                                        g: 0.0,
-                                                                                        b: 0.0,
+                                                                                        r: 0.416,
+                                                                                        g: 0.636,
+                                                                                        b: 0.722,
                                                                                         alpha: 1.0)
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
         renderEncoder.setRenderPipelineState(self.renderPipelineState!)
         renderEncoder.setDepthStencilState(depthStencilState)
+        
+        renderEncoder.setFrontFacing(.clockwise)
+        renderEncoder.setCullMode(.back)
         
         var viewUniform = ViewUniform(viewMatrix: camera.getViewMatrix(),
                                       projectionMatrix: camera.getProjectionMatrix())
@@ -56,6 +58,7 @@ class ModelPass {
         var lightUniform = LightUniform(viewMatrix: camera.getViewMatrix(eyePosition: -self.lightDir),
                                         projectionMatrix: simd_float4x4.identity().orthographicProjection(l: -10.0, r: 10.0, bottom: -10.0, top: 10.0, zNear: -25.0, zFar: 25.0))
         renderEncoder.setFragmentBytes(&lightUniform, length: MemoryLayout<LightUniform>.size, index: FragmentBufferIndex.lightUniform.rawValue)
+        
         renderEncoder.setFragmentBytes(&camera.position, length: MemoryLayout<simd_float3>.size, index: FragmentBufferIndex.cameraPosition.rawValue)
         
         renderEncoder.setFragmentTexture(shadowMap, index: 0)

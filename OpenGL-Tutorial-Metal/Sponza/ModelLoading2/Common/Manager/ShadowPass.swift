@@ -19,11 +19,11 @@ class ShadowPass {
          vertexFunction: String, fragmentFunction: String) {
         self.vertexDescriptor = DescriptorManager.buildVertexDescriptor(attributeLength: 1)
         self.shadowMap = DescriptorManager.buildMTLTextureDescriptor(device: device)
-        self.renderPipelineState = DescriptorManager.buildPipelineDescriptor(device: device,
-                                                                             metalKitView: mkView,
-                                                                             vertexDescriptor: self.vertexDescriptor,
-                                                                             vertexFunctionName: vertexFunction,
-                                                                             fragmentFunctionName: fragmentFunction)
+        self.renderPipelineState = DescriptorManager.buildShadowPipelineDescriptor(device: device,
+                                                                                   shadowMap: self.shadowMap,
+                                                                                   vertexDescriptor: self.vertexDescriptor,
+                                                                                   vertexFunctionName: vertexFunction,
+                                                                                   fragmentFunctionName: fragmentFunction)
     } // init
     
     // MARK: - encode
@@ -32,11 +32,12 @@ class ShadowPass {
                 depthStencilState: MTLDepthStencilState?,
                 render: (MTLRenderCommandEncoder) -> Void,
                 camera: Camera) {
-        let renderPassDescriptor = DescriptorManager.buildMTLRenderPassDescriptor(view: mkView,
-                                                                                        r: 0.0,
-                                                                                        g: 0.0,
-                                                                                        b: 0.0,
-                                                                                        alpha: 1.0)
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.depthAttachment.texture = self.shadowMap
+        renderPassDescriptor.depthAttachment.loadAction = .clear
+        renderPassDescriptor.depthAttachment.storeAction = .store
+        renderPassDescriptor.depthAttachment.clearDepth = 1.0
+        
         let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
         renderEncoder.setRenderPipelineState(self.renderPipelineState!)
         renderEncoder.setDepthStencilState(depthStencilState)

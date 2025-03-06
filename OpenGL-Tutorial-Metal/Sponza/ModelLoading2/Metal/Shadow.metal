@@ -8,7 +8,7 @@
 #include <metal_stdlib>
 using namespace metal;
 
-constant float3 lightDirection = float3(0.5, 0.9, 0.2);
+constant float3 lightDirection = float3(0.436436, -0.872872, 0.218218);
 constant float3 lightAmbient = float3(0.4);
 constant float3 lightDiffuse = float3(1.0);
 constant float3 lightSpecular = float3(0.8);

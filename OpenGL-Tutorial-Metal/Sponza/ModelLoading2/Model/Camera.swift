@@ -82,18 +82,18 @@ class Camera {
     
     // MARK: - getViewMatrix
     func getViewMatrix(eyePosition: simd_float3? = nil) -> simd_float4x4 {
-        if eyePosition != nil {
-            return simd_float4x4.identity().lookAt(eyePosition: eyePosition!, targetPosition: simd_float3(repeating: 0.0), upVec: simd_float3(0.0, 1.0, 0.0))
+        if let pos = eyePosition {
+            return simd_float4x4.identity().lookAt(eyePosition: pos, targetPosition: simd_float3(repeating: 0.0), upVec: simd_float3(0.0, 1.0, 0.0))
         }
         
         return simd_float4x4.identity().lookAt(eyePosition: self.position,
-                                    targetPosition: self.position + front,
-                                    upVec: up)
+                                               targetPosition: self.position + self.front,
+                                               upVec: self.up)
     } // getViewMatrix
     
     // MARK: - getProjectionMatrix
     func getProjectionMatrix() -> simd_float4x4 {
-        return simd_float4x4.identity().perspective(fov: self.zoom.toRadians(),
+        return simd_float4x4.identity().perspective(fov: Float(45).toRadians(),
                                          aspectRatio: 1.0,
                                          nearPlane: 0.1,
                                          farPlane: 100.0)

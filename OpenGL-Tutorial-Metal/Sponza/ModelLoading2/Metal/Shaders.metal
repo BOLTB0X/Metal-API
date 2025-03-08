@@ -8,14 +8,12 @@
 #include <metal_stdlib>
 #include "Vertexs.metal"
 #include "Uniforms.metal"
-#include "Shadow.metal"
 using namespace metal;
 
-// MARK: - random
-inline float random(float3 seed, int i) {
-    float dotProduct = dot(float4(seed, i), float4(12.9898, 78.233, 45.164, 94.673));
-    return fract(sin(dotProduct) * 43758.5453);
-}
+constant float3 lightDirection = float3(0.436436, -0.572872, 0.218218);
+constant float3 lightAmbient = float3(0.4);
+constant float3 lightDiffuse = float3(1.0);
+constant float3 lightSpecular = float3(0.8);
 
 // MARK: - calcPhongLight
 inline float4 calcPhongLight(float4 diffuseColor,
@@ -31,7 +29,7 @@ inline float4 calcPhongLight(float4 diffuseColor,
     
     float3 viewDir = normalize(cameraPosition - worldPosition);
     float3 reflectDir = reflect(lightDirection, norm);
-    float spec = pow(max(dot(reflectDir, viewDir), 0.0), 32.0);
+    float spec = pow(max(dot(reflectDir, viewDir), 0.0), 64.0);
     float3 specular = spec * lightSpecular * specularColor.r;
     
     return float4(ambient + (diffuse + specular) * visibility, 1.0);
@@ -63,10 +61,10 @@ vertex VertexOut vertexFunction(VertexIn in [[stage_in]],
 
 // MARK: - shadow_VertexFunction
 vertex float4 shadow_VertexFunction(VertexIn in [[stage_in]],
-                                    constant ViewUniform& viewUniform [[buffer(vertexBufferIndexView)]],
+                                    constant LightUniform& lightUniform [[buffer(vertexBufferIndexView)]],
                                     constant ModelUniform& modelUniform [[buffer(vertexBufferIndexModel)]]) {
     float3 worldPosition = (modelUniform.modelMatrix * float4(in.position, 1.0)).xyz;
-    float4 position = (viewUniform.viewMatrix * viewUniform.projectionMatrix) * float4(worldPosition, 1.0);
+    float4 position = (lightUniform.viewMatrix * lightUniform.projectionMatrix) * float4(worldPosition, 1.0);
     
     return position;
 } // shadow_VertexFunction
@@ -93,23 +91,20 @@ fragment float4 fragmentFunction(VertexOut in [[stage_in]],
     float3 normal = normalize(TBN * normalColor.rgb);
     
     // shadow
-    float4 positionInLightSpace = lightUniform.viewMatrix * lightUniform.projectionMatrix * float4(in.worldPosition, 1.0);
+    float4 positionInLightSpace = (lightUniform.projectionMatrix * lightUniform.viewMatrix) * float4(in.worldPosition, 1.0);
     positionInLightSpace.xyz /= positionInLightSpace.w;
-    
     float2 lightSpaceCoord = positionInLightSpace.xy * 0.5 + 0.5;
     lightSpaceCoord.y = 1.0 - lightSpaceCoord.y;
-    
-    const float2 texelSize = 1.0 / float2(shadowMap.get_width(), shadowMap.get_height());
-    float visibility = 0.0;
-    
-    for (int i = 0; i < SHADOW_SAMPLE_COUNT; i++) {
-        float2 coord = float2(lightSpaceCoord.xy + normalize(poissonDisk[i]) * random(in.worldPosition, i) * SHADOW_PENUMBRA_SIZE * texelSize);
-        visibility += shadowMap.sample_compare(shadowSampler, coord, positionInLightSpace.z - SHADOW_BIAS);
+    float lightDepth = shadowMap.sample(colorSampler, lightSpaceCoord);
+    float visibility = 1.0;
+    if (positionInLightSpace.z > lightDepth) {
+        visibility = 0.0;
     }
-    visibility /= SHADOW_SAMPLE_COUNT;
-    
+        
     return calcPhongLight(diffuseColor, specularColor, in.worldPosition, normal, cameraPosition, visibility);
 } // fragmentFunction
 
 // MARK: - shadow_FragmentFunction
-fragment void shadow_FragmentFunction() {}
+fragment void shadow_FragmentFunction() {
+    return;
+}

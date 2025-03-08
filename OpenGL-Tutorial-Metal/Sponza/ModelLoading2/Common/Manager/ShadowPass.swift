@@ -14,6 +14,8 @@ class ShadowPass {
     private var vertexDescriptor: MTLVertexDescriptor
     private var renderPipelineState: MTLRenderPipelineState?
     
+    private let lightDir : simd_float3 = simd_float3(0.436436, -0.572872, 0.218218)
+
     // MARK: - init
     init(device: MTLDevice, mkView: MTKView,
          vertexFunction: String, fragmentFunction: String) {
@@ -42,9 +44,12 @@ class ShadowPass {
         renderEncoder.setRenderPipelineState(self.renderPipelineState!)
         renderEncoder.setDepthStencilState(depthStencilState)
         
-        var viewUniform = ViewUniform(viewMatrix: camera.getViewMatrix(),
-                                      projectionMatrix: camera.getProjectionMatrix())
-        renderEncoder.setVertexBytes(&viewUniform, length: MemoryLayout<ViewUniform>.size, index: VertexBufferIndex.viewUniform.rawValue)
+//        renderEncoder.setFrontFacing(.clockwise)
+//        renderEncoder.setCullMode(.back)
+
+        var lightUniform = LightUniform(viewMatrix: camera.getViewMatrix(eyePosition: lightDir),
+                                        projectionMatrix: simd_float4x4.identity().orthographicProjection(l: -10.0, r: 10.0, bottom: -10.0, top: 10.0, zNear: -25.0, zFar: 25.0))
+        renderEncoder.setVertexBytes(&lightUniform, length: MemoryLayout<LightUniform>.size, index: VertexBufferIndex.viewUniform.rawValue)
         
         render(renderEncoder)
         

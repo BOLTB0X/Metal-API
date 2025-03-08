@@ -34,7 +34,7 @@ class Mesh {
                 renderEncoder.setFragmentTexture(material.specularTexture, index: MaterialIndex.specularTexture.rawValue)
                 renderEncoder.setFragmentTexture(material.normalTexture, index: MaterialIndex.normalTexture.rawValue)
             } // if
-                        
+            
             var stateUniform = MaterialStateUniform(diffuseTexture: material.diffuseTexture,
                                                     specularTexture: material.specularTexture,
                                                     normalTexture: material.normalTexture)

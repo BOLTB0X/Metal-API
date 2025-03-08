@@ -20,10 +20,6 @@ struct Material {
         diffuseTexture = loadTexture(.baseColor, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
         specularTexture = loadTexture(.specular, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
         normalTexture = loadTexture(.tangentSpaceNormal, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
-
-//        MaterialIndex.allCases.forEach { index in
-//            textures[index.rawValue] = loadTexture(index.semantic, mdlMaterial: mdlMaterial, textureLoader: textureLoader)
-//        } // forEach
     } // init
     
     // MARK: - loadTexture
@@ -50,13 +46,4 @@ enum MaterialIndex: Int, CaseIterable {
     case diffuseTexture = 1
     case specularTexture = 2
     case normalTexture = 3
-    
-//    var semantic: MDLMaterialSemantic {
-//        switch self {
-//        case .diffuseTexture: return .baseColor
-//        case .specularTexture: return .specular
-//        case .normalTexture: return .tangentSpaceNormal
-//        }
-//    } // semantic
-    
 } // MaterialIndex

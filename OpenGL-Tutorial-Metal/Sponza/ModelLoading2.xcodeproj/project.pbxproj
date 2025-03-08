@@ -18,7 +18,6 @@
 		BE9A12CF2D77D37A00877756 /* RendererViewController+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9A12CE2D77D37A00877756 /* RendererViewController+Gesture.swift */; };
 		BE9A12D12D77EE4200877756 /* ModelPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9A12D02D77EE4200877756 /* ModelPass.swift */; };
 		BE9A12D32D78019700877756 /* ShadowPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9A12D22D78019700877756 /* ShadowPass.swift */; };
-		BE9A12D52D78114C00877756 /* Shadow.metal in Sources */ = {isa = PBXBuildFile; fileRef = BE9A12D42D78114C00877756 /* Shadow.metal */; };
 		BE9DF7782D6AB7EC002D3501 /* ModelLoading2App.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9DF7772D6AB7EC002D3501 /* ModelLoading2App.swift */; };
 		BE9DF77A2D6AB7ED002D3501 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9DF7792D6AB7ED002D3501 /* ContentView.swift */; };
 		BE9DF77C2D6AB7F3002D3501 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE9DF77B2D6AB7F3002D3501 /* Assets.xcassets */; };
@@ -46,7 +45,6 @@
 		BE9A12CE2D77D37A00877756 /* RendererViewController+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RendererViewController+Gesture.swift"; sourceTree = "<group>"; };
 		BE9A12D02D77EE4200877756 /* ModelPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelPass.swift; sourceTree = "<group>"; };
 		BE9A12D22D78019700877756 /* ShadowPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowPass.swift; sourceTree = "<group>"; };
-		BE9A12D42D78114C00877756 /* Shadow.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shadow.metal; sourceTree = "<group>"; };
 		BE9DF7742D6AB7EC002D3501 /* ModelLoading2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ModelLoading2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE9DF7772D6AB7EC002D3501 /* ModelLoading2App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelLoading2App.swift; sourceTree = "<group>"; };
 		BE9DF7792D6AB7ED002D3501 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -136,7 +134,6 @@
 			children = (
 				BE8E1EA22D6B0790001186B3 /* Vertexs.metal */,
 				BEA41A4C2D6D70610067BA67 /* Uniforms.metal */,
-				BE9A12D42D78114C00877756 /* Shadow.metal */,
 				BE9DF7992D6ABBBA002D3501 /* Shaders.metal */,
 			);
 			path = Metal;
@@ -286,7 +283,6 @@
 				BE9DF79C2D6ABC72002D3501 /* RendererView.swift in Sources */,
 				BE8E1E9D2D6B044B001186B3 /* RendererViewController.swift in Sources */,
 				BE8E1EA02D6B051A001186B3 /* Vertex.swift in Sources */,
-				BE9A12D52D78114C00877756 /* Shadow.metal in Sources */,
 				BE9DF77A2D6AB7ED002D3501 /* ContentView.swift in Sources */,
 				BE9DF7782D6AB7EC002D3501 /* ModelLoading2App.swift in Sources */,
 				BE9DF78E2D6AB9BB002D3501 /* RendererManager.swift in Sources */,

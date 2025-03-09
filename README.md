@@ -1680,6 +1680,13 @@ class Model {
              style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
         </p>
       </td>
+        <td style="text-align:center; vertical-align:middle;">
+        <p align="center">
+        <img src="https://github.com/BOLTB0X/Metal-API/blob/main/img/sponza-3.png?raw=true" 
+             alt="image 2" 
+             style="width:200px; height:400px; object-fit:contain; border:1px solid #ddd; border-radius:4px;"/>
+        </p>
+      </td>
     </tr>
     <tr>
       <td style="text-align:center; font-size:14px; font-weight:bold;">
@@ -1690,6 +1697,11 @@ class Model {
       <td style="text-align:center; font-size:14px; font-weight:bold;">
       <p align="center">
       Sponza 2
+      </p>
+      </td>
+      <td style="text-align:center; font-size:14px; font-weight:bold;">
+      <p align="center">
+      Sponza 조명 X
       </p>
       </td>
     </tr>

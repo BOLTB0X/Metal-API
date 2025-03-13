@@ -223,6 +223,8 @@
 <details>
 <summary> Metal vs MetalKit </summary>
 
+<br/>
+
 | 기능              | Metal                                        | MetalKit                         |
 | ----------------- | -------------------------------------------- | -------------------------------- |
 | **Setup**         | `CAMetalLayer` 직접 설정                     | `MTKView`으로 자동 관리          |
@@ -253,7 +255,8 @@
    ```
 
    - `MTKView`가 View를 업데이트 관리해줌
-     <br/>
+
+<br/>
 
 2. **Textures Load**
 
@@ -272,7 +275,8 @@
    ```
 
    - `textureLoader` 지원
-     <br/>
+
+<br/>
 
 3. **3D Model Load**
 
@@ -281,7 +285,7 @@
    let vertexBuffer = device.makeBuffer(bytes: vertices, length: vertices.count * MemoryLayout<Float>.size, options: [])
    ```
 
-   - obj 같은 모델 파일을 직접 파싱 필요한
+   - obj 같은 모델 파일을 직접 파싱 필요
    - `MTLBuffer`를 수동으로 생성한 뒤, 버텍스 데이터를 저장해야함
      <br/>
 

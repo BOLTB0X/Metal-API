@@ -68,6 +68,10 @@
 
 1. **Metal Device** (`MTLDevice`)
 
+   ```swift
+   protocol MTLDevice : NSObjectProtocol
+   ```
+
    - Metal에서 모든 작업의 출발점은 `MTLDevice`
 
    - 객체는 GPU를 추상화한 것으로, GPU 자원을 관리하고 작업을 실행
@@ -76,15 +80,24 @@
 
 2. **Metal Command Queue** (`MTLCommandQueue`)
 
+   ```swift
+   protocol MTLCommandQueue : NSObjectProtocol
+   ```
+
    - GPU에게 명령을 전달하는 큐
    - 명령이 실행되는 순서를 제어 가능
      <br/>
 
 3. **Metal Buffers** (`MTLBuffer`)
 
+   ```swift
+   protocol MTLBuffer : MTLResource
+   ```
+
    - GPU와 데이터를 공유하기 위한 메모리
-   <br/>
-   </details>
+     <br/>
+
+</details>
 
 <details>
 
@@ -93,18 +106,80 @@
 
 1. **Metal 디바이스, layer 설정, vertex, shader 코딩**
 
+   ```swift
+   var device: MTLDevice!
+   var metalLayer: CAMetalLayer!
+
+   // ...
+
+   device = MTLCreateSystemDefaultDevice()
+   metalLayer = CAMetalLayer()
+   metalLayer.device = device
+   metalLayer.pixelFormat = .bgra8Unorm
+   metalLayer.framebufferOnly = true
+   metalLayer.frame = view.layer.frame
+   view.layer.addSublayer(metalLayer)
+
+   // ...
+   ```
+
    - `MTLDevice` (**Metal 디바이스**): GPU와 연결해 작업을 수행할 객체를 설정
    - `CAMetalLayer`: 화면 출력용 Metal 레이어를 설정해 렌더링 결과를 디스플레이
+     <br/>
+
+   ```swift
+   let vertexData: [Float] = [
+        0.0,  0.5, 0.0,
+        -0.5, -0.5, 0.0,
+        0.5, -0.5, 0.0
+    ]
+
+   let defaultLibrary = device.makeDefaultLibrary()!
+   let fragmentProgram = defaultLibrary.makeFunction(name: "basic_fragment")
+   let vertexProgram = defaultLibrary.makeFunction(name: "basic_vertex")
+   ```
+
+   ```cpp
+   vertex float4 basic_vertex(uint vid [[vertex_id]], constant Vertex* vertices [[buffer(0)]]) {
+       VertexOut out;
+       return out;
+   }
+
+   fragment float4 basic_fragment(VertexOut in [[stage_in]], constant float4 &color [[buffer(1)]]) {
+        return color;
+   }
+   ```
+
    - **vertex data**: 그릴 도형(예: 삼각형, 사각형 등)의 좌표 정보를 정의
    - **shader**: 버텍스(기하학적 변환)와 프래그먼트(픽셀 색상 계산)를 처리하는 GPU 코드 작성
      <br/>
 
 2. **파이프라인(Pipeline) 설정**
 
+   ```swift
+   let defaultLibrary = device.makeDefaultLibrary()!
+   let fragmentProgram = defaultLibrary.makeFunction(name: "basic_fragment")
+   let vertexProgram = defaultLibrary.makeFunction(name: "basic_vertex")
+
+   let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
+   pipelineStateDescriptor.vertexFunction = vertexProgram
+   pipelineStateDescriptor.fragmentFunction = fragmentProgram
+   pipelineStateDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+   pipelineState = try! device.makeRenderPipelineState(descriptor: pipelineStateDescriptor)
+   ```
+
    - `MTLRenderPipelineState` **렌더링 파이프라인**:
      - 버텍스 셰이더와 프래그먼트 셰이더를 연결하고 렌더링 규칙을 설정
      - 어떤 그래픽 출력을 원하는지 GPU가 이해할수 있도록 정의
        <br/>
+
+   ```swift
+   let renderPassDescriptor = MTLRenderPassDescriptor()
+   renderPassDescriptor.colorAttachments[0].texture = drawable.texture
+   renderPassDescriptor.colorAttachments[0].loadAction = .clear
+   renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 1,green: 1, blue: 1, alpha: 0.5)
+   ```
+
    - **Pipeline**은 커맨드 큐가 실행할 때 GPU의 처리 흐름을 결정
      <br/>
 
@@ -112,13 +187,113 @@
 
 - `MTLBuffer` (**입력 버퍼**): CPU에서 GPU로 데이터를 전달하는 메모리 공간
 
+  ```swift
+  var vertexBuffer: MTLBuffer!
+  // ...
+
+  vertexBuffer = device.makeBuffer(bytes: vertexData, length: dataSize, options: [])
+
+  // ...
+  ```
+
   - 예 : _버텍스 데이터_ , _색상 정보_
     <br/>
 
 - `MTLCommandQueue` (**커맨드 큐**):
+
+  ```swift
+  let renderEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
+  renderEncoder.setRenderPipelineState(pipelineState)
+  renderEncoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
+  renderEncoder.setFragmentBytes(&currentColor, length: MemoryLayout<SIMD4<Float>>.stride, index: 1)
+  renderEncoder
+    .drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: 3, instanceCount: 1)
+  renderEncoder.endEncoding()
+
+  commandBuffer.present(drawable)
+  commandBuffer.commit()
+  ```
+
   - 커맨드 버퍼 안에 명령어를 작성하고 GPU에서 실행
   - 예 : _drawPrimitives로 삼각형 등 기본 도형을 그리기_ , _입력 버퍼와 파이프라인을 연결해 GPU 작업 실행_
     <br/>
+
+</details>
+
+<details>
+<summary> Metal vs MetalKit </summary>
+
+| 기능              | Metal                                        | MetalKit                         |
+| ----------------- | -------------------------------------------- | -------------------------------- |
+| **Setup**         | `CAMetalLayer` 직접 설정                     | `MTKView`으로 자동 관리          |
+| **프레임 Update** | `CADisplayLink` 직접 설정                    | `MTKView`의 자동 프레임 관리     |
+| **텍스처 Load**   | `UIImage -> CGImage -> MTLTexture` 직접 변환 | `MTKTextureLoader`으로 간편 처리 |
+| **3D Model Load** | `.obj` 파일 직접 파싱 후 `MTLBuffer` 생성    | `MTKMesh`를 지원, 자동 변환      |
+
+1. **Setup/프레임 Update**
+
+   ```swift
+   // Metal
+   let metalLayer = CAMetalLayer()
+   metalLayer.device = device
+   metalLayer.pixelFormat = .bgra8Unorm
+   metalLayer.framebufferOnly = true
+   view.layer.addSublayer(metalLayer)
+   ```
+
+   - `MTLDevice`, `MTLCommandQueue`, `MTLRenderPipelineState` 등을 수동으로 구성
+   - `CADisplayLink` 또는 타이머를 사용하여 프레임 업데이트
+     <br/>
+
+   ```swift
+   // MetalKit
+   let mtkView = MTKView(frame: view.bounds, device: device)
+   mtkView.delegate = self
+   view.addSubview(mtkView)
+   ```
+
+   - `MTKView`가 View를 업데이트 관리해줌
+     <br/>
+
+2. **Textures Load**
+
+   ```swift
+   // Metal
+   guard let image = UIImage(named: name)?.cgImage else { return nil }
+   ```
+
+   - `CGContext`를 사용하여 텍스처 데이터를 직접 파싱이 필요
+     <br/>
+
+   ```swift
+   // MetalKit
+   let textureLoader = MTKTextureLoader(device: device)
+   let texture = try textureLoader.newTexture(name: "img", scaleFactor: 1.0, bundle: nil)
+   ```
+
+   - `textureLoader` 지원
+     <br/>
+
+3. **3D Model Load**
+
+   ```swift
+   // Metal
+   let vertexBuffer = device.makeBuffer(bytes: vertices, length: vertices.count * MemoryLayout<Float>.size, options: [])
+   ```
+
+   - obj 같은 모델 파일을 직접 파싱 필요한
+   - `MTLBuffer`를 수동으로 생성한 뒤, 버텍스 데이터를 저장해야함
+     <br/>
+
+   ```swift
+   // MetalKit
+   let asset = MDLAsset(url: url)
+   let mesh = try MTKMesh.newMeshes(asset: asset, device: device)
+   ```
+
+   - `MDLAsset`, `MTKMesh` 지원
+   - `MDLAsset` + `MTKMesh`를 사용하면 3D 모델을 자동으로 변환해서 `MTLBuffer`로 만들어줌
+     <br/>
 
 </details>
 
